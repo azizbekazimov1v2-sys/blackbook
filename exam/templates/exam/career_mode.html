@@ -1,0 +1,472 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Mode</title>
+    <link rel="stylesheet" href="{% static 'exam/ui_smooth.css' %}">
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(245, 158, 11, 0.14) 0%, transparent 22%),
+                radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.18) 0%, transparent 24%),
+                linear-gradient(135deg, #fffdf8 0%, #fff8eb 48%, #fdf3df 100%);
+            color: #1f2937;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: rgba(255, 252, 245, 0.88);
+            border-bottom: 1px solid rgba(180, 140, 60, 0.16);
+            backdrop-filter: blur(10px);
+        }
+
+        .topbar-inner {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: 800;
+            color: #a16207;
+            letter-spacing: 0.02em;
+        }
+
+        .nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.76);
+            border: 1px solid rgba(180, 140, 60, 0.14);
+            font-size: 13px;
+            font-weight: 700;
+            color: #6b4f1d;
+            transition: all 0.22s ease;
+        }
+
+        .nav a:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 22px rgba(180, 140, 60, 0.10);
+            background: #fffdf7;
+        }
+
+        .page {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 22px 18px 40px;
+        }
+
+        .hero {
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.88), rgba(255,248,231,0.96));
+            border: 1px solid rgba(180, 140, 60, 0.16);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 18px 40px rgba(176, 138, 61, 0.10);
+            margin-bottom: 22px;
+        }
+
+        .hero h1 {
+            margin: 0 0 6px;
+            font-size: 44px;
+            font-weight: 800;
+            color: #8b5e13;
+        }
+
+        .hero-sub {
+            margin: 0;
+            color: #8a6a2f;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .stats {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .stat {
+            background: rgba(255,255,255,0.78);
+            border: 1px solid rgba(180, 140, 60, 0.14);
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: 0 8px 22px rgba(176, 138, 61, 0.06);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .stat:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 30px rgba(176, 138, 61, 0.10);
+        }
+
+        .stat-number {
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: #a16207;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #8a6a2f;
+        }
+
+        .progress-wrap {
+            margin-top: 18px;
+        }
+
+        .progress-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 13px;
+            margin-bottom: 8px;
+            color: #8a6a2f;
+            font-weight: 700;
+        }
+
+        .progress-bar {
+            height: 15px;
+            background: rgba(255,255,255,0.75);
+            border-radius: 999px;
+            overflow: hidden;
+            border: 1px solid rgba(180, 140, 60, 0.14);
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: {{ progress_percent }}%;
+            background: linear-gradient(90deg, #f59e0b, #fbbf24, #fde68a);
+            box-shadow: 0 0 18px rgba(245, 158, 11, 0.28);
+        }
+
+        .section-title {
+            margin: 0 0 10px;
+            font-size: 30px;
+            font-weight: 800;
+            color: #8b5e13;
+        }
+
+        .track {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .topic-card {
+            position: relative;
+            background: rgba(255,255,255,0.78);
+            border: 1px solid rgba(180, 140, 60, 0.14);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 12px 28px rgba(176, 138, 61, 0.08);
+            overflow: hidden;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 36px rgba(176, 138, 61, 0.12);
+        }
+
+        .topic-card.completed {
+            border-color: rgba(245, 158, 11, 0.34);
+            background: linear-gradient(135deg, rgba(255,255,255,0.86), rgba(255,244,214,0.96));
+        }
+
+        .topic-card.locked {
+            opacity: 0.72;
+            filter: saturate(0.82);
+        }
+
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: start;
+            margin-bottom: 14px;
+        }
+
+        .left-head {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            background: linear-gradient(135deg, #fffdf7, #fdecc8);
+            border: 1px solid rgba(180, 140, 60, 0.14);
+            color: #a16207;
+            box-shadow: 0 8px 20px rgba(176, 138, 61, 0.08);
+        }
+
+        .order-box {
+            font-size: 12px;
+            font-weight: 800;
+            color: #a16207;
+            margin-bottom: 4px;
+            letter-spacing: 0.06em;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            color: #6b4f1d;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #8a6a2f;
+        }
+
+        .tag {
+            display: inline-flex;
+            border-radius: 999px;
+            padding: 8px 10px;
+            font-size: 11px;
+            font-weight: 800;
+            border: 1px solid rgba(180, 140, 60, 0.10);
+        }
+
+        .tag.free {
+            background: #fff7db;
+            color: #a16207;
+        }
+
+        .tag.premium {
+            background: linear-gradient(135deg, #fff5d6, #fde68a);
+            color: #8b5e13;
+        }
+
+        .desc {
+            margin: 0 0 16px;
+            color: #6b7280;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .status-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .status-chip {
+            border-radius: 999px;
+            padding: 8px 10px;
+            font-size: 12px;
+            font-weight: 800;
+            border: 1px solid rgba(180, 140, 60, 0.08);
+        }
+
+        .status-green {
+            background: #ecfdf3;
+            color: #15803d;
+        }
+
+        .status-blue {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .status-gray {
+            background: #f8fafc;
+            color: #64748b;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 13px;
+            font-weight: 800;
+            transition: all 0.20s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #fff7db, #fde68a);
+            color: #8b5e13;
+            border: 1px solid rgba(180, 140, 60, 0.12);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #6b4f1d;
+            border: 1px solid rgba(180, 140, 60, 0.12);
+        }
+
+        .btn-locked {
+            background: #f8fafc;
+            color: #94a3b8;
+            border: 1px solid #e5e7eb;
+        }
+
+        @media (max-width: 980px) {
+            .stats, .track {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="topbar">
+    <div class="topbar-inner">
+        <div class="brand">Career Mode</div>
+        <div class="nav">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            {% if user.is_staff %}
+                <a href="{% url 'career_manager' %}">Career Manager</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+
+<div class="page">
+    <section class="hero">
+        <h1>Career Mode</h1>
+        <p class="hero-sub">Step by step progression</p>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">{{ total_topics }}</div>
+                <div class="stat-label">Total Levels</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">{{ completed_topics }}</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">{{ free_topics }}</div>
+                <div class="stat-label">Free Levels</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">{{ progress_percent }}%</div>
+                <div class="stat-label">Progress</div>
+            </div>
+        </div>
+
+        <div class="progress-wrap">
+            <div class="progress-head">
+                <span>Career Progress</span>
+                <span>{{ completed_topics }} / {{ total_topics }}</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+    </section>
+
+    <h2 class="section-title">Levels</h2>
+
+    <div class="track">
+        {% for item in items %}
+            <div class="topic-card {% if item.completed %}completed{% elif item.locked %}locked{% endif %}">
+                <div class="top-row">
+                    <div class="left-head">
+                        <div class="icon">{{ item.topic.icon }}</div>
+                        <div>
+                            <div class="order-box">LEVEL {{ item.topic.order }}</div>
+                            <div class="title">{{ item.topic.title }}</div>
+                            <div class="subtitle">{{ item.topic.subtitle }}</div>
+                        </div>
+                    </div>
+
+                    {% if item.topic.is_free %}
+                        <span class="tag free">FREE</span>
+                    {% else %}
+                        <span class="tag premium">PREMIUM</span>
+                    {% endif %}
+                </div>
+
+                <p class="desc">{{ item.topic.description }}</p>
+
+                <div class="status-row">
+                    {% if item.progress.video_done %}
+                        <span class="status-chip status-green">Video watched</span>
+                    {% else %}
+                        <span class="status-chip status-gray">Video not watched</span>
+                    {% endif %}
+
+                    {% if item.progress.test_passed %}
+                        <span class="status-chip status-green">Test passed</span>
+                    {% else %}
+                        <span class="status-chip status-blue">Test not passed</span>
+                    {% endif %}
+
+                    {% if item.completed %}
+                        <span class="status-chip status-green">Completed</span>
+                    {% elif item.unlocked %}
+                        <span class="status-chip status-blue">Unlocked</span>
+                    {% else %}
+                        <span class="status-chip status-gray">Locked</span>
+                    {% endif %}
+                </div>
+
+                <div class="actions">
+                    {% if item.unlocked %}
+                        {% if item.has_video %}
+                            <a href="{% url 'career_watch_video' item.topic.id %}" class="btn btn-primary">▶ Watch Video</a>
+                        {% else %}
+                            <span class="btn btn-locked">No Video</span>
+                        {% endif %}
+
+                        {% if item.has_test %}
+                            <a href="{% url 'career_test' item.topic.id %}" class="btn btn-secondary">📝 Start PDF Test</a>
+                        {% else %}
+                            <span class="btn btn-locked">No Test</span>
+                        {% endif %}
+                    {% else %}
+                        <span class="btn btn-locked">🔒 Locked</span>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF yuklash - SAT Azizbek</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #f5f7fb, #eef2ff);
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.6s ease both;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(51, 74, 203, 0.05) 1.5px, transparent 1.5px);
+            background-size: 64px 64px;
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .box {
+            max-width: 760px;
+            width: 100%;
+            margin: 0 auto;
+            background: white;
+            padding: 36px 40px;
+            border-radius: 28px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+            animation: fadeUp 0.7s ease both;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            border: 1px solid #e5e7eb;
+            position: relative;
+            z-index: 1;
+        }
+
+        .box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 24px 56px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            margin-bottom: 28px;
+            font-size: 34px;
+            font-weight: 700;
+            color: #111827;
+            animation: slideDown 0.8s ease both;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h1::before {
+            content: "📄";
+            font-size: 38px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+            animation: fadeUp 0.85s ease both;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        label::before {
+            content: "•";
+            color: #334acb;
+            font-size: 20px;
+        }
+
+        label.required::after {
+            content: "*";
+            color: #dc2626;
+            margin-left: 4px;
+            font-size: 14px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 14px;
+            font-size: 15px;
+            box-sizing: border-box;
+            background: white;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+            font-family: inherit;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #334acb;
+            box-shadow: 0 0 0 4px rgba(51, 74, 203, 0.1);
+            transform: translateY(-1px);
+        }
+
+        input:hover, textarea:hover, select:hover {
+            border-color: #9ca3af;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+            background-position: right 16px center;
+            background-repeat: no-repeat;
+            background-size: 20px;
+            padding-right: 48px;
+        }
+
+        input[type="file"] {
+            padding: 12px 14px;
+            cursor: pointer;
+            background: #f9fafb;
+        }
+
+        input[type="file"]:hover {
+            background: #f3f4f6;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background: #f9fafb;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .checkbox-group:hover {
+            background: #eef2ff;
+            border-color: #c7d2fe;
+            transform: translateY(-1px);
+        }
+
+        .checkbox-group input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #f59e0b;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 700;
+            color: #374151;
+        }
+
+        .checkbox-group label::before {
+            display: none;
+        }
+
+        .file-name {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .file-name::before {
+            content: "✅";
+            font-size: 14px;
+        }
+
+        .helper-text {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .helper-text::before {
+            content: "💡";
+            font-size: 14px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 32px;
+            animation: fadeUp 0.95s ease both;
+        }
+
+        button, .btn {
+            padding: 14px 28px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+            text-decoration: none;
+        }
+
+        button {
+            background: linear-gradient(135deg, #111827, #1f2937);
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(17, 24, 39, 0.2);
+            background: linear-gradient(135deg, #1f2937, #374151);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+        }
+
+        .messages {
+            margin-bottom: 20px;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .alert {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px 14px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            border: 1px solid #fecaca;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .alert::before {
+            content: "⚠️";
+            font-size: 16px;
+        }
+
+        .alert.success {
+            background: #dcfce7;
+            color: #166534;
+            border-color: #bbf7d0;
+        }
+
+        .alert.success::before {
+            content: "✅";
+        }
+
+        /* Staggered animations */
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.15s; }
+        .form-group:nth-child(3) { animation-delay: 0.2s; }
+        .form-group:nth-child(4) { animation-delay: 0.25s; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 16px;
+            }
+
+            .box {
+                padding: 28px 24px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            h1::before {
+                font-size: 32px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button, .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            h1::before {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>PDF test yuklash</h1>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data" id="uploadForm">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label class="required">Test nomi</label>
+                <input type="text" name="title" id="title" required
+                       placeholder="Masalan: SAT Math Practice Test 1"
+                       maxlength="200">
+                <div class="helper-text">Test nomi foydalanuvchilarga ko'rinadi</div>
+            </div>
+
+            <div class="form-group">
+                <label>Izoh</label>
+                <textarea name="description" id="description"
+                          placeholder="Test haqida qisqacha ma'lumot (ixtiyoriy)"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="required">Bo'lim</label>
+                <select name="subject" id="subject" required>
+                    <option value="math">🔢 Math</option>
+                    <option value="english">📖 English</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="required">PDF fayl</label>
+                <input type="file" name="pdf_file" id="pdf_file" accept=".pdf" required>
+                <div class="file-name" id="fileName"></div>
+                <div class="helper-text">Faqat PDF formatidagi fayllarni yuklang</div>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox-group" onclick="document.getElementById('is_premium').click()">
+                    <input type="checkbox" name="is_premium" id="is_premium">
+                    <label for="is_premium">
+                        💎 Premium test - Faqat premium foydalanuvchilar yecha oladi
+                    </label>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" id="submitBtn">
+                    <span>📤</span> Yuklash
+                </button>
+                <a href="{% url 'admin_panel' %}" class="btn btn-secondary">
+                    <span>←</span> Bekor qilish
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // File input enhancement
+        const fileInput = document.getElementById('pdf_file');
+        const fileName = document.getElementById('fileName');
+
+        if (fileInput) {
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const size = (file.size / (1024 * 1024)).toFixed(2);
+                    fileName.textContent = `${file.name} (${size} MB)`;
+                    fileName.style.color = '#10b981';
+
+                    // Animation
+                    this.style.background = '#e0e7ff';
+                    setTimeout(() => {
+                        this.style.background = '#f9fafb';
+                    }, 300);
+
+                    // Validate file type
+                    if (!file.name.toLowerCase().endsWith('.pdf')) {
+                        fileName.textContent = '⚠️ Faqat PDF fayl yuklash mumkin!';
+                        fileName.style.color = '#dc2626';
+                        this.value = '';
+                    }
+
+                    // Validate file size (max 50MB)
+                    if (file.size > 50 * 1024 * 1024) {
+                        fileName.textContent = '⚠️ Fayl hajmi 50MB dan katta bo\'lishi mumkin emas!';
+                        fileName.style.color = '#dc2626';
+                        this.value = '';
+                    }
+                } else {
+                    fileName.textContent = '';
+                }
+            });
+        }
+
+        // Form submission loading state
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+
+            submitBtn.classList.add('loading');
+            submitBtn.innerHTML = '<span>⏳</span> Yuklanmoqda...';
+
+            setTimeout(() => {
+                if (submitBtn.classList.contains('loading')) {
+                    submitBtn.classList.remove('loading');
+                    submitBtn.innerHTML = originalText;
+                }
+            }, 5000);
+        });
+
+        // Auto-resize textarea
+        const textarea = document.getElementById('description');
+        if (textarea) {
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 200) + 'px';
+            });
+        }
+
+        // Smooth scroll to top
+        window.addEventListener('load', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Title character counter
+        const titleInput = document.getElementById('title');
+        if (titleInput) {
+            titleInput.addEventListener('input', function() {
+                if (this.value.length > 190) {
+                    this.style.borderColor = '#f59e0b';
+                } else {
+                    this.style.borderColor = '#e5e7eb';
+                }
+            });
+        }
+
+        // Keyboard shortcut (Ctrl/Cmd + Enter to submit)
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('uploadForm').submit();
+            }
+        });
+
+        // Drag and drop for file input
+        const box = document.querySelector('.box');
+        if (box) {
+            box.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                box.style.borderColor = '#334acb';
+                box.style.backgroundColor = '#f8fafc';
+            });
+
+            box.addEventListener('dragleave', () => {
+                box.style.borderColor = '#e5e7eb';
+                box.style.backgroundColor = 'white';
+            });
+
+            box.addEventListener('drop', (e) => {
+                e.preventDefault();
+                box.style.borderColor = '#e5e7eb';
+                box.style.backgroundColor = 'white';
+
+                const files = e.dataTransfer.files;
+                if (files.length > 0 && files[0].type === 'application/pdf') {
+                    fileInput.files = files;
+                    const event = new Event('change', { bubbles: true });
+                    fileInput.dispatchEvent(event);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

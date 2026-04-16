@@ -1,0 +1,332 @@
+<section style="
+    margin: 18px 0 22px;
+    background: linear-gradient(135deg, #111827, #334155 45%, #1d4ed8);
+    color: white;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 16px 32px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    animation: fadeUp 0.7s ease both;
+">
+    <!-- Background pattern -->
+    <div style="
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255,255,255,0.08) 1.5px, transparent 1.5px);
+        background-size: 48px 48px;
+        pointer-events: none;
+    "></div>
+
+    <!-- Animated gradient overlay -->
+    <div style="
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 200%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+        animation: shimmer 3s infinite;
+        pointer-events: none;
+    "></div>
+
+    <div style="
+        display: grid;
+        grid-template-columns: 1.3fr 0.8fr;
+        gap: 20px;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+    ">
+        <div>
+            <div style="
+                font-size: 12px;
+                font-weight: 800;
+                opacity: 0.9;
+                margin-bottom: 12px;
+                letter-spacing: 1.5px;
+                text-transform: uppercase;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            ">
+                <span style="
+                    display: inline-block;
+                    width: 8px;
+                    height: 8px;
+                    background: #10b981;
+                    border-radius: 50%;
+                    animation: pulse 2s infinite;
+                "></span>
+                🔥 NEW MODE
+            </div>
+
+            <h2 style="
+                margin: 0 0 12px;
+                font-size: 38px;
+                line-height: 1.15;
+                font-weight: 800;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            ">
+                <span style="
+                    display: inline-block;
+                    animation: bounce 2s infinite;
+                ">⚽</span>
+                <span style="
+                    background: linear-gradient(135deg, #fff, #fbbf24);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                ">Career Mode</span>
+            </h2>
+
+            <p style="
+                margin: 0;
+                color: rgba(255,255,255,0.9);
+                line-height: 1.7;
+                font-size: 15px;
+                max-width: 700px;
+            ">
+                Video lesson ko'ring, test ishlang, keyingi levelni oching.
+                O'yin uslubidagi progression orqali o'rganing.
+            </p>
+
+            <div style="
+                margin-top: 20px;
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+            ">
+                <a href="{% url 'career_mode' %}" style="
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    padding: 13px 20px;
+                    border-radius: 14px;
+                    background: white;
+                    color: #111827;
+                    font-size: 14px;
+                    font-weight: 700;
+                    text-decoration: none;
+                    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 24px rgba(0,0,0,0.2)';"
+                   onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+                    <span>🎮</span> Enter Career Mode
+                    <span style="font-size: 16px;">→</span>
+                </a>
+
+                <a href="https://t.me/SAT_Math_English" target="_blank" rel="noopener noreferrer" style="
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    padding: 13px 20px;
+                    border-radius: 14px;
+                    background: rgba(255,255,255,0.1);
+                    color: white;
+                    font-size: 14px;
+                    font-weight: 700;
+                    text-decoration: none;
+                    border: 1px solid rgba(255,255,255,0.2);
+                    backdrop-filter: blur(10px);
+                    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+                " onmouseover="this.style.transform='translateY(-2px)'; this.style.background='rgba(255,255,255,0.15)'; this.style.borderColor='rgba(255,255,255,0.3)';"
+                   onmouseout="this.style.transform=''; this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='rgba(255,255,255,0.2)';">
+                    <span>📢</span> Telegram Channel
+                </a>
+            </div>
+        </div>
+
+        <div style="
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 18px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.22s ease, background 0.22s ease;
+        " onmouseover="this.style.transform='translateY(-2px)'; this.style.background='rgba(255,255,255,0.12)';"
+           onmouseout="this.style.transform=''; this.style.background='rgba(255,255,255,0.08)';">
+            <div style="
+                font-size: 15px;
+                font-weight: 800;
+                margin-bottom: 14px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            ">
+                <span>🎯</span> Mode Features
+            </div>
+            <div style="
+                display: grid;
+                gap: 10px;
+                font-size: 13px;
+                color: rgba(255,255,255,0.9);
+            ">
+                <div style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 6px 0;
+                ">
+                    <span style="
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 24px;
+                        height: 24px;
+                        background: rgba(16, 185, 129, 0.2);
+                        border-radius: 8px;
+                        color: #10b981;
+                        font-weight: 700;
+                    ">✓</span>
+                    <span>Video + test progression</span>
+                </div>
+                <div style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 6px 0;
+                ">
+                    <span style="
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 24px;
+                        height: 24px;
+                        background: rgba(16, 185, 129, 0.2);
+                        border-radius: 8px;
+                        color: #10b981;
+                        font-weight: 700;
+                    ">✓</span>
+                    <span>Level unlock system</span>
+                </div>
+                <div style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 6px 0;
+                ">
+                    <span style="
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 24px;
+                        height: 24px;
+                        background: rgba(245, 158, 11, 0.2);
+                        border-radius: 8px;
+                        color: #fbbf24;
+                        font-weight: 700;
+                    ">💎</span>
+                    <span>Premium locked levels</span>
+                </div>
+                <div style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 6px 0;
+                ">
+                    <span style="
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 24px;
+                        height: 24px;
+                        background: rgba(16, 185, 129, 0.2);
+                        border-radius: 8px;
+                        color: #10b981;
+                        font-weight: 700;
+                    ">✓</span>
+                    <span>Game-style progression feel</span>
+                </div>
+            </div>
+
+            <!-- Progress indicator -->
+            <div style="
+                margin-top: 16px;
+                padding-top: 14px;
+                border-top: 1px solid rgba(255,255,255,0.1);
+            ">
+                <div style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 6px;
+                ">
+                    <span style="font-size: 12px; opacity: 0.8;">Your progress</span>
+                    <span style="font-size: 12px; font-weight: 700; color: #fbbf24;">0/{{ total_topics|default:10 }} levels</span>
+                </div>
+                <div style="
+                    height: 6px;
+                    background: rgba(255,255,255,0.1);
+                    border-radius: 999px;
+                    overflow: hidden;
+                ">
+                    <div style="
+                        width: 0%;
+                        height: 100%;
+                        background: linear-gradient(90deg, #10b981, #34d399);
+                        border-radius: 999px;
+                        transition: width 1s ease;
+                        animation: fillProgress 1.5s ease forwards;
+                    "></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(18px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes shimmer {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(50%);
+        }
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.5;
+            transform: scale(1.2);
+        }
+    }
+
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-5px);
+        }
+    }
+
+    @keyframes fillProgress {
+        from {
+            width: 0%;
+        }
+        to {
+            width: {{ progress_percentage|default:0 }}%;
+        }
+    }
+</style>

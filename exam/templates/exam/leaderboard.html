@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - SAT Azizbek</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #f5f7fb, #eef2ff);
+            margin: 0;
+            color: #111827;
+            min-height: 100vh;
+            animation: fadeIn 0.6s ease both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+        }
+
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 28px 20px 48px;
+            animation: fadeUp 0.7s ease both;
+        }
+
+        .top-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #111827, #1f2937);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            animation: slideDown 0.5s ease both;
+        }
+
+        .top-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(17, 24, 39, 0.2);
+            background: linear-gradient(135deg, #1f2937, #374151);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #334acb, #1d4ed8);
+            color: white;
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 16px 32px rgba(29, 78, 216, 0.16);
+            animation: slideDown 0.6s ease both;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.1) 1.5px, transparent 1.5px);
+            background-size: 64px 64px;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .hero > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            margin: 0 0 10px;
+            font-size: 38px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero h1::before {
+            content: "🏆";
+            font-size: 42px;
+        }
+
+        .hero p {
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+
+        .my-box {
+            background: rgba(255,255,255,0.15);
+            padding: 18px 20px;
+            border-radius: 16px;
+            margin-top: 18px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.22s ease, background 0.22s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .my-box:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.2);
+        }
+
+        .my-box strong {
+            font-size: 20px;
+            color: #fbbf24;
+        }
+
+        .my-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 12px;
+        }
+
+        .my-stat {
+            text-align: center;
+        }
+
+        .my-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .my-stat-label {
+            font-size: 12px;
+            opacity: 0.85;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            animation: fadeUp 0.85s ease both;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 36px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            font-weight: 700;
+            font-size: 22px;
+            background: #fafafa;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-header::before {
+            content: "🌍";
+            font-size: 24px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th {
+            background: #f8fafc;
+            font-weight: 700;
+            font-size: 13px;
+            color: #4b5563;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        tbody tr {
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: #f9fafb;
+            transform: scale(1.01);
+        }
+
+        .rank-chip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 45px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #111827, #1f2937);
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .rank-chip:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .top-1 .rank-chip {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #78350f;
+        }
+
+        .top-2 .rank-chip {
+            background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+            color: #1e293b;
+        }
+
+        .top-3 .rank-chip {
+            background: linear-gradient(135deg, #d97706, #b45309);
+            color: white;
+        }
+
+        .username {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-1 .username::before {
+            content: "🥇";
+            font-size: 18px;
+        }
+
+        .top-2 .username::before {
+            content: "🥈";
+            font-size: 18px;
+        }
+
+        .top-3 .username::before {
+            content: "🥉";
+            font-size: 18px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+        .empty-state::before {
+            content: "📊";
+            font-size: 48px;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 18px;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+        }
+
+        .summary-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .summary-label {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page {
+                padding: 20px 16px 32px;
+            }
+
+            .hero {
+                padding: 20px;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .hero h1::before {
+                font-size: 34px;
+            }
+
+            .my-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .stats-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .card-header {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 26px;
+            }
+
+            .hero h1::before {
+                font-size: 30px;
+            }
+
+            .my-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .top-link {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <a href="{% url 'profile' %}" class="top-link">
+            <span>←</span> Back to Profile
+        </a>
+
+        <div class="hero">
+            <h1>Leaderboard</h1>
+            <p>Best score, average score va total attempts bo'yicha global ranking.</p>
+
+            {% if my_rank %}
+                <div class="my-box">
+                    <strong>#{{ my_rank.rank }} - Sizning o'rningiz</strong>
+                    <div class="my-stats">
+                        <div class="my-stat">
+                            <div class="my-stat-value">{{ my_rank.best_score }}</div>
+                            <div class="my-stat-label">Best Score</div>
+                        </div>
+                        <div class="my-stat">
+                            <div class="my-stat-value">{{ my_rank.avg_score }}</div>
+                            <div class="my-stat-label">Average Score</div>
+                        </div>
+                        <div class="my-stat">
+                            <div class="my-stat-value">{{ my_rank.total_attempts }}</div>
+                            <div class="my-stat-label">Total Attempts</div>
+                        </div>
+                        <div class="my-stat">
+                            <div class="my-stat-value">{{ my_rank.percentile|default:'-' }}</div>
+                            <div class="my-stat-label">Percentile</div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        {% if leaderboard %}
+            <div class="stats-summary">
+                <div class="summary-card">
+                    <div class="summary-value">{{ leaderboard|length }}</div>
+                    <div class="summary-label">Jami ishtirokchilar</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value">{{ top_score|default:'-' }}</div>
+                    <div class="summary-label">Eng yuqori ball</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value">{{ avg_score_all|default:'-' }}</div>
+                    <div class="summary-label">O'rtacha ball</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Global Ranking</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Username</th>
+                                <th>Best Score</th>
+                                <th>Average Score</th>
+                                <th>Attempts</th>
+                                <th>Last Activity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in leaderboard %}
+                                <tr class="{% if row.rank == 1 %}top-1{% elif row.rank == 2 %}top-2{% elif row.rank == 3 %}top-3{% endif %}">
+                                    <td>
+                                        <span class="rank-chip">#{{ row.rank }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="username">{{ row.username }}</span>
+                                    </td>
+                                    <td><strong>{{ row.best_score }}</strong></td>
+                                    <td>{{ row.avg_score }}</td>
+                                    <td>{{ row.total_attempts }}</td>
+                                    <td>{{ row.last_activity|date:"Y-m-d H:i" }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% else %}
+            <div class="card">
+                <div class="card-header">Global Ranking</div>
+                <div class="empty-state">
+                    Hali ranking yo'q. Test ishlashni boshlang!
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Smooth scroll to top
+        window.addEventListener('load', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Highlight user's row if present
+        const currentUsername = "{{ user.username }}";
+        if (currentUsername) {
+            document.querySelectorAll('tbody tr').forEach(row => {
+                const usernameCell = row.querySelector('.username');
+                if (usernameCell && usernameCell.textContent.trim() === currentUsername) {
+                    row.style.background = '#eef2ff';
+                    row.style.borderLeft = '4px solid #334acb';
+                }
+            });
+        }
+
+        // Add hover effect to summary cards
+        document.querySelectorAll('.summary-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.background = '#f8fafc';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.style.background = 'white';
+            });
+        });
+
+        // Animate rank chips on load
+        document.querySelectorAll('.rank-chip').forEach((chip, index) => {
+            chip.style.opacity = '0';
+            chip.style.transform = 'scale(0.5)';
+
+            setTimeout(() => {
+                chip.style.transition = 'all 0.3s ease';
+                chip.style.opacity = '1';
+                chip.style.transform = 'scale(1)';
+            }, index * 30);
+        });
+    </script>
+</body>
+</html>

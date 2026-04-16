@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - SAT Azizbek</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #efefef;
+            color: #111827;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Topbar styles with animations */
+        .topbar {
+            background: #ffffff;
+            border-bottom: 1px solid #d9d9d9;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            height: 56px;
+            padding: 0 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .left-brand {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .menu-box {
+            width: 56px;
+            height: 40px;
+            border-right: 1px solid #d9d9d9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #111;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .menu-box:hover {
+            background: #f8fafc;
+            transform: translateY(-1px);
+        }
+
+        .logo-box {
+            height: 40px;
+            min-width: 150px;
+            background: #111;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 0 14px;
+            text-decoration: none;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, opacity 0.22s ease;
+        }
+
+        .logo-box:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+            opacity: 0.96;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .top-link {
+            font-size: 13px;
+            padding: 7px 10px;
+            border-radius: 8px;
+            color: #111827;
+            transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+        }
+
+        .top-link:hover {
+            background: #f3f4f6;
+            transform: translateY(-1px);
+        }
+
+        .top-link.primary {
+            background: #111827;
+            color: white;
+            font-weight: 700;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+        }
+
+        .top-link.primary:hover {
+            background: #111827;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.18);
+            opacity: 0.96;
+        }
+
+        /* Page container */
+        .page {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 28px 16px 40px;
+        }
+
+        /* Hero section with animations */
+        .hero {
+            background: linear-gradient(135deg, #334acb, #1d4ed8);
+            color: white;
+            border-radius: 22px;
+            padding: 24px;
+            margin-bottom: 18px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 24px rgba(29, 78, 216, 0.12);
+            animation: fadeUp 0.7s ease both;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 18px;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.10) 1.5px, transparent 1.5px);
+            background-size: 64px 64px;
+            opacity: 0.55;
+            pointer-events: none;
+        }
+
+        .hero > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            margin: 0 0 8px;
+            font-size: 34px;
+            font-weight: 600;
+        }
+
+        .hero p {
+            margin: 0;
+            line-height: 1.6;
+            opacity: 0.95;
+            font-size: 14px;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .hero-stat {
+            background: rgba(255,255,255,0.12);
+            border-radius: 14px;
+            padding: 14px;
+            transition: transform 0.22s ease, background 0.22s ease;
+        }
+
+        .hero-stat:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.18);
+        }
+
+        .hero-stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .hero-stat-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.85);
+        }
+
+        /* Section styles */
+        .section {
+            margin-top: 22px;
+            animation: fadeUp 0.85s ease both;
+        }
+
+        .section h2 {
+            margin: 0 0 6px;
+            font-size: 22px;
+        }
+
+        .section p {
+            margin: 0 0 14px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Grid layouts */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 16px;
+        }
+
+        /* Card styles with animations */
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+            animation: fadeUp 0.95s ease both;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+            border-color: #d1d5db;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Profile center styles */
+        .profile-center {
+            text-align: center;
+        }
+
+        .avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 24px;
+            object-fit: cover;
+            border: 1px solid #d1d5db;
+            display: block;
+            margin: 0 auto 14px;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .avatar:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+        }
+
+        .avatar-placeholder {
+            width: 140px;
+            height: 140px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #334acb, #1d4ed8);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 46px;
+            font-weight: 700;
+            margin: 0 auto 14px;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .avatar-placeholder:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(51, 74, 203, 0.2);
+        }
+
+        .username {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .muted {
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .bio-box {
+            margin-top: 14px;
+            background: #f3f4f6;
+            border-radius: 14px;
+            padding: 12px;
+            font-size: 13px;
+            color: #374151;
+            line-height: 1.55;
+            min-height: 88px;
+            white-space: pre-wrap;
+            text-align: left;
+            transition: background 0.2s ease;
+        }
+
+        .bio-box:hover {
+            background: #e5e7eb;
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+            justify-content: center;
+        }
+
+        /* Button styles with animations */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 13px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.16);
+        }
+
+        .btn:active {
+            transform: scale(0.985);
+        }
+
+        .btn-dark {
+            background: #111827;
+            color: white;
+        }
+
+        .btn-light {
+            background: #eef2ff;
+            color: #2538a8;
+        }
+
+        .btn-light:hover {
+            background: #dbeafe;
+        }
+
+        /* Badge styles */
+        .badge {
+            display: inline-block;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 10px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .badge:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 16px rgba(245, 158, 11, 0.2);
+        }
+
+        /* Grid layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        /* Mini stat cards */
+        .mini-stat {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 16px;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+        }
+
+        .mini-stat:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 18px rgba(59, 130, 246, 0.08);
+            border-color: #bfdbfe;
+        }
+
+        .mini-stat .number {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .mini-stat .label {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        /* List styles */
+        .list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .list-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 14px;
+            background: #fff;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+        }
+
+        .list-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+            border-color: #d1d5db;
+        }
+
+        .list-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        /* Pill styles */
+        .pill {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            background: #eef2ff;
+            color: #334acb;
+            margin-right: 6px;
+            margin-bottom: 6px;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .pill:hover {
+            transform: translateY(-1px);
+            background: #dbeafe;
+        }
+
+        /* Recommendation box */
+        .recommend-box {
+            background: linear-gradient(135deg, #eff6ff, #eef2ff);
+            border: 1px solid #c7d2fe;
+            border-radius: 18px;
+            padding: 18px;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .recommend-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(59, 130, 246, 0.12);
+        }
+
+        .recommend-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .recommend-sub {
+            color: #334155;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+
+        .goal-box {
+            margin-top: 14px;
+            background: white;
+            border-radius: 16px;
+            padding: 14px;
+            border: 1px solid #dbeafe;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .goal-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.08);
+        }
+
+        /* Table styles */
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background: #f8fafc;
+            font-size: 13px;
+            color: #475569;
+        }
+
+        tr {
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .rank-chip {
+            display: inline-block;
+            min-width: 40px;
+            text-align: center;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #111827;
+            color: white;
+            font-weight: 800;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .rank-chip:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Category card */
+        .category-card {
+            padding: 14px;
+            border-radius: 14px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+            border-color: #d1d5db;
+        }
+
+        .category-card h4 {
+            margin: 0 0 8px;
+            font-size: 16px;
+        }
+
+        .small {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        /* Animation keyframes */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 980px) {
+            .topbar-inner {
+                height: auto;
+                padding-top: 12px;
+                padding-bottom: 12px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .top-right {
+                justify-content: center;
+            }
+
+            .hero,
+            .profile-grid,
+            .grid-2,
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .hero {
+                padding: 18px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="topbar-inner">
+            <div class="left-brand">
+                <div class="menu-box">☰</div>
+                <div class="logo-box">SAT Azizbek</div>
+            </div>
+
+            <div class="top-right">
+                <a href="{% url 'home' %}" class="top-link">Home</a>
+                <a href="{% url 'leaderboard' %}" class="top-link">Leaderboard</a>
+                <a href="{% url 'edit_profile' %}" class="top-link">Edit Profile</a>
+                <a href="{% url 'logout' %}" class="top-link primary">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="hero">
+            <div>
+                <h1>{{ request.user.username }} profili</h1>
+                <p>
+                    Bu sahifada sizning umumiy statistikangiz, faol premium access lar, so'nggi attemptlar,
+                    shaxsiy tavsiyalar va global leaderboard preview ko'rinadi.
+                </p>
+            </div>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-number">{{ total_attempts }}</div>
+                    <div class="hero-stat-label">Total Attempts</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">{{ best_score }}</div>
+                    <div class="hero-stat-label">Best Score</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">{{ avg_score }}</div>
+                    <div class="hero-stat-label">Average Score</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">{{ streak_days }}</div>
+                    <div class="hero-stat-label">Streak Days</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="profile-grid">
+                <div class="card">
+                    <div class="card-body profile-center">
+                        {% if profile.image %}
+                            <img src="{{ profile.image.url }}" alt="Profile image" class="avatar">
+                        {% else %}
+                            <div class="avatar-placeholder">
+                                {{ request.user.username|slice:":1"|upper }}
+                            </div>
+                        {% endif %}
+
+                        <div class="username">{{ request.user.username }}</div>
+                        <div class="muted">{{ request.user.email }}</div>
+
+                        <div class="badge">{{ badge }} Badge</div>
+
+                        <div class="bio-box">
+                            {% if profile.bio %}
+                                {{ profile.bio }}
+                            {% else %}
+                                Hali bio yozilmagan.
+                            {% endif %}
+                        </div>
+
+                        <div class="profile-actions">
+                            <a href="{% url 'edit_profile' %}" class="btn btn-dark">Profilni tahrirlash</a>
+                            <a href="{% url 'leaderboard' %}" class="btn btn-light">Leaderboard</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h2>Umumiy statistika</h2>
+                        <p class="small">Sizning eng muhim performance ko'rsatkichlaringiz.</p>
+
+                        <div class="stats-grid">
+                            <div class="mini-stat">
+                                <div class="number">{{ total_attempts }}</div>
+                                <div class="label">Total Attempts</div>
+                            </div>
+                            <div class="mini-stat">
+                                <div class="number">{{ best_score }}</div>
+                                <div class="label">Best Score</div>
+                            </div>
+                            <div class="mini-stat">
+                                <div class="number">{{ avg_score }}</div>
+                                <div class="label">Average Score</div>
+                            </div>
+                            <div class="mini-stat">
+                                <div class="number">{{ avg_percentage }}%</div>
+                                <div class="label">Average Percentage</div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top:16px;">
+                            <h3>Active Premium</h3>
+                            {% if active_premiums %}
+                                {% for premium in active_premiums %}
+                                    <span class="pill">{{ premium.get_premium_type_display }}</span>
+                                {% endfor %}
+                            {% else %}
+                                <div class="small">Sizda hozircha active premium yo'q.</div>
+                            {% endif %}
+                        </div>
+
+                        <div style="margin-top:18px;">
+                            <h3>Category bo'yicha natijalar</h3>
+                            {% if category_stats %}
+                                <div class="grid-2">
+                                    {% for category, stats in category_stats.items %}
+                                        <div class="category-card">
+                                            <h4>{{ category|title }}</h4>
+                                            <div class="small">Attempts: {{ stats.count }}</div>
+                                            <div class="small">Best score: {{ stats.best }}</div>
+                                            <div class="small">Average score: {{ stats.avg_score }}</div>
+                                            <div class="small">Average percentage: {{ stats.avg_percentage }}%</div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="small">Hali category statistikasi yo'q.</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="card">
+                <div class="card-body">
+                    <div class="recommend-box">
+                        <div class="recommend-title">Personal Recommendations</div>
+                        <div class="recommend-sub">
+                            {{ recommendation_data.reason }}
+                        </div>
+
+                        {% if recommendation_data.weakest_category_label %}
+                            <span class="pill">Weakest Category: {{ recommendation_data.weakest_category_label }}</span>
+                        {% endif %}
+
+                        <div class="goal-box">
+                            <strong>Weekly Goal:</strong> {{ recommendation_data.weekly_goal }} ta test<br>
+                            <strong>Last 7 days attempts:</strong> {{ recommendation_data.attempts_7d }}<br>
+                            <strong>Qolgan:</strong> {{ recommendation_data.remaining }}<br><br>
+                            {{ recommendation_data.message }}
+                        </div>
+
+                        <div class="grid-2" style="margin-top:16px;">
+                            <div>
+                                <h3>Tavsiya qilingan testlar</h3>
+                                <div class="list">
+                                    {% for test in recommendation_data.recommended_tests %}
+                                        <div class="list-item">
+                                            <div class="list-title">{{ test.title }}</div>
+                                            <div class="small">Category: {{ test.category|title }}</div>
+                                            <div class="small">Time limit: {{ test.time_limit_minutes }} min</div>
+                                            <div class="small">Questions: {{ test.total_questions }}</div>
+                                            <div style="margin-top:10px;">
+                                                <a href="{% if test.is_premium %}{% url 'check_access' 'test' test.id %}{% else %}{% url 'take_pdf_test' test.id %}{% endif %}" class="btn btn-dark">
+                                                    Testni ochish
+                                                </a>
+                                            </div>
+                                        </div>
+                                    {% empty %}
+                                        <div class="list-item">
+                                            <div class="small">Hozircha tavsiya qilinadigan test topilmadi.</div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3>Tavsiya qilingan videolar</h3>
+                                <div class="list">
+                                    {% for video in recommendation_data.recommended_videos %}
+                                        <div class="list-item">
+                                            <div class="list-title">{{ video.title }}</div>
+                                            <div class="small">Category: {{ video.category|title }}</div>
+                                            <div class="small">{{ video.description|truncatechars:120 }}</div>
+                                            <div style="margin-top:10px;">
+                                                {% if video.is_premium %}
+                                                    <a href="{% url 'check_access' 'video' video.id %}" class="btn btn-dark">Videoni ochish</a>
+                                                {% else %}
+                                                    {% if video.video_url %}
+                                                        <a href="{{ video.video_url }}" class="btn btn-dark">Videoni ko'rish</a>
+                                                    {% elif video.video_file %}
+                                                        <a href="{{ video.video_file.url }}" class="btn btn-dark">Videoni ko'rish</a>
+                                                    {% else %}
+                                                        <span class="small">Video manzili topilmadi.</span>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% empty %}
+                                        <div class="list-item">
+                                            <div class="small">Hozircha tavsiya qilinadigan video topilmadi.</div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-body">
+                        <h2>So'nggi attemptlar</h2>
+                        <p>Sizning oxirgi 5 ta test natijangiz.</p>
+
+                        <div class="list">
+                            {% for attempt in last_attempts %}
+                                <div class="list-item">
+                                    <div class="list-title">{{ attempt.test.title }}</div>
+                                    <div class="small">Category: {{ attempt.test.category|title }}</div>
+                                    <div class="small">Score: {{ attempt.score }}</div>
+                                    <div class="small">Percentage: {{ attempt.percentage }}%</div>
+                                    <div class="small">Completed: {{ attempt.completed_at|date:"Y-m-d H:i" }}</div>
+                                </div>
+                            {% empty %}
+                                <div class="list-item">
+                                    <div class="small">Hali attempt yo'q.</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h2>Leaderboard Preview</h2>
+                        <p>Top 10 foydalanuvchi. To'liq ro'yxat uchun leaderboard sahifasiga o'ting.</p>
+
+                        {% if my_rank %}
+                            <div class="list-item" style="margin-bottom:14px; background:#eef2ff;">
+                                <div class="list-title">Sizning rankingiz: #{{ my_rank.rank }}</div>
+                                <div class="small">Best score: {{ my_rank.best_score }}</div>
+                                <div class="small">Average score: {{ my_rank.avg_score }}</div>
+                                <div class="small">Attempts: {{ my_rank.total_attempts }}</div>
+                            </div>
+                        {% else %}
+                            <div class="list-item" style="margin-bottom:14px;">
+                                <div class="small">Siz hali leaderboard ga kirmagansiz. Kamida bitta test ishlang.</div>
+                            </div>
+                        {% endif %}
+
+                        {% if leaderboard_preview %}
+                            <div class="table-wrap">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Rank</th>
+                                            <th>User</th>
+                                            <th>Best</th>
+                                            <th>Avg</th>
+                                            <th>Attempts</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for row in leaderboard_preview %}
+                                            <tr>
+                                                <td><span class="rank-chip">#{{ row.rank }}</span></td>
+                                                <td>{{ row.username }}</td>
+                                                <td>{{ row.best_score }}</td>
+                                                <td>{{ row.avg_score }}</td>
+                                                <td>{{ row.total_attempts }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div style="margin-top:14px;">
+                                <a href="{% url 'leaderboard' %}" class="btn btn-dark">To'liq leaderboard</a>
+                            </div>
+                        {% else %}
+                            <div class="small">Hali leaderboard ma'lumoti yo'q.</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

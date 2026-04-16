@@ -1,0 +1,971 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - SAT Azizbek</title>
+    <link rel="stylesheet" href="{% static 'exam/ui_smooth.css' %}">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #efefef;
+            color: #111827;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Topbar styles with animations */
+        .topbar {
+            background: #ffffff;
+            border-bottom: 1px solid #d9d9d9;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            height: 56px;
+            padding: 0 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .left-brand {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .menu-box {
+            width: 56px;
+            height: 40px;
+            border-right: 1px solid #d9d9d9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #111;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .menu-box:hover {
+            background: #f8fafc;
+            transform: translateY(-1px);
+        }
+
+        .logo-box {
+            height: 40px;
+            min-width: 150px;
+            background: #111;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 0 14px;
+            text-decoration: none;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, opacity 0.22s ease;
+        }
+
+        .logo-box:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+            opacity: 0.96;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .top-link {
+            font-size: 13px;
+            padding: 7px 10px;
+            border-radius: 8px;
+            color: #111827;
+            transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+        }
+
+        .top-link:hover {
+            background: #f3f4f6;
+            transform: translateY(-1px);
+        }
+
+        .top-link.primary {
+            background: #111827;
+            color: white;
+            font-weight: 700;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+        }
+
+        .top-link.primary:hover {
+            background: #111827;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.18);
+            opacity: 0.96;
+        }
+
+        /* Page container */
+        .page {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 28px 16px 40px;
+        }
+
+        /* Hero section with animations */
+        .hero {
+            background: linear-gradient(135deg, #334acb, #1d4ed8);
+            color: white;
+            border-radius: 22px;
+            padding: 24px;
+            margin-bottom: 18px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 24px rgba(29, 78, 216, 0.12);
+            animation: fadeUp 0.7s ease both;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 18px;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.10) 1.5px, transparent 1.5px);
+            background-size: 64px 64px;
+            opacity: 0.55;
+            pointer-events: none;
+        }
+
+        .hero > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            margin: 0 0 8px;
+            font-size: 34px;
+            font-weight: 600;
+        }
+
+        .hero p {
+            margin: 0;
+            line-height: 1.6;
+            opacity: 0.95;
+            font-size: 14px;
+            max-width: 680px;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .hero-stat {
+            background: rgba(255,255,255,0.12);
+            border-radius: 14px;
+            padding: 14px;
+            transition: transform 0.22s ease, background 0.22s ease;
+        }
+
+        .hero-stat:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.18);
+        }
+
+        .hero-stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .hero-stat-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.85);
+        }
+
+        /* Messages */
+        .messages {
+            margin-top: 14px;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .msg {
+            background: #dcfce7;
+            color: #166534;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid #bbf7d0;
+            margin-bottom: 8px;
+            font-size: 13px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .msg:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(22, 101, 52, 0.1);
+        }
+
+        /* Actions */
+        .actions {
+            margin-top: 16px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: #111827;
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.16);
+        }
+
+        .action-btn:active {
+            transform: scale(0.985);
+        }
+
+        .action-btn.light {
+            background: #eef2ff;
+            color: #2538a8;
+        }
+
+        .action-btn.light:hover {
+            background: #dbeafe;
+        }
+
+        /* Sections with animations */
+        .section {
+            margin-top: 22px;
+            animation: fadeUp 0.85s ease both;
+        }
+
+        .section h2 {
+            margin: 0 0 6px;
+            font-size: 22px;
+        }
+
+        .section p {
+            margin: 0 0 14px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Filter box */
+        .filter-box {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .filter-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+        }
+
+        .filter-form {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr auto;
+            gap: 10px;
+        }
+
+        .filter-form input,
+        .filter-form select {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            padding: 11px 12px;
+            font-size: 14px;
+            background: white;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .filter-form input:focus,
+        .filter-form select:focus {
+            outline: none;
+            border-color: #3950cf;
+            box-shadow: 0 0 0 4px rgba(57, 80, 207, 0.10);
+        }
+
+        /* Grid layouts */
+        .test-grid, .video-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        /* Card styles with animations */
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+            animation: fadeUp 0.95s ease both;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+            border-color: #d1d5db;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .icon-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #334acb, #1d4ed8);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 700;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .icon-circle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(51, 74, 203, 0.2);
+        }
+
+        /* Badges */
+        .badge {
+            padding: 6px 9px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            transition: transform 0.2s ease;
+        }
+
+        .badge:hover {
+            transform: translateY(-1px);
+        }
+
+        .badge-premium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-free {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .card-title {
+            margin: 0 0 8px;
+            font-size: 20px;
+            line-height: 1.2;
+        }
+
+        .card-description {
+            margin: 0 0 12px;
+            color: #666;
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        /* Chips */
+        .chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .chip {
+            background: #f3f4f6;
+            color: #374151;
+            border-radius: 999px;
+            padding: 6px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .chip:hover {
+            transform: translateY(-1px);
+            background: #e5e7eb;
+        }
+
+        /* Analytics box */
+        .analytics-box {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 12px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .analytics-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .stat {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 10px;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .stat:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.04);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #6b7280;
+            margin-bottom: 6px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* Hard questions box */
+        .hard-box {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 14px;
+            padding: 12px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hard-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(124, 45, 18, 0.08);
+        }
+
+        .hard-box h4 {
+            margin: 0 0 8px;
+            font-size: 14px;
+            color: #7c2d12;
+        }
+
+        .hard-q {
+            font-size: 12px;
+            color: #7c2d12;
+            margin-bottom: 6px;
+            line-height: 1.45;
+        }
+
+        /* Card actions */
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+
+        /* Button styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 9px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.16);
+        }
+
+        .btn:active {
+            transform: scale(0.985);
+        }
+
+        .btn-dark {
+            background: #111827;
+            color: white;
+        }
+
+        .btn-light {
+            background: #eef2ff;
+            color: #2538a8;
+        }
+
+        .btn-light:hover {
+            background: #dbeafe;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        /* Video preview */
+        .video-preview {
+            margin-top: 8px;
+            margin-bottom: 10px;
+        }
+
+        .video-preview video {
+            width: 100%;
+            max-height: 220px;
+            background: black;
+            border-radius: 12px;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .video-preview video:hover {
+            transform: scale(1.01);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+        }
+
+        /* Simple list */
+        .simple-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .simple-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+        }
+
+        .simple-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+            border-color: #d1d5db;
+        }
+
+        .muted {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            background: white;
+            border-radius: 18px;
+            padding: 18px;
+            color: #666;
+            font-size: 14px;
+            border: 1px solid #e5e7eb;
+            animation: fadeUp 0.95s ease both;
+        }
+
+        /* Animation keyframes */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .test-grid,
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .analytics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .filter-form {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .topbar-inner {
+                height: auto;
+                padding-top: 12px;
+                padding-bottom: 12px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .top-right {
+                justify-content: center;
+            }
+
+            .hero {
+                padding: 18px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .analytics-grid,
+            .filter-form {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="topbar">
+    <div class="topbar-inner">
+        <div class="left-brand">
+            <div class="menu-box">⌄</div>
+            <a href="{% url 'home' %}" class="logo-box">SAT Azizbek</a>
+        </div>
+
+        <div class="top-right">
+            <a class="top-link" href="{% url 'home' %}">Home</a>
+            <a class="top-link" href="{% url 'users_list' %}">Users</a>
+            <a class="top-link" href="/admin/">Django Admin</a>
+            <a class="top-link primary" href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+</header>
+
+<div class="page">
+    <section class="hero">
+        <div>
+            <h1>Admin Panel</h1>
+            <p>
+                Testlarni yuklash, timer belgilash, analytics ko'rish,
+                videolarni boshqarish va platformani nazorat qilish uchun boshqaruv paneli.
+            </p>
+
+            <div class="actions">
+                <a class="action-btn" href="{% url 'upload_sat_pdf' %}">Upload PDF Test</a>
+                <a class="action-btn" href="{% url 'upload_latex_test' %}">Upload LaTeX Test</a>
+                <a class="action-btn" href="{% url 'upload_pdf_bank' %}">Upload Premium Bank</a>
+                <a class="action-btn light" href="{% url 'create_video' %}">Create Video</a>
+                <a class="action-btn light" href="{% url 'users_list' %}">Users</a>
+                <a class="action-btn light" href="{% url 'career_manager' %}">Career Manager</a>
+            </div>
+        </div>
+
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-number">{{ total_tests }}</div>
+                <div class="hero-stat-label">Total Tests</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-number">{{ total_videos }}</div>
+                <div class="hero-stat-label">Total Videos</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-number">{{ total_users }}</div>
+                <div class="hero-stat-label">Found Users</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-number">{{ total_attempts }}</div>
+                <div class="hero-stat-label">Total Attempts</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-number">{{ avg_score_all }}</div>
+                <div class="hero-stat-label">Average Score</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-number">{{ premium_users_count }}</div>
+                <div class="hero-stat-label">Premium Users</div>
+            </div>
+        </div>
+    </section>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="msg">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <section class="section">
+        <h2>Search & Filters</h2>
+        <p>Test, video va userlarni tez topish uchun filter ishlating.</p>
+
+        <div class="filter-box">
+            <form method="get" class="filter-form">
+                <input type="text" name="q" value="{{ query }}" placeholder="Search tests, videos, users">
+                <select name="category">
+                    <option value="">All Categories</option>
+                    <option value="english" {% if category_filter == 'english' %}selected{% endif %}>English</option>
+                    <option value="math" {% if category_filter == 'math' %}selected{% endif %}>Math</option>
+                    <option value="analysis" {% if category_filter == 'analysis' %}selected{% endif %}>Analysis</option>
+                </select>
+                <select name="premium">
+                    <option value="">All Types</option>
+                    <option value="free" {% if premium_filter == 'free' %}selected{% endif %}>Free</option>
+                    <option value="premium" {% if premium_filter == 'premium' %}selected{% endif %}>Premium</option>
+                </select>
+                <button type="submit" class="action-btn">Apply</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Your Tests</h2>
+        <p>Timer, analytics, attempts va eng qiyin savollar shu yerda ko'rinadi.</p>
+
+        {% if test_cards %}
+            <div class="test-grid">
+                {% for card in test_cards %}
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-top">
+                                <div class="icon-circle">
+                                    {% if card.test.category == 'math' %}
+                                        M
+                                    {% elif card.test.category == 'english' %}
+                                        E
+                                    {% else %}
+                                        T
+                                    {% endif %}
+                                </div>
+
+                                {% if card.test.is_premium %}
+                                    <span class="badge badge-premium">Premium</span>
+                                {% else %}
+                                    <span class="badge badge-free">Free</span>
+                                {% endif %}
+                            </div>
+
+                            <h3 class="card-title">{{ card.test.title }}</h3>
+                            <p class="card-description">
+                                {{ card.test.description|default:"Test description mavjud emas."|truncatechars:130 }}
+                            </p>
+
+                            <div class="chip-row">
+                                <span class="chip">{{ card.test.category|title }}</span>
+                                <span class="chip">{{ card.test.upload_mode }}</span>
+                                <span class="chip">{{ card.test.total_questions }} questions</span>
+                                <span class="chip">{{ card.test.time_limit_minutes }} min</span>
+                                {% if card.test.pick_count %}
+                                    <span class="chip">Pick {{ card.test.pick_count }}</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="analytics-box">
+                                <div class="analytics-grid">
+                                    <div class="stat">
+                                        <div class="stat-label">Attempts</div>
+                                        <div class="stat-value">{{ card.attempt_count }}</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-label">Participants</div>
+                                        <div class="stat-value">{{ card.participant_count }}</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-label">Avg Score</div>
+                                        <div class="stat-value">{{ card.avg_score }}</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-label">Avg Accuracy</div>
+                                        <div class="stat-value">{{ card.avg_percentage }}%</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-label">Best Score</div>
+                                        <div class="stat-value">{{ card.best_score }}</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-label">Last Taken</div>
+                                        <div class="stat-value" style="font-size:12px;">
+                                            {% if card.last_taken %}
+                                                {{ card.last_taken.completed_at|date:"Y-m-d H:i" }}
+                                            {% else %}
+                                                No data
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="hard-box">
+                                <h4>Hardest Questions</h4>
+                                {% if card.hard_questions %}
+                                    {% for q in card.hard_questions %}
+                                        <div class="hard-q">
+                                            Question {{ q.order }} — Wrong rate: {{ q.wrong_rate }}%
+                                            ({{ q.wrong_count }}/{{ q.total_attempts }})
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="hard-q">No analytics yet.</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="card-actions">
+                                <a class="btn btn-dark" href="{% url 'take_pdf_test' card.test.id %}">Open</a>
+
+                                {% if card.test.upload_mode == 'pdf_bank' %}
+                                    <a class="btn btn-light" href="{% url 'append_pdf_bank' card.test.id %}">
+                                        + Add PDF
+                                    </a>
+                                {% endif %}
+
+                                <a class="btn btn-light" href="{% url 'upload_sat_pdf' %}">New Test</a>
+                                <a class="btn btn-danger" href="{% url 'delete_test' card.test.id %}">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">Hozircha testlar yo'q.</div>
+        {% endif %}
+    </section>
+
+    <section class="section">
+        <h2>Your Videos</h2>
+        <p>Analysis va boshqa video materiallarni shu yerdan boshqarasan.</p>
+
+        {% if videos %}
+            <div class="video-grid">
+                {% for video in videos %}
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-top">
+                                <div class="icon-circle">V</div>
+
+                                {% if video.is_premium %}
+                                    <span class="badge badge-premium">Premium</span>
+                                {% else %}
+                                    <span class="badge badge-free">Free</span>
+                                {% endif %}
+                            </div>
+
+                            <h3 class="card-title">{{ video.title }}</h3>
+                            <p class="card-description">
+                                {{ video.description|default:"Video description mavjud emas."|truncatechars:130 }}
+                            </p>
+
+                            <div class="chip-row">
+                                <span class="chip">{{ video.category|title }}</span>
+                                <span class="chip">Price: {{ video.price }}</span>
+                            </div>
+
+                            {% if video.video_file %}
+                                <div class="video-preview">
+                                    <video controls>
+                                        <source src="{{ video.video_file.url }}">
+                                        Brauzer bu videoni qo'llab-quvvatlamaydi.
+                                    </video>
+                                </div>
+                            {% endif %}
+
+                            <div class="card-actions">
+                                {% if video.video_url %}
+                                    <a class="btn btn-dark" href="{{ video.video_url }}" target="_blank">Watch Link</a>
+                                {% elif video.video_file %}
+                                    <a class="btn btn-dark" href="{{ video.video_file.url }}" target="_blank">Watch File</a>
+                                {% else %}
+                                    <span class="btn btn-light">No Source</span>
+                                {% endif %}
+
+                                <a class="btn btn-light" href="{% url 'create_video' %}">New Video</a>
+                                <a class="btn btn-danger" href="{% url 'delete_video' video.id %}">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">Hozircha videolar yo'q.</div>
+        {% endif %}
+    </section>
+
+    <section class="section">
+        <h2>Recent Users</h2>
+        <p>Oxirgi topilgan foydalanuvchilar ro'yxati.</p>
+
+        {% if users %}
+            <div class="simple-list">
+                {% for user in users %}
+                    <div class="simple-item">
+                        <strong>{{ user.username }}</strong><br>
+                        <span class="muted">{{ user.email|default:"-" }} | Joined: {{ user.date_joined }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">User topilmadi.</div>
+        {% endif %}
+    </section>
+</div>
+
+</body>
+</html>

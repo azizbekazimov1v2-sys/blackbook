@@ -1,0 +1,718 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload PDF Test - SAT Azizbek</title>
+    <link rel="stylesheet" href="{% static 'exam/ui_smooth.css' %}">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #f5f7fb, #eef2ff);
+            padding: 24px;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.6s ease both;
+        }
+
+        .box {
+            max-width: 900px;
+            width: 100%;
+            margin: auto;
+            background: white;
+            padding: 32px;
+            border-radius: 24px;
+            box-shadow: 0 16px 32px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            animation: fadeUp 0.7s ease both;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #334acb, #1d4ed8, #7c3aed);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+
+        .box:hover::before {
+            opacity: 1;
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 24px;
+            font-size: 34px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #334acb, #1d4ed8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.8s ease both;
+        }
+
+        h1::before {
+            content: "📄";
+            font-size: 38px;
+            -webkit-text-fill-color: initial;
+            color: #f59e0b;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            animation: fadeUp 0.85s ease both;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        label::before {
+            content: "•";
+            color: #f59e0b;
+            font-size: 20px;
+        }
+
+        label.required::after {
+            content: "*";
+            color: #dc2626;
+            margin-left: 4px;
+            font-size: 14px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 14px;
+            font-size: 14px;
+            box-sizing: border-box;
+            background: white;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+            font-family: inherit;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #3950cf;
+            box-shadow: 0 0 0 4px rgba(57, 80, 207, 0.1);
+            transform: translateY(-1px);
+        }
+
+        input:hover, textarea:hover, select:hover {
+            border-color: #9ca3af;
+        }
+
+        textarea {
+            min-height: 160px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 20px;
+            padding-right: 40px;
+        }
+
+        input[type="file"] {
+            padding: 10px 12px;
+            cursor: pointer;
+            background: #f9fafb;
+        }
+
+        input[type="file"]:hover {
+            background: #f3f4f6;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 20px 0;
+            padding: 12px 16px;
+            background: #f9fafb;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-row:hover {
+            background: #eef2ff;
+            border-color: #c7d2fe;
+        }
+
+        .checkbox-row input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #f59e0b;
+        }
+
+        .checkbox-row label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .checkbox-row label::before {
+            display: none;
+        }
+
+        .btn-row {
+            margin-top: 28px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            animation: fadeUp 0.95s ease both;
+        }
+
+        button, a {
+            padding: 12px 24px;
+            border-radius: 14px;
+            border: none;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            min-width: 140px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #111827, #1f2937);
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(17, 24, 39, 0.2);
+            background: linear-gradient(135deg, #1f2937, #374151);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        a {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+        }
+
+        a:hover {
+            background: #e5e7eb;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+        }
+
+        .messages {
+            margin-bottom: 20px;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .msg {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px 14px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            border: 1px solid #fecaca;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .msg::before {
+            content: "⚠️";
+            font-size: 16px;
+        }
+
+        .msg:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(153, 27, 27, 0.1);
+        }
+
+        .hint {
+            margin-top: 12px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #0369a1;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 1px solid #bae6fd;
+            padding: 16px;
+            border-radius: 14px;
+            animation: fadeUp 0.9s ease both;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hint:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(2, 106, 162, 0.1);
+        }
+
+        .hint strong {
+            color: #0284c7;
+            font-size: 14px;
+        }
+
+        pre {
+            margin: 12px 0 0 0;
+            white-space: pre-wrap;
+            font-family: 'Courier New', 'Monaco', monospace;
+            font-size: 12px;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            transition: transform 0.2s ease;
+        }
+
+        pre:hover {
+            transform: scale(1.01);
+        }
+
+        /* Character counter */
+        .char-counter {
+            text-align: right;
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        /* File name display */
+        .file-name {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .file-name::before {
+            content: "📁";
+            font-size: 14px;
+        }
+
+        /* Price field animation */
+        #price {
+            transition: all 0.3s ease;
+        }
+
+        #price:focus {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+        }
+
+        /* Animation keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Staggered animation for form groups */
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.15s; }
+        .form-group:nth-child(3) { animation-delay: 0.2s; }
+        .form-group:nth-child(4) { animation-delay: 0.25s; }
+        .form-group:nth-child(5) { animation-delay: 0.3s; }
+        .form-group:nth-child(6) { animation-delay: 0.35s; }
+
+        /* Loading state */
+        button.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+
+            .box {
+                padding: 24px 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            h1::before {
+                font-size: 32px;
+            }
+
+            .btn-row {
+                flex-direction: column;
+            }
+
+            button, a {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            h1::before {
+                font-size: 28px;
+            }
+
+            pre {
+                font-size: 11px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h1>Upload PDF Test</h1>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="msg">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" id="uploadForm">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label class="required">Title</label>
+            <input type="text" name="title" id="title" required
+                   placeholder="Test nomini kiriting" maxlength="200">
+            <div class="char-counter" id="titleCounter">0/200</div>
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" id="description"
+                      placeholder="Test haqida qisqacha ma'lumot"></textarea>
+            <div class="char-counter" id="descCounter">0/500</div>
+        </div>
+
+        <div class="form-group">
+            <label class="required">Category</label>
+            <select name="category" id="category" required>
+                <option value="english">📖 English</option>
+                <option value="math">🔢 Math</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="required">PDF File</label>
+            <input type="file" name="pdf_file" id="pdf_file"
+                   accept="application/pdf" required>
+            <div class="file-name" id="fileName"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="required">Total Questions</label>
+            <input type="number" name="total_questions" id="total_questions"
+                   required min="1" placeholder="Savollar soni">
+        </div>
+
+        <div class="form-group">
+            <label class="required">Timer (minutes)</label>
+            <input type="number" name="time_limit_minutes" id="time_limit_minutes"
+                   value="60" min="1" required>
+        </div>
+
+        <div class="form-group">
+            <label class="required">Answer Key</label>
+            <textarea name="answer_key" id="answer_key" required
+                      placeholder="Masalan:
+a
+b
+2/3
+0.2
+c
+
+yoki
+
+1:a
+2:b
+3:2/3
+4:0.2
+5:c
+
+yoki eski format:
+ACBDABCD"></textarea>
+            <div class="char-counter" id="answerCounter">0 belgi</div>
+        </div>
+
+        <div class="hint">
+            <strong>📌 Answer Key formati:</strong><br>
+            Har qatorda bitta javob yozing.
+            <pre>a
+b
+2/3
+0.2
+c</pre>
+            Endi aqlli checking ishlaydi:
+            <pre>1/2 = 0.5
+x=4 = 4
+A = a</pre>
+        </div>
+
+        <div class="checkbox-row">
+            <input type="checkbox" name="is_premium" id="is_premium">
+            <label for="is_premium">
+                <strong>💎 Premium Test</strong> - Faqat premium foydalanuvchilar yecha oladi
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>Price (so'm)</label>
+            <input type="number" step="1000" name="price" id="price" value="0" min="0">
+            <div class="char-counter">Premium test uchun narx belgilang</div>
+        </div>
+
+        <div class="btn-row">
+            <button type="submit" id="submitBtn">
+                <span>📤</span> Create Test
+            </button>
+            <a href="{% url 'admin_panel' %}">
+                <span>←</span> Back to Admin Panel
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Character counters
+    function updateCounters() {
+        const title = document.getElementById('title');
+        const description = document.getElementById('description');
+        const answerKey = document.getElementById('answer_key');
+
+        if (title) {
+            document.getElementById('titleCounter').textContent =
+                title.value.length + '/200';
+        }
+
+        if (description) {
+            document.getElementById('descCounter').textContent =
+                description.value.length + '/500';
+        }
+
+        if (answerKey) {
+            const lines = answerKey.value.split('\n').filter(line => line.trim()).length;
+            document.getElementById('answerCounter').textContent =
+                answerKey.value.length + ' belgi | ~' + lines + ' javob';
+        }
+    }
+
+    // File input enhancement
+    const fileInput = document.getElementById('pdf_file');
+    const fileName = document.getElementById('fileName');
+
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const size = (file.size / (1024 * 1024)).toFixed(2);
+                fileName.textContent = `${file.name} (${size} MB)`;
+                fileName.style.color = '#10b981';
+
+                // Animation
+                this.style.background = '#e0e7ff';
+                setTimeout(() => {
+                    this.style.background = '#f9fafb';
+                }, 300);
+            } else {
+                fileName.textContent = '';
+            }
+        });
+    }
+
+    // Auto-resize textareas
+    const textareas = ['description', 'answer_key'];
+    textareas.forEach(id => {
+        const textarea = document.getElementById(id);
+        if (textarea) {
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 300) + 'px';
+                updateCounters();
+            });
+        }
+    });
+
+    // Update counters on input
+    document.getElementById('title').addEventListener('input', updateCounters);
+    document.getElementById('description').addEventListener('input', updateCounters);
+    document.getElementById('answer_key').addEventListener('input', updateCounters);
+
+    // Premium checkbox affects price field
+    const premiumCheckbox = document.getElementById('is_premium');
+    const priceInput = document.getElementById('price');
+
+    if (premiumCheckbox && priceInput) {
+        premiumCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                priceInput.style.borderColor = '#f59e0b';
+                priceInput.style.backgroundColor = '#fef3c7';
+                if (priceInput.value == 0) {
+                    priceInput.value = 50000;
+                }
+            } else {
+                priceInput.style.borderColor = '#e5e7eb';
+                priceInput.style.backgroundColor = 'white';
+            }
+        });
+    }
+
+    // Form submission loading state
+    document.getElementById('uploadForm').addEventListener('submit', function(e) {
+        const submitBtn = document.getElementById('submitBtn');
+        const originalText = submitBtn.innerHTML;
+
+        submitBtn.classList.add('loading');
+        submitBtn.innerHTML = '<span>⏳</span> Creating...';
+
+        // Re-enable after 5 seconds if still loading (fallback)
+        setTimeout(() => {
+            if (submitBtn.classList.contains('loading')) {
+                submitBtn.classList.remove('loading');
+                submitBtn.innerHTML = originalText;
+            }
+        }, 5000);
+    });
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        updateCounters();
+
+        // Set initial textarea heights
+        textareas.forEach(id => {
+            const textarea = document.getElementById(id);
+            if (textarea) {
+                textarea.style.height = 'auto';
+                textarea.style.height = Math.min(textarea.scrollHeight, 300) + 'px';
+            }
+        });
+
+        // Smooth scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Trigger premium checkbox initial state
+        if (premiumCheckbox && premiumCheckbox.checked) {
+            priceInput.style.borderColor = '#f59e0b';
+            priceInput.style.backgroundColor = '#fef3c7';
+        }
+    });
+
+    // Keyboard shortcut (Ctrl/Cmd + Enter to submit)
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+            e.preventDefault();
+            document.getElementById('uploadForm').submit();
+        }
+    });
+
+    // Validation for total questions
+    const totalQuestions = document.getElementById('total_questions');
+    if (totalQuestions) {
+        totalQuestions.addEventListener('input', function() {
+            if (this.value < 1) this.value = 1;
+        });
+    }
+
+    // Timer validation
+    const timerInput = document.getElementById('time_limit_minutes');
+    if (timerInput) {
+        timerInput.addEventListener('input', function() {
+            if (this.value < 1) this.value = 1;
+        });
+    }
+</script>
+
+</body>
+</html>

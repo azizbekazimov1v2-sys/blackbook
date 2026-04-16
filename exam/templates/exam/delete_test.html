@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Test - SAT Azizbek</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            margin: 0;
+            padding: 28px;
+        }
+
+        .box {
+            max-width: 380px;
+            margin: 60px auto;
+            background: white;
+            padding: 22px;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #111827;
+        }
+
+        p {
+            color: #4b5563;
+            margin-bottom: 18px;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button, a {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: none;
+            text-decoration: none;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        button {
+            background: #dc2626;
+            color: white;
+        }
+
+        a {
+            background: #e5e7eb;
+            color: #111827;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h1>Testni o‘chirish</h1>
+    <p><strong>{{ test.title }}</strong> testini o‘chirmoqchimisiz?</p>
+    <p>Bu amalni ortga qaytarib bo‘lmaydi.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="actions">
+            <button type="submit">Ha, o‘chir</button>
+            <a href="{% url 'admin_panel' %}">Bekor qilish</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilni tahrirlash - SAT Azizbek</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #f5f7fb, #eef2ff);
+            margin: 0;
+            padding: 30px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.6s ease both;
+        }
+
+        .box {
+            max-width: 760px;
+            width: 100%;
+            margin: auto;
+            background: white;
+            padding: 36px;
+            border-radius: 24px;
+            box-shadow: 0 16px 32px rgba(0,0,0,0.1);
+            animation: fadeUp 0.7s ease both;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            border: 1px solid #e5e7eb;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #334acb, #1d4ed8, #7c3aed);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .box:hover::before {
+            opacity: 1;
+        }
+
+        h1 {
+            margin-bottom: 28px;
+            font-size: 34px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #334acb, #1d4ed8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.8s ease both;
+        }
+
+        h1::before {
+            content: "";
+            font-size: 38px;
+            -webkit-text-fill-color: initial;
+            color: #f59e0b;
+        }
+
+        form {
+            animation: fadeUp 0.85s ease both;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 10px;
+            color: #374151;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        label::before {
+            content: "•";
+            color: #f59e0b;
+            font-size: 22px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 2px solid #e5e7eb;
+            resize: vertical;
+            min-height: 140px;
+            font-size: 14px;
+            line-height: 1.6;
+            font-family: inherit;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+            background: white;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #3950cf;
+            box-shadow: 0 0 0 4px rgba(57, 80, 207, 0.1);
+            transform: translateY(-1px);
+        }
+
+        textarea:hover {
+            border-color: #9ca3af;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 14px;
+            border: 2px solid #e5e7eb;
+            font-size: 14px;
+            background: #f9fafb;
+            cursor: pointer;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        input[type="file"]:hover {
+            background: #f3f4f6;
+            border-color: #9ca3af;
+        }
+
+        input[type="file"]:focus {
+            outline: none;
+            border-color: #3950cf;
+            box-shadow: 0 0 0 4px rgba(57, 80, 207, 0.1);
+        }
+
+        /* Custom file input styling */
+        .file-input-wrapper {
+            position: relative;
+        }
+
+        .file-name {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .file-name::before {
+            content: "";
+            font-size: 16px;
+        }
+
+        /* Current image preview */
+        .current-image {
+            margin: 16px 0;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .current-image p {
+            margin-bottom: 12px;
+            font-weight: 700;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .current-image p::before {
+            content: "";
+            font-size: 18px;
+        }
+
+        .current-image img {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+            object-fit: cover;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .current-image img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+        }
+
+        .current-image .no-image {
+            color: #6b7280;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        /* Character counter */
+        .char-counter {
+            text-align: right;
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        /* Button group */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 32px;
+            animation: fadeUp 0.95s ease both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            min-width: 140px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(17, 24, 39, 0.16);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #111827, #1f2937);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1f2937, #374151);
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        /* Messages */
+        .messages {
+            margin-bottom: 20px;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .msg {
+            padding: 12px 14px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .msg.success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .msg.success::before {
+            content: "✅";
+            font-size: 18px;
+        }
+
+        .msg.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .msg.error::before {
+            content: "⚠️";
+            font-size: 18px;
+        }
+
+        /* Helper text */
+        .helper-text {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .helper-text::before {
+            content: "";
+            font-size: 14px;
+        }
+
+        /* Animation keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Loading state */
+        .btn.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+
+            .box {
+                padding: 24px 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            h1::before {
+                font-size: 32px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            h1::before {
+                font-size: 28px;
+            }
+
+            .current-image img {
+                max-width: 120px;
+                max-height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>Profilni tahrirlash</h1>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="msg {% if message.tags %}{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data" id="profileForm">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.bio.id_for_label }}">Bio</label>
+                {{ form.bio }}
+                <div class="char-counter" id="bioCounter">0/500</div>
+                <div class="helper-text">O'zingiz haqingizda qisqacha ma'lumot yozing</div>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.image.id_for_label }}">Profil rasmi</label>
+                {{ form.image }}
+                <div class="file-name" id="fileName"></div>
+                <div class="helper-text">JPG, PNG yoki GIF formatida. Maksimal hajm: 5MB</div>
+            </div>
+
+            {% if form.instance.image %}
+                <div class="current-image">
+                    <p>Joriy profil rasmi</p>
+                    <img src="{{ form.instance.image.url }}" alt="Current profile image">
+                </div>
+            {% else %}
+                <div class="current-image">
+                    <p>Joriy profil rasmi</p>
+                    <div class="no-image">Hozircha profil rasmi yuklanmagan</div>
+                </div>
+            {% endif %}
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <span></span> Saqlash
+                </button>
+                <a href="{% url 'profile' %}" class="btn btn-secondary">
+                    <span>←</span> Orqaga
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Character counter for bio
+        const bioTextarea = document.querySelector('textarea[name="bio"]');
+        const bioCounter = document.getElementById('bioCounter');
+
+        if (bioTextarea && bioCounter) {
+            const updateBioCounter = () => {
+                const length = bioTextarea.value.length;
+                bioCounter.textContent = length + '/500';
+
+                if (length > 450) {
+                    bioCounter.style.color = '#f59e0b';
+                } else if (length > 490) {
+                    bioCounter.style.color = '#dc2626';
+                } else {
+                    bioCounter.style.color = '#6b7280';
+                }
+            };
+
+            bioTextarea.addEventListener('input', updateBioCounter);
+            updateBioCounter();
+        }
+
+        // Auto-resize textarea
+        if (bioTextarea) {
+            bioTextarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 300) + 'px';
+            });
+
+            // Initial height
+            setTimeout(() => {
+                bioTextarea.style.height = 'auto';
+                bioTextarea.style.height = Math.min(bioTextarea.scrollHeight, 300) + 'px';
+            }, 100);
+        }
+
+        // File input enhancement
+        const fileInput = document.querySelector('input[type="file"]');
+        const fileName = document.getElementById('fileName');
+
+        if (fileInput && fileName) {
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const size = (file.size / (1024 * 1024)).toFixed(2);
+                    fileName.textContent = `${file.name} (${size} MB)`;
+                    fileName.style.color = '#10b981';
+
+                    // Animation
+                    this.style.background = '#e0e7ff';
+                    setTimeout(() => {
+                        this.style.background = '#f9fafb';
+                    }, 300);
+
+                    // Size validation
+                    if (file.size > 5 * 1024 * 1024) {
+                        fileName.textContent = `⚠️ ${file.name} - Fayl hajmi 5MB dan katta!`;
+                        fileName.style.color = '#dc2626';
+                        this.value = '';
+                    }
+                } else {
+                    fileName.textContent = '';
+                }
+            });
+        }
+
+        // Form submission loading state
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+
+            submitBtn.classList.add('loading');
+            submitBtn.innerHTML = '<span>⏳</span> Saqlanmoqda...';
+
+            // Re-enable after 5 seconds if still loading (fallback)
+            setTimeout(() => {
+                if (submitBtn.classList.contains('loading')) {
+                    submitBtn.classList.remove('loading');
+                    submitBtn.innerHTML = originalText;
+                }
+            }, 5000);
+        });
+
+        // Smooth scroll to top
+        window.addEventListener('load', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Keyboard shortcut (Ctrl/Cmd + S to save)
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                document.getElementById('profileForm').submit();
+            }
+        });
+
+        // Add animation to textarea on focus
+        if (bioTextarea) {
+            bioTextarea.addEventListener('focus', function() {
+                this.style.transform = 'scale(1.01)';
+            });
+
+            bioTextarea.addEventListener('blur', function() {
+                this.style.transform = 'scale(1)';
+            });
+        }
+
+        // Show preview of selected image (optional)
+        if (fileInput) {
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const previewImg = document.querySelector('.current-image img');
+                        if (previewImg) {
+                            previewImg.src = e.target.result;
+                        } else {
+                            // Create preview if not exists
+                            const container = document.querySelector('.current-image');
+                            const noImageDiv = container.querySelector('.no-image');
+                            if (noImageDiv) {
+                                noImageDiv.remove();
+                            }
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.alt = 'Preview';
+                            img.style.maxWidth = '150px';
+                            img.style.maxHeight = '150px';
+                            img.style.borderRadius = '12px';
+                            img.style.border = '2px solid #e5e7eb';
+                            container.appendChild(img);
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

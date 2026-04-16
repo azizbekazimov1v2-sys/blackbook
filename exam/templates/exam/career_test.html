@@ -1,0 +1,934 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ topic.title }} - Career PDF Test | SAT Azizbek</title>
+    <link rel="stylesheet" href="{% static 'exam/ui_smooth.css' %}">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(245, 158, 11, 0.14) 0%, transparent 22%),
+                radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.18) 0%, transparent 24%),
+                linear-gradient(135deg, #fffdf8 0%, #fff8eb 48%, #fdf3df 100%);
+            color: #1f2937;
+            animation: fadeIn 0.6s ease both;
+        }
+
+        /* Topbar with animations */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: rgba(255, 252, 245, 0.92);
+            border-bottom: 1px solid rgba(180, 140, 60, 0.2);
+            backdrop-filter: blur(12px);
+            animation: slideDown 0.5s ease both;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .topbar-inner {
+            max-width: 1500px;
+            margin: 0 auto;
+            height: 60px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #8b5e13, #b8860b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand::before {
+            content: "⚽";
+            font-size: 24px;
+            -webkit-text-fill-color: initial;
+            color: #f59e0b;
+        }
+
+        .timer-box {
+            background: linear-gradient(135deg, #fff7db, #fde68a);
+            color: #8b5e13;
+            padding: 10px 16px;
+            border-radius: 14px;
+            font-size: 20px;
+            font-weight: 800;
+            border: 1px solid rgba(180, 140, 60, 0.2);
+            box-shadow: 0 8px 18px rgba(176, 138, 61, 0.12);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+        }
+
+        .timer-box.warning {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #dc2626;
+            animation: warningPulse 1s infinite;
+        }
+
+        @keyframes warningPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 8px 18px rgba(220, 38, 38, 0.12);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 12px 24px rgba(220, 38, 38, 0.2);
+            }
+        }
+
+        /* Page layout */
+        .page {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 20px 16px;
+            animation: fadeUp 0.7s ease both;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1.45fr 0.9fr;
+            gap: 18px;
+            align-items: start;
+        }
+
+        /* Panels with animations */
+        .pdf-panel,
+        .side-panel {
+            background: rgba(255,255,255,0.82);
+            border: 1px solid rgba(180, 140, 60, 0.18);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 16px 32px rgba(176, 138, 61, 0.1);
+            backdrop-filter: blur(8px);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            animation: fadeUp 0.85s ease both;
+        }
+
+        .pdf-panel:hover,
+        .side-panel:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(176, 138, 61, 0.16);
+        }
+
+        .pdf-panel-header,
+        .side-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(180, 140, 60, 0.16);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: rgba(255,255,255,0.5);
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #8b5e13;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-title::before {
+            content: "📄";
+            font-size: 18px;
+        }
+
+        .pdf-panel-body {
+            background: linear-gradient(135deg, #ece7db, #e8e2d5);
+            padding: 20px;
+            min-height: calc(100vh - 140px);
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 100px);
+        }
+
+        .side-body {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .test-title {
+            font-size: 26px;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(135deg, #6b4f1d, #8b5e13);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .test-sub {
+            margin: 6px 0 0;
+            color: #8a6a2f;
+            font-size: 14px;
+            line-height: 1.5;
+            display: flex;
+            gap: 16px;
+        }
+
+        .test-sub span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Question palette */
+        .palette-wrap,
+        .answer-block {
+            border: 1px solid rgba(180, 140, 60, 0.16);
+            border-radius: 18px;
+            padding: 16px;
+            background: rgba(255,255,255,0.6);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .palette-wrap:hover,
+        .answer-block:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 16px rgba(176, 138, 61, 0.08);
+        }
+
+        .palette-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 14px;
+            color: #8b5e13;
+        }
+
+        .question-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        .q-btn {
+            border: 1px solid rgba(180, 140, 60, 0.2);
+            background: white;
+            color: #6b4f1d;
+            border-radius: 12px;
+            height: 42px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .q-btn::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(245, 158, 11, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .q-btn:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .q-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(176, 138, 61, 0.12);
+            border-color: #f59e0b;
+        }
+
+        .q-btn.active {
+            background: linear-gradient(135deg, #fff7db, #fde68a);
+            color: #8b5e13;
+            border-color: #f59e0b;
+            transform: scale(1.05);
+        }
+
+        .q-btn.answered {
+            background: #fef3c7;
+            color: #8b5e13;
+            border-color: #f59e0b;
+            position: relative;
+        }
+
+        .q-btn.answered::after {
+            content: "✓";
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            font-size: 12px;
+            color: #10b981;
+            font-weight: 900;
+        }
+
+        .q-btn.active.answered {
+            background: linear-gradient(135deg, #fff7db, #fde68a);
+            color: #8b5e13;
+        }
+
+        /* Answer block */
+        .answer-block-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            color: #8b5e13;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .answer-block-title::before {
+            content: "✏️";
+            font-size: 16px;
+        }
+
+        .answers {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .answer-btn {
+            border: 2px solid rgba(180, 140, 60, 0.2);
+            background: white;
+            color: #6b4f1d;
+            border-radius: 14px;
+            padding: 16px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .answer-btn::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(245, 158, 11, 0.15);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .answer-btn:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(176, 138, 61, 0.12);
+            border-color: #f59e0b;
+        }
+
+        .answer-btn.selected {
+            background: linear-gradient(135deg, #fff7db, #fde68a);
+            color: #8b5e13;
+            border-color: #f59e0b;
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(245, 158, 11, 0.2);
+        }
+
+        /* Navigation buttons */
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .nav-buttons button {
+            flex: 1;
+            border: none;
+            background: white;
+            color: #6b4f1d;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1px solid rgba(180, 140, 60, 0.2);
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-buttons button::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(245, 158, 11, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .nav-buttons button:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .nav-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(176, 138, 61, 0.12);
+            background: #fef3c7;
+            border-color: #f59e0b;
+        }
+
+        .nav-buttons button[type="submit"] {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #8b5e13;
+            font-weight: 800;
+        }
+
+        .nav-buttons button[type="submit"]:hover {
+            background: linear-gradient(135deg, #fde68a, #fcd34d);
+        }
+
+        /* Canvas styling */
+        canvas {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        canvas:hover {
+            transform: scale(1.01);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        /* Current question label */
+        #current-question-label {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0;
+            color: #8b5e13;
+            padding: 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #current-question-label::before {
+            content: "📍";
+            font-size: 16px;
+        }
+
+        /* Animation keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .loading::after {
+            content: "";
+            width: 40px;
+            height: 40px;
+            border: 3px solid #fde68a;
+            border-top-color: #f59e0b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 1200px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .pdf-panel-body {
+                min-height: 500px;
+            }
+
+            .side-panel {
+                min-height: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .topbar-inner {
+                height: auto;
+                padding: 12px 16px;
+                flex-direction: column;
+            }
+
+            .brand {
+                font-size: 18px;
+            }
+
+            .timer-box {
+                font-size: 18px;
+                padding: 8px 14px;
+            }
+
+            .test-title {
+                font-size: 22px;
+            }
+
+            .answers {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .answer-btn {
+                padding: 14px;
+                font-size: 18px;
+            }
+
+            .question-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .question-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="topbar">
+    <div class="topbar-inner">
+        <div class="brand">Career Test • {{ topic.title }}</div>
+        <div class="timer-box" id="timerBox">00:00</div>
+    </div>
+</header>
+
+<div class="page">
+    <div class="layout">
+        <div class="pdf-panel">
+            <div class="pdf-panel-header">
+                <div class="panel-title">PDF View</div>
+                <div style="font-size:13px;color:#8b5e13;font-weight:700;display:flex;align-items:center;gap:6px;">
+                    <span>🎯</span> Pass score: {{ pass_percentage }}%
+                </div>
+            </div>
+            <div class="pdf-panel-body" id="pdfContainer">
+                <div class="loading"></div>
+                <canvas id="pdf-canvas" style="display:none;"></canvas>
+            </div>
+        </div>
+
+        <div class="side-panel">
+            <div class="side-header">
+                <div>
+                    <h1 class="test-title">{{ topic.title }}</h1>
+                    <p class="test-sub">
+                        <span>📝 {{ questions|length }} questions</span>
+                        <span>⏱ {{ time_limit_minutes }} min</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="side-body">
+                <p id="current-question-label">Question 1</p>
+
+                <div class="palette-wrap">
+                    <div class="palette-head">
+                        <strong>📋 Question palette</strong>
+                        <span style="font-size:12px;color:#8a6a2f;">
+                            <span id="answeredCount">0</span>/{{ questions|length }} answered
+                        </span>
+                    </div>
+
+                    <div class="question-grid" id="questionGrid">
+                        {% for q in questions %}
+                            <button
+                                type="button"
+                                class="q-btn"
+                                id="qbtn{{ forloop.counter }}"
+                                onclick="showQuestion({{ forloop.counter0 }})"
+                            >
+                                {{ forloop.counter }}
+                            </button>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="answer-block">
+                    <div class="answer-block-title">Select Answer</div>
+
+                    <div class="answers">
+                        <button type="button" class="answer-btn" id="btnA" onclick="selectAnswer('A')">A</button>
+                        <button type="button" class="answer-btn" id="btnB" onclick="selectAnswer('B')">B</button>
+                        <button type="button" class="answer-btn" id="btnC" onclick="selectAnswer('C')">C</button>
+                        <button type="button" class="answer-btn" id="btnD" onclick="selectAnswer('D')">D</button>
+                    </div>
+                </div>
+
+                <form id="careerTestForm" method="post">
+                    {% csrf_token %}
+                    {% for q in questions %}
+                        <input type="hidden" name="question_{{ q.id }}" id="input_q_{{ q.id }}">
+                    {% endfor %}
+
+                    <div class="nav-buttons">
+                        <button type="button" onclick="prevQuestion()">⬅ Previous</button>
+                        <button type="button" onclick="nextQuestion()">Next ➔</button>
+                        <button type="submit">✅ Submit Test</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+    const pdfUrl = "{{ pdf_url|escapejs }}";
+
+    const questions = [
+        {% for q in questions %}
+        {
+            id: {{ q.id }},
+            displayOrder: {{ forloop.counter }},
+            page: {{ q.pdf_page|default:1 }},
+            correct: `{{ q.correct_answer|default:''|escapejs }}`
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    let pdfDoc = null;
+    let currentIndex = 0;
+    const answers = {};
+    let totalSeconds = {{ time_limit_minutes|default:15 }} * 60;
+    let timerInterval = null;
+    let formSubmitted = false;
+
+    let renderedPageNumber = null;
+    let currentRenderTask = null;
+    let pendingPageNumber = null;
+
+    const canvas = document.getElementById('pdf-canvas');
+    const ctx = canvas.getContext('2d');
+    const loadingDiv = document.querySelector('.loading');
+
+    // Show canvas and hide loading when PDF loads
+    pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+        pdfDoc = pdf;
+        loadingDiv.style.display = 'none';
+        canvas.style.display = 'block';
+
+        if (questions.length > 0) {
+            showQuestion(0);
+        }
+    }).catch(function(error) {
+        console.error('PDF yuklashda xato:', error);
+        loadingDiv.innerHTML = '<p style="color:#dc2626;">❌ PDF yuklashda xato</p>';
+    });
+
+    function renderPage(pageNumber) {
+        if (!pdfDoc || !pageNumber || pageNumber < 1 || pageNumber > pdfDoc.numPages) return;
+        if (renderedPageNumber === pageNumber && !currentRenderTask) return;
+
+        if (currentRenderTask) {
+            pendingPageNumber = pageNumber;
+            try { currentRenderTask.cancel(); } catch (e) {}
+            return;
+        }
+
+        pdfDoc.getPage(pageNumber).then(function(page) {
+            const scale = 1.32;
+            const viewport = page.getViewport({ scale: scale });
+            const outputScale = window.devicePixelRatio || 1;
+
+            canvas.width = Math.floor(viewport.width * outputScale);
+            canvas.height = Math.floor(viewport.height * outputScale);
+
+            canvas.style.width = Math.floor(viewport.width) + 'px';
+            canvas.style.height = Math.floor(viewport.height) + 'px';
+
+            ctx.setTransform(outputScale, 0, 0, outputScale, 0, 0);
+
+            currentRenderTask = page.render({
+                canvasContext: ctx,
+                viewport: viewport
+            });
+
+            currentRenderTask.promise.then(function() {
+                renderedPageNumber = pageNumber;
+                currentRenderTask = null;
+
+                if (pendingPageNumber && pendingPageNumber !== renderedPageNumber) {
+                    const nextPage = pendingPageNumber;
+                    pendingPageNumber = null;
+                    renderPage(nextPage);
+                } else {
+                    pendingPageNumber = null;
+                }
+            }).catch(function(error) {
+                currentRenderTask = null;
+
+                if (error && error.name !== 'RenderingCancelledException') {
+                    console.error(error);
+                }
+
+                if (pendingPageNumber && pendingPageNumber !== renderedPageNumber) {
+                    const nextPage = pendingPageNumber;
+                    pendingPageNumber = null;
+                    renderPage(nextPage);
+                } else {
+                    pendingPageNumber = null;
+                }
+            });
+        });
+    }
+
+    function updateAnsweredCount() {
+        const answeredCount = Object.values(answers).filter(v => String(v || '').trim() !== '').length;
+        document.getElementById('answeredCount').textContent = answeredCount;
+    }
+
+    function clearQuestionButtons() {
+        document.querySelectorAll('.q-btn').forEach(btn => btn.classList.remove('active'));
+    }
+
+    function clearAnswerButtons() {
+        document.querySelectorAll('.answer-btn').forEach(btn => btn.classList.remove('selected'));
+    }
+
+    function markAnsweredState(q, value) {
+        const btn = document.getElementById('qbtn' + q.displayOrder);
+        if (!btn) return;
+
+        if (String(value || '').trim() !== '') {
+            btn.classList.add('answered');
+        } else {
+            btn.classList.remove('answered');
+        }
+
+        updateAnsweredCount();
+    }
+
+    function showQuestion(index) {
+        if (index < 0 || index >= questions.length) return;
+
+        currentIndex = index;
+        const q = questions[index];
+
+        renderPage(q.page);
+        document.getElementById('current-question-label').innerText = 'Question ' + q.displayOrder;
+
+        clearQuestionButtons();
+        const qBtn = document.getElementById('qbtn' + q.displayOrder);
+        if (qBtn) qBtn.classList.add('active');
+
+        clearAnswerButtons();
+
+        if (answers[q.id]) {
+            const saved = String(answers[q.id]).trim().toUpperCase();
+            const btn = document.getElementById('btn' + saved);
+            if (btn) btn.classList.add('selected');
+        }
+    }
+
+    function selectAnswer(choice) {
+        const q = questions[currentIndex];
+        answers[q.id] = choice;
+
+        const input = document.getElementById('input_q_' + q.id);
+        if (input) input.value = choice;
+
+        markAnsweredState(q, choice);
+
+        clearAnswerButtons();
+        const btn = document.getElementById('btn' + choice);
+        if (btn) btn.classList.add('selected');
+
+        // Add success animation
+        btn.style.animation = 'pulse 0.3s ease';
+        setTimeout(() => btn.style.animation = '', 300);
+    }
+
+    function nextQuestion() {
+        if (currentIndex < questions.length - 1) {
+            showQuestion(currentIndex + 1);
+        } else {
+            // Optional: Show confirmation for submit
+            if (confirm('Bu oxirgi savol. Testni yakunlashni xohlaysizmi?')) {
+                document.getElementById('careerTestForm').submit();
+            }
+        }
+    }
+
+    function prevQuestion() {
+        if (currentIndex > 0) showQuestion(currentIndex - 1);
+    }
+
+    function updateTimerUI() {
+        const mins = Math.floor(totalSeconds / 60);
+        const secs = totalSeconds % 60;
+        const timerBox = document.getElementById('timerBox');
+        timerBox.textContent = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+
+        // Add warning class when less than 5 minutes remaining
+        if (totalSeconds <= 300) {
+            timerBox.classList.add('warning');
+        }
+    }
+
+    function startTimer() {
+        updateTimerUI();
+
+        timerInterval = setInterval(function() {
+            totalSeconds--;
+
+            if (totalSeconds <= 0) {
+                totalSeconds = 0;
+                updateTimerUI();
+                clearInterval(timerInterval);
+
+                if (!formSubmitted) {
+                    formSubmitted = true;
+                    alert("⏰ Vaqt tugadi. Test avtomatik yuboriladi.");
+                    document.getElementById('careerTestForm').submit();
+                }
+                return;
+            }
+
+            updateTimerUI();
+        }, 1000);
+    }
+
+    document.getElementById('careerTestForm').addEventListener('submit', function(e) {
+        // Check if all questions are answered
+        const answeredCount = Object.values(answers).filter(v => String(v || '').trim() !== '').length;
+
+        if (answeredCount < questions.length) {
+            const confirmSubmit = confirm(`${answeredCount}/${questions.length} savolga javob berdingiz. Testni yakunlashni xohlaysizmi?`);
+            if (!confirmSubmit) {
+                e.preventDefault();
+                return;
+            }
+        }
+
+        formSubmitted = true;
+        if (timerInterval) clearInterval(timerInterval);
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevQuestion();
+        } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            nextQuestion();
+        } else if (['A', 'B', 'C', 'D'].includes(e.key.toUpperCase())) {
+            e.preventDefault();
+            selectAnswer(e.key.toUpperCase());
+        }
+    });
+
+    window.addEventListener('load', function() {
+        startTimer();
+        updateAnsweredCount();
+    });
+
+    // Add beforeunload warning
+    window.addEventListener('beforeunload', function(e) {
+        if (!formSubmitted && Object.keys(answers).length > 0) {
+            e.preventDefault();
+            e.returnValue = '';
+        }
+    });
+</script>
+</body>
+</html>

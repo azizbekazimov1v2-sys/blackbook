@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Yuklash - SAT Azizbek</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #0f1f4d, #1e3a8a, #2247c7);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            animation: fadeIn 0.6s ease both;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.08) 1.5px, transparent 1.5px);
+            background-size: 64px 64px;
+            pointer-events: none;
+        }
+
+        .upload-box {
+            background: white;
+            padding: 40px;
+            border-radius: 28px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 24px 48px rgba(0,0,0,0.25);
+            animation: fadeUp 0.7s ease both;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .upload-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 32px 64px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            color: #111827;
+            margin-bottom: 8px;
+            text-align: center;
+            font-size: 30px;
+            font-weight: 700;
+            animation: slideIn 0.8s ease both;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        h2::before {
+            content: "📄";
+            font-size: 32px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 32px;
+            font-size: 14px;
+            animation: fadeUp 0.85s ease both;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            animation: fadeUp 0.9s ease both;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #374151;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        label::before {
+            content: "•";
+            color: #2563eb;
+            font-size: 20px;
+        }
+
+        label.required::after {
+            content: "*";
+            color: #dc2626;
+            margin-left: 4px;
+            font-size: 14px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+            font-family: inherit;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            transform: translateY(-1px);
+        }
+
+        input:hover, textarea:hover {
+            border-color: #9ca3af;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+            line-height: 1.6;
+        }
+
+        .file-input {
+            border: 2px dashed #d1d5db;
+            padding: 36px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 16px;
+            background: #fafafa;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-input::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.05), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .file-input:hover {
+            border-color: #2563eb;
+            background: #f0f4ff;
+            transform: scale(1.01);
+        }
+
+        .file-input:hover::before {
+            left: 100%;
+        }
+
+        .file-input.dragover {
+            border-color: #2563eb;
+            background: #dbeafe;
+            transform: scale(1.02);
+        }
+
+        .file-input input {
+            display: none;
+        }
+
+        .file-input label {
+            cursor: pointer;
+            color: #2563eb;
+            font-weight: 700;
+            margin: 0;
+            display: inline-block;
+            font-size: 16px;
+        }
+
+        .file-input label::before {
+            display: none;
+        }
+
+        .file-input p {
+            color: #9ca3af;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #111827, #1f2937);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 24px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(17, 24, 39, 0.2);
+            background: linear-gradient(135deg, #1f2937, #374151);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .info {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 18px 20px;
+            border-radius: 14px;
+            margin-bottom: 28px;
+            color: #0369a1;
+            font-size: 14px;
+            border: 1px solid #bae6fd;
+            animation: fadeUp 0.95s ease both;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(2, 106, 162, 0.1);
+        }
+
+        .info strong {
+            color: #0284c7;
+            font-size: 15px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-group:hover {
+            background: #eef2ff;
+            border-color: #c7d2fe;
+        }
+
+        .checkbox-group input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #f59e0b;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .checkbox-group label::before {
+            display: none;
+        }
+
+        .price-group {
+            margin-top: 16px;
+            padding: 18px 20px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 14px;
+            display: none;
+            border: 1px solid #fcd34d;
+            animation: slideDown 0.3s ease;
+        }
+
+        .price-group.show {
+            display: block;
+        }
+
+        .price-group label {
+            color: #92400e;
+        }
+
+        .price-group label::before {
+            color: #d97706;
+        }
+
+        .price-group input {
+            border-color: #fcd34d;
+        }
+
+        .price-group input:focus {
+            border-color: #d97706;
+            box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.1);
+        }
+
+        .messages {
+            margin-bottom: 20px;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .alert {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 12px 14px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            border: 1px solid #fecaca;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .alert::before {
+            content: "⚠️";
+            font-size: 16px;
+        }
+
+        .alert.success {
+            background: #dcfce7;
+            color: #166534;
+            border-color: #bbf7d0;
+        }
+
+        .alert.success::before {
+            content: "✅";
+        }
+
+        .alert:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        }
+
+        .file-name {
+            margin-top: 10px;
+            color: #10b981;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            animation: fadeUp 0.3s ease;
+        }
+
+        .file-name::before {
+            content: "✅";
+            font-size: 14px;
+        }
+
+        .back-link {
+            color: #6b7280;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #374151;
+            transform: translateX(-4px);
+        }
+
+        /* Animation keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Staggered animation for form groups */
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.15s; }
+        .form-group:nth-child(3) { animation-delay: 0.2s; }
+        .form-group:nth-child(4) { animation-delay: 0.25s; }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+
+            .upload-box {
+                padding: 28px 20px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+            h2::before {
+                font-size: 28px;
+            }
+
+            .file-input {
+                padding: 28px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 22px;
+            }
+
+            h2::before {
+                font-size: 24px;
+            }
+
+            .info {
+                padding: 14px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-box">
+        <h2>PDF Yuklab Test Yaratish</h2>
+        <div class="subtitle">Overleaf uslubidagi PDF fayllarni yuklang</div>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert {% if message.tags == 'success' %}success{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="info">
+            <strong>📌 Qanday ishlaydi:</strong><br>
+            • PDF fayl yuklang<br>
+            • Tizim avtomatik savollarni aniqlaydi<br>
+            • To'g'ri javoblarni belgilaysiz<br>
+            <br>
+            <strong>Format talablari:</strong><br>
+            Savollar raqamlangan bo'lishi kerak (1., 2., 3., ...)<br>
+            Variantlar A), B), C), D) formatida bo'lishi kerak
+        </div>
+
+        <form method="post" enctype="multipart/form-data" id="uploadForm">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label class="required">Test nomi</label>
+                <input type="text" name="title" id="title" required
+                       placeholder="Masalan: SAT Math Practice Test 1"
+                       maxlength="200">
+            </div>
+
+            <div class="form-group">
+                <label>Test tavsifi (ixtiyoriy)</label>
+                <textarea name="description" id="description"
+                          placeholder="Test haqida qisqacha ma'lumot"
+                          rows="2"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="required">PDF fayl</label>
+                <div class="file-input" id="dropZone" onclick="document.getElementById('pdf_file').click()">
+                    <input type="file" name="pdf_file" id="pdf_file" accept=".pdf" required onchange="showFileName(this)">
+                    <label>📁 PDF faylni tanlash</label>
+                    <p>yoki bu yerga sudrab keling</p>
+                </div>
+                <div id="fileName" class="file-name"></div>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" name="is_premium" id="is_premium" onchange="togglePriceField()">
+                    <label for="is_premium">💎 Pullik test</label>
+                </div>
+
+                <div id="priceField" class="price-group">
+                    <label>Narxi (so'm)</label>
+                    <input type="number" name="price" id="price" value="50000" min="0" step="1000">
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn">
+                <span>📤</span> Yuklash va Test Yaratish
+            </button>
+        </form>
+
+        <a href="{% url 'admin_panel' %}" class="back-link">
+            ← Admin panelga qaytish
+        </a>
+    </div>
+
+    <script>
+        function togglePriceField() {
+            const checkbox = document.getElementById('is_premium');
+            const priceField = document.getElementById('priceField');
+
+            if (checkbox.checked) {
+                priceField.classList.add('show');
+            } else {
+                priceField.classList.remove('show');
+            }
+        }
+
+        function showFileName(input) {
+            const fileName = document.getElementById('fileName');
+            if (input.files && input.files[0]) {
+                fileName.textContent = input.files[0].name;
+                fileName.style.color = '#10b981';
+
+                // Animation
+                const fileInput = document.querySelector('.file-input');
+                fileInput.style.borderColor = '#10b981';
+                fileInput.style.background = '#f0fdf4';
+                setTimeout(() => {
+                    fileInput.style.borderColor = '#2563eb';
+                    fileInput.style.background = '#f0f4ff';
+                }, 500);
+            } else {
+                fileName.textContent = '';
+            }
+        }
+
+        // Drag and drop functionality
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('pdf_file');
+
+        if (dropZone && fileInput) {
+            dropZone.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('dragover');
+            });
+
+            dropZone.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+            });
+
+            dropZone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    fileInput.files = files;
+                    showFileName(fileInput);
+                }
+            });
+        }
+
+        // Form submission loading state
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+
+            submitBtn.classList.add('loading');
+            submitBtn.innerHTML = '<span>⏳</span> Yuklanmoqda...';
+
+            // Re-enable after 5 seconds if still loading (fallback)
+            setTimeout(() => {
+                if (submitBtn.classList.contains('loading')) {
+                    submitBtn.classList.remove('loading');
+                    submitBtn.innerHTML = originalText;
+                }
+            }, 5000);
+        });
+
+        // Price input animation
+        const priceInput = document.getElementById('price');
+        if (priceInput) {
+            priceInput.addEventListener('focus', function() {
+                this.style.transform = 'scale(1.02)';
+            });
+
+            priceInput.addEventListener('blur', function() {
+                this.style.transform = 'scale(1)';
+            });
+        }
+
+        // Auto-resize textarea
+        const textarea = document.getElementById('description');
+        if (textarea) {
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+            });
+        }
+
+        // Smooth scroll to top
+        window.addEventListener('load', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Keyboard shortcut (Ctrl/Cmd + Enter to submit)
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('uploadForm').submit();
+            }
+        });
+
+        // Title character counter (optional)
+        const titleInput = document.getElementById('title');
+        if (titleInput) {
+            titleInput.addEventListener('input', function() {
+                if (this.value.length > 190) {
+                    this.style.borderColor = '#f59e0b';
+                } else {
+                    this.style.borderColor = '#e5e7eb';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

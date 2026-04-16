@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if mode == 'edit' %}Edit Career Topic{% else %}Create Career Topic{% endif %} - SAT Azizbek</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #f5f7fb, #eef2ff);
+            color: #111827;
+            min-height: 100vh;
+            animation: fadeIn 0.6s ease both;
+        }
+
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 20px 48px;
+            animation: fadeUp 0.7s ease both;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b, #d97706, #b45309);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 36px rgba(0,0,0,0.1);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 34px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #334acb, #1d4ed8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h1::before {
+            content: "🎯";
+            font-size: 36px;
+            -webkit-text-fill-color: initial;
+            color: #f59e0b;
+        }
+
+        p {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-top: 0;
+            margin-bottom: 24px;
+            font-size: 15px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group {
+            animation: fadeUp 0.85s ease both;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        label::before {
+            content: "•";
+            color: #f59e0b;
+            font-size: 20px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 14px;
+            padding: 12px 14px;
+            font-size: 14px;
+            background: white;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #3950cf;
+            box-shadow: 0 0 0 4px rgba(57, 80, 207, 0.1);
+            transform: translateY(-1px);
+        }
+
+        input:hover, textarea:hover, select:hover {
+            border-color: #9ca3af;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        select {
+            cursor: pointer;
+            background: white;
+        }
+
+        .checks {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            align-items: center;
+            padding-top: 12px;
+        }
+
+        .checks label {
+            margin: 0;
+            font-weight: 700;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px 12px;
+            background: #f9fafb;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+        }
+
+        .checks label::before {
+            display: none;
+        }
+
+        .checks label:hover {
+            background: #eef2ff;
+            border-color: #c7d2fe;
+            transform: translateY(-1px);
+        }
+
+        .checks input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #3950cf;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 28px;
+            animation: fadeUp 0.95s ease both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+            min-width: 140px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.16);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-dark {
+            background: #111827;
+            color: white;
+        }
+
+        .btn-dark:hover {
+            background: #1f2937;
+        }
+
+        .btn-light {
+            background: #eef2ff;
+            color: #2538a8;
+            border: 1px solid #c7d2fe;
+        }
+
+        .btn-light:hover {
+            background: #dbeafe;
+        }
+
+        .messages {
+            margin-bottom: 18px;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .msg {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px 14px;
+            border-radius: 14px;
+            border: 1px solid #fecaca;
+            margin-bottom: 8px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .msg::before {
+            content: "⚠️";
+            font-size: 16px;
+        }
+
+        .msg:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(153, 27, 27, 0.1);
+        }
+
+        /* Success message style */
+        .msg.success {
+            background: #dcfce7;
+            color: #166534;
+            border-color: #bbf7d0;
+        }
+
+        .msg.success::before {
+            content: "✅";
+        }
+
+        /* Helper text */
+        .helper-text {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+            margin-bottom: 0;
+        }
+
+        /* Animation keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading state for button */
+        .btn.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Required field indicator */
+        label.required::after {
+            content: "*";
+            color: #dc2626;
+            margin-left: 4px;
+            font-size: 14px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 760px) {
+            .page {
+                padding: 20px 16px 32px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            h1::before {
+                font-size: 30px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .checks {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .checks label {
+                justify-content: center;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            h1::before {
+                font-size: 26px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+        }
+
+        /* Optional field styling */
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Select arrow customization */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 20px;
+            padding-right: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="msg {% if message.tags %}{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="card">
+            <h1>{% if mode == 'edit' %}Edit Career Topic{% else %}Create Career Topic{% endif %}</h1>
+            <p>Video va testni shu yerda biriktirasan. Free yoki premium ekanini ham shu yerda belgilaysan.</p>
+
+            <form method="post" id="topicForm">
+                {% csrf_token %}
+
+                <div class="form-grid">
+                    <div class="full form-group">
+                        <label class="required">Title</label>
+                        <input type="text" name="title" value="{% if topic %}{{ topic.title }}{% endif %}"
+                               placeholder="Topic nomini kiriting" required>
+                        <div class="helper-text">Topic sarlavhasi foydalanuvchilarga ko'rinadi</div>
+                    </div>
+
+                    <div class="full form-group">
+                        <label>Subtitle</label>
+                        <input type="text" name="subtitle" value="{% if topic %}{{ topic.subtitle }}{% endif %}"
+                               placeholder="Qo'shimcha sarlavha (ixtiyoriy)">
+                    </div>
+
+                    <div class="full form-group">
+                        <label>Description</label>
+                        <textarea name="description"
+                                  placeholder="Topic haqida batafsil ma'lumot">{% if topic %}{{ topic.description }}{% endif %}</textarea>
+                        <div class="helper-text">Topic mazmuni va maqsadini tushuntiring</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Order</label>
+                        <input type="number" name="order" value="{% if topic %}{{ topic.order }}{% endif %}"
+                               placeholder="Tartib raqami" required>
+                        <div class="helper-text">Topiclar ketma-ketligini belgilaydi</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Pass Percentage</label>
+                        <input type="number" name="pass_percentage"
+                               value="{% if topic %}{{ topic.pass_percentage }}{% else %}60{% endif %}"
+                               min="0" max="100" required>
+                        <div class="helper-text">O'tish uchun kerakli foiz (0-100)</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Icon</label>
+                        <input type="text" name="icon" value="{% if topic %}{{ topic.icon }}{% else %}⚽{% endif %}"
+                               placeholder="Emoji yoki icon">
+                        <div class="helper-text">Topic uchun vizual belgi</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Video</label>
+                        <select name="video">
+                            <option value="">-- Select video --</option>
+                            {% for video in videos %}
+                                <option value="{{ video.id }}"
+                                    {% if topic and topic.video and topic.video.id == video.id %}selected{% endif %}>
+                                    {{ video.title }} ({{ video.category }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="helper-text">Topicga biriktiriladigan video dars</div>
+                    </div>
+
+                    <div class="full form-group">
+                        <label>Test</label>
+                        <select name="test">
+                            <option value="">-- Select test --</option>
+                            {% for test in tests %}
+                                <option value="{{ test.id }}"
+                                    {% if topic and topic.test and topic.test.id == test.id %}selected{% endif %}>
+                                    {{ test.title }} ({{ test.category }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="helper-text">Topicga biriktiriladigan test</div>
+                    </div>
+
+                    <div class="full form-group">
+                        <div class="checks">
+                            <label>
+                                <input type="checkbox" name="is_free"
+                                    {% if topic and topic.is_free %}checked{% elif not topic %}checked{% endif %}>
+                                <span>
+                                    <strong>🆓 Free topic</strong><br>
+                                    <small style="color:#6b7280;">Barcha foydalanuvchilar uchun ochiq</small>
+                                </span>
+                            </label>
+                            <label>
+                                <input type="checkbox" name="is_active"
+                                    {% if topic and topic.is_active %}checked{% elif not topic %}checked{% endif %}>
+                                <span>
+                                    <strong>✅ Active</strong><br>
+                                    <small style="color:#6b7280;">Topic faol holatda</small>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn btn-dark" id="submitBtn">
+                        {% if mode == 'edit' %}
+                            💾 Save Changes
+                        {% else %}
+                            ✨ Create Topic
+                        {% endif %}
+                    </button>
+                    <a href="{% url 'career_topics_manage' %}" class="btn btn-light">
+                        ← Back
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Form submission loading state
+        document.getElementById('topicForm').addEventListener('submit', function(e) {
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+
+            submitBtn.classList.add('loading');
+            submitBtn.innerHTML = '⏳ Processing...';
+
+            // Re-enable after 5 seconds if still loading (fallback)
+            setTimeout(() => {
+                if (submitBtn.classList.contains('loading')) {
+                    submitBtn.classList.remove('loading');
+                    submitBtn.innerHTML = originalText;
+                }
+            }, 5000);
+        });
+
+        // Auto-resize textarea
+        const textarea = document.querySelector('textarea');
+        if (textarea) {
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 300) + 'px';
+            });
+
+            // Initial resize
+            setTimeout(() => {
+                textarea.style.height = 'auto';
+                textarea.style.height = Math.min(textarea.scrollHeight, 300) + 'px';
+            }, 100);
+        }
+
+        // Form validation
+        const passPercentageInput = document.querySelector('input[name="pass_percentage"]');
+        if (passPercentageInput) {
+            passPercentageInput.addEventListener('input', function() {
+                let value = parseInt(this.value);
+                if (value < 0) this.value = 0;
+                if (value > 100) this.value = 100;
+            });
+        }
+
+        // Order input validation
+        const orderInput = document.querySelector('input[name="order"]');
+        if (orderInput) {
+            orderInput.addEventListener('input', function() {
+                if (parseInt(this.value) < 0) this.value = 0;
+            });
+        }
+
+        // Smooth scroll to top on page load
+        window.addEventListener('load', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Add animation to form groups on load
+        document.querySelectorAll('.form-group').forEach((group, index) => {
+            group.style.animationDelay = (0.1 * index) + 's';
+        });
+
+        // Show success message animation if redirected from successful action
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('saved') === 'true') {
+            const successMsg = document.createElement('div');
+            successMsg.className = 'msg success';
+            successMsg.textContent = '✓ Topic muvaffaqiyatli saqlandi!';
+            const messagesContainer = document.querySelector('.messages');
+            if (messagesContainer) {
+                messagesContainer.appendChild(successMsg);
+            }
+        }
+    </script>
+</body>
+</html>

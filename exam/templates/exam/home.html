@@ -1,0 +1,958 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAT Azizbek - College and Career Start Here</title>
+    <link rel="stylesheet" href="{% static 'exam/ui_smooth.css' %}">
+    <link rel="stylesheet" href="{% static 'exam/page_transition.css' %}">
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #f5f7fb, #eef2ff);
+            color: #111;
+            animation: fadeIn 0.6s ease both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* Topbar */
+        .topbar {
+            background: #ffffff;
+            border-bottom: 1px solid #d9d9d9;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.5s ease both;
+        }
+
+        .topbar-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            height: 56px;
+            padding: 0 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .left-brand {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .menu-box {
+            width: 56px;
+            height: 40px;
+            border-right: 1px solid #d9d9d9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #111;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .menu-box:hover {
+            background: #f8fafc;
+            transform: translateY(-1px);
+        }
+
+        .logo-box {
+            height: 40px;
+            min-width: 150px;
+            background: #111;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 0 14px;
+            text-decoration: none;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, opacity 0.22s ease;
+        }
+
+        .logo-box:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+            opacity: 0.96;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .top-link {
+            font-size: 13px;
+            padding: 7px 10px;
+            border-radius: 8px;
+            color: #111827;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .top-link:hover {
+            background: #f3f4f6;
+            transform: translateY(-1px);
+        }
+
+        .top-link.primary {
+            background: #111827;
+            color: white;
+            font-weight: 700;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .top-link.primary:hover {
+            background: #1f2937;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.18);
+        }
+
+        .page {
+            width: 100%;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #1e3a8a, #1d4ed8, #334acb);
+            color: white;
+            min-height: 320px;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            align-items: center;
+            gap: 22px;
+            padding: 36px 42px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp 0.7s ease both;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            opacity: 0.08;
+            background-image:
+                radial-gradient(circle at 8% 18%, white 0 2px, transparent 2px),
+                radial-gradient(circle at 28% 62%, white 0 2px, transparent 2px),
+                radial-gradient(circle at 50% 20%, white 0 2px, transparent 2px),
+                radial-gradient(circle at 72% 68%, white 0 2px, transparent 2px),
+                radial-gradient(circle at 90% 24%, white 0 2px, transparent 2px);
+            background-size: 160px 160px;
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            animation: shimmer 4s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(50%); }
+        }
+
+        .hero-left, .hero-right {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-left {
+            max-width: 560px;
+            margin-left: auto;
+            margin-right: 0;
+            animation: slideInLeft 0.8s ease both;
+        }
+
+        .hero-left h1 {
+            margin: 0 0 12px;
+            font-size: 44px;
+            line-height: 1.1;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-left p {
+            margin: 0;
+            font-size: 18px;
+            line-height: 1.5;
+            font-weight: 400;
+            max-width: 520px;
+            opacity: 0.95;
+        }
+
+        .hero-right {
+            display: flex;
+            justify-content: center;
+            animation: slideInRight 0.8s ease both;
+        }
+
+        .signin-panel {
+            width: 100%;
+            max-width: 430px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 28px 24px 22px;
+            box-shadow: 0 16px 32px rgba(0,0,0,0.2);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .signin-panel:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 24px 48px rgba(0,0,0,0.25);
+        }
+
+        .signin-main-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+            color: white;
+            text-align: center;
+            padding: 15px 12px;
+            border-radius: 999px;
+            font-size: 16px;
+            font-weight: 700;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .signin-main-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(37, 99, 235, 0.3);
+            animation: none;
+        }
+
+        .signin-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #d9d9d9, transparent);
+            margin: 20px 0;
+        }
+
+        .signin-secondary {
+            display: block;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: underline;
+            color: #111;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .signin-secondary:hover {
+            transform: translateY(-1px);
+            color: #1d4ed8;
+        }
+
+        /* Content */
+        .content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 32px 28px 48px;
+            animation: fadeUp 0.85s ease both;
+        }
+
+        .card-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 20px;
+            min-height: 200px;
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            border: 1px solid #e5e7eb;
+            animation: fadeUp 0.95s ease both;
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.1);
+        }
+
+        .info-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .info-card:hover .info-icon {
+            transform: scale(1.05);
+            box-shadow: 0 12px 24px rgba(37, 99, 235, 0.25);
+        }
+
+        .info-card h3 {
+            margin: 0 0 8px;
+            font-size: 18px;
+            line-height: 1.4;
+            font-weight: 700;
+            max-width: 300px;
+        }
+
+        .info-card p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            max-width: 300px;
+        }
+
+        .section {
+            margin-top: 36px;
+        }
+
+        .section h2 {
+            margin: 0 0 8px;
+            font-size: 26px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .section p.section-sub {
+            margin: 0 0 18px;
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .test-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            min-height: 200px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            border: 1px solid #e5e7eb;
+            animation: fadeUp 0.95s ease both;
+        }
+
+        .test-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.1);
+        }
+
+        .test-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .test-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            transition: transform 0.22s ease;
+        }
+
+        .test-card:hover .test-icon {
+            transform: scale(1.05);
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            transition: transform 0.2s ease;
+        }
+
+        .badge:hover {
+            transform: scale(1.05);
+        }
+
+        .badge-free {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .badge-premium {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+
+        .test-card h3 {
+            margin: 0 0 8px;
+            font-size: 18px;
+            line-height: 1.3;
+            font-weight: 700;
+        }
+
+        .test-card p {
+            margin: 0;
+            color: #666;
+            line-height: 1.6;
+            font-size: 13px;
+        }
+
+        .meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 14px;
+        }
+
+        .meta-chip {
+            background: #f3f4f6;
+            color: #374151;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .meta-chip:hover {
+            transform: translateY(-1px);
+            background: #e5e7eb;
+        }
+
+        .card-actions {
+            margin-top: auto;
+            padding-top: 16px;
+        }
+
+        .open-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #111827, #1f2937);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .open-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(17, 24, 39, 0.2);
+            background: linear-gradient(135deg, #1f2937, #374151);
+        }
+
+        .empty-box {
+            background: white;
+            border-radius: 18px;
+            padding: 24px;
+            color: #6b7280;
+            font-size: 14px;
+            text-align: center;
+            border: 2px dashed #d1d5db;
+        }
+
+        .premium-line {
+            font-size: 14px;
+            color: #374151;
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 14px;
+            border: 1px solid #fcd34d;
+        }
+
+        /* Staggered animations */
+        .info-card:nth-child(1) { animation-delay: 0.1s; }
+        .info-card:nth-child(2) { animation-delay: 0.2s; }
+        .info-card:nth-child(3) { animation-delay: 0.3s; }
+
+        .test-card:nth-child(1) { animation-delay: 0.1s; }
+        .test-card:nth-child(2) { animation-delay: 0.2s; }
+        .test-card:nth-child(3) { animation-delay: 0.3s; }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 32px 24px;
+            }
+
+            .hero-left {
+                margin-left: 0;
+                max-width: 100%;
+            }
+
+            .card-row,
+            .test-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 760px) {
+            .topbar-inner {
+                height: auto;
+                padding-top: 12px;
+                padding-bottom: 12px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .top-right {
+                justify-content: center;
+            }
+
+            .hero-left h1 {
+                font-size: 34px;
+            }
+
+            .hero-left p {
+                font-size: 16px;
+            }
+
+            .content {
+                padding: 24px 16px 36px;
+            }
+
+            .hero {
+                padding: 24px 16px;
+            }
+
+            .card-row,
+            .test-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logo-box {
+                min-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="topbar">
+    <div class="topbar-inner">
+        <div class="left-brand">
+            <div class="menu-box">⌄</div>
+            <a href="https://t.me/SAT_Math_English" target="_blank" rel="noopener noreferrer" class="logo-box">
+                SAT Azizbek
+            </a>
+        </div>
+
+        <div class="top-right">
+            <a class="top-link" href="{% url 'home' %}"> Home</a>
+
+            {% if user.is_authenticated %}
+                <a class="top-link" href="{% url 'profile' %}"> Profil</a>
+                <a class="top-link" href="{% url 'career_mode' %}"> Career Mode</a>
+                <a class="top-link" href="{% url 'score_calculator' %}"> Score Calculator</a>
+            {% endif %}
+
+            {% if user.is_authenticated and user.is_staff %}
+                <a class="top-link" href="{% url 'admin_panel' %}">Admin Panel</a>
+                <a class="top-link" href="/admin/"> Django Admin</a>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                <a class="top-link primary" href="{% url 'logout' %}"> Logout</a>
+            {% else %}
+                <a class="top-link" href="{% url 'login' %}"> Sign In</a>
+                <a class="top-link primary" href="{% url 'register' %}"> Create Account</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+
+<main class="page">
+    <section class="hero">
+        <div class="hero-left">
+            <h1>College and Career Start Here</h1>
+            <p>
+                {% if user.is_authenticated %}
+                    Platformdagi English testlar, Math testlar, analysis videolar, premium
+                    materiallar va yangi Career Mode bo'limiga shu yerdan tezkor o'ting.
+                {% else %}
+                    Sign in for personalized recommendations and access to your SAT, Math tests,
+                    English tests, premium materials and more.
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="hero-right">
+            <div class="signin-panel">
+                {% if user.is_authenticated %}
+                    <a class="signin-main-btn" href="{% url 'career_mode' %}">
+                        <span></span> Open Career Mode
+                    </a>
+                    <div class="signin-divider"></div>
+                    <a class="signin-secondary" href="{% url 'profile' %}">
+                        <span></span> Open Profile
+                    </a>
+                {% else %}
+                    <a class="signin-main-btn" href="{% url 'login' %}">
+                        <span></span> Sign In
+                    </a>
+                    <div class="signin-divider"></div>
+                    <a class="signin-secondary" href="{% url 'register' %}">
+                        <span></span> Create Account
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="card-row">
+            <div class="info-card">
+                <div class="info-icon">E</div>
+                <h3>Structured English Practice</h3>
+                <p>Reading va Writing bo'limlari uchun tartibli va qulay test tajribasi.</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon">M</div>
+                <h3>Timed Math with Desmos</h3>
+                <p>Math testlarni timer va Desmos bilan real imtihonga yaqin formatda ishlang.</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon">⚽</div>
+                <h3>Career Mode Progression</h3>
+                <p>Video lesson ko'ring, test ishlang va keyingi levelni ochib boring.</p>
+            </div>
+        </div>
+
+        {% if user.is_authenticated %}
+            <section class="section">
+                <h2>Welcome to SAT Azizbek</h2>
+                <p class="section-sub">
+                    Test ishlash va tayyorgarlikni tartibli davom ettirish uchun platforma.
+                </p>
+                <div class="premium-line">
+                    <strong> Sizdagi premiumlar:</strong>
+                    {% if user_premiums %}
+                        {{ user_premiums|join:", " }}
+                    {% else %}
+                        Premium yo'q
+                    {% endif %}
+                </div>
+            </section>
+        {% endif %}
+
+        <section class="section">
+            <h2> English Tests</h2>
+            <p class="section-sub">Reading, Writing va SAT English practice materiallari.</p>
+
+            {% if english_tests %}
+                <div class="test-grid">
+                    {% for test in english_tests %}
+                        <div class="test-card">
+                            <div class="test-top">
+                                <div class="test-icon">E</div>
+                                <span class="badge badge-free">Free</span>
+                            </div>
+
+                            <h3>{{ test.title }}</h3>
+                            <p>{{ test.description|default:"English practice test."|truncatechars:110 }}</p>
+
+                            <div class="meta-row">
+                                <span class="meta-chip">{{ test.total_questions }} questions</span>
+                                <span class="meta-chip">{{ test.time_limit_minutes }} min</span>
+                                <span class="meta-chip">English</span>
+                            </div>
+
+                            <div class="card-actions">
+                                <a class="open-btn" href="{% url 'take_pdf_test' test.id %}">
+                                    <span></span> Open Test
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-box">Hozircha English testlar yo'q.</div>
+            {% endif %}
+        </section>
+
+        <section class="section" id="math-tests">
+            <h2> Math Tests</h2>
+            <p class="section-sub">Timer, Desmos va practice testlar bilan Math bo'limi.</p>
+
+            {% if math_tests %}
+                <div class="test-grid">
+                    {% for test in math_tests %}
+                        <div class="test-card">
+                            <div class="test-top">
+                                <div class="test-icon">M</div>
+                                <span class="badge badge-free">Free</span>
+                            </div>
+
+                            <h3>{{ test.title }}</h3>
+                            <p>{{ test.description|default:"Math practice test with timer and calculator support."|truncatechars:110 }}</p>
+
+                            <div class="meta-row">
+                                <span class="meta-chip">{{ test.total_questions }} questions</span>
+                                <span class="meta-chip">{{ test.time_limit_minutes }} min</span>
+                                <span class="meta-chip">Math</span>
+                            </div>
+
+                            <div class="card-actions">
+                                <a class="open-btn" href="{% url 'take_pdf_test' test.id %}">
+                                    <span></span> Open Test
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-box">Hozircha Math testlar yo'q.</div>
+            {% endif %}
+        </section>
+
+        <section class="section">
+            <h2> Analysis Videos</h2>
+            <p class="section-sub">Test tahlillari va tushuntiruvchi videolar.</p>
+
+            {% if analysis_videos %}
+                <div class="test-grid">
+                    {% for video in analysis_videos %}
+                        <div class="test-card">
+                            <div class="test-top">
+                                <div class="test-icon">A</div>
+                                <span class="badge badge-free">Free</span>
+                            </div>
+
+                            <h3>{{ video.title }}</h3>
+                            <p>{{ video.description|default:"Analysis video material."|truncatechars:110 }}</p>
+
+                            <div class="meta-row">
+                                <span class="meta-chip">Analysis</span>
+                                {% if video.video_file or video.video_url %}
+                                    <span class="meta-chip">Available</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="card-actions">
+                                {% if video.video_url %}
+                                    <a class="open-btn" href="{{ video.video_url }}" target="_blank">
+                                        <span>▶</span> Watch
+                                    </a>
+                                {% elif video.video_file %}
+                                    <a class="open-btn" href="{{ video.video_file.url }}" target="_blank">
+                                        <span>▶</span> Watch
+                                    </a>
+                                {% else %}
+                                    <span class="open-btn" style="background:#9ca3af; cursor: default;">No Video</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-box">Hozircha analysis videolar yo'q.</div>
+            {% endif %}
+        </section>
+
+        <section class="section">
+            <h2> Premium Materials</h2>
+            <p class="section-sub">Premium foydalanuvchilar uchun maxsus testlar va resurslar.</p>
+
+            {% if premium_english_tests or premium_math_tests or premium_analysis_videos %}
+                <div class="test-grid">
+                    {% for test in premium_english_tests %}
+                        <div class="test-card">
+                            <div class="test-top">
+                                <div class="test-icon">E</div>
+                                <span class="badge badge-premium">Premium</span>
+                            </div>
+
+                            <h3>{{ test.title }}</h3>
+                            <p>{{ test.description|default:"Premium English material."|truncatechars:110 }}</p>
+
+                            <div class="meta-row">
+                                <span class="meta-chip">{{ test.total_questions }} questions</span>
+                                <span class="meta-chip">{{ test.time_limit_minutes }} min</span>
+                                <span class="meta-chip">{{ test.price }} so'm</span>
+                            </div>
+
+                            <div class="card-actions">
+                                <a class="open-btn" href="{% url 'check_access' 'test' test.id %}">
+                                    <span></span> Open
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    {% for test in premium_math_tests %}
+                        <div class="test-card">
+                            <div class="test-top">
+                                <div class="test-icon">M</div>
+                                <span class="badge badge-premium">Premium</span>
+                            </div>
+
+                            <h3>{{ test.title }}</h3>
+                            <p>{{ test.description|default:"Premium Math material."|truncatechars:110 }}</p>
+
+                            <div class="meta-row">
+                                <span class="meta-chip">{{ test.total_questions }} questions</span>
+                                <span class="meta-chip">{{ test.time_limit_minutes }} min</span>
+                                <span class="meta-chip">{{ test.price }} so'm</span>
+                            </div>
+
+                            <div class="card-actions">
+                                <a class="open-btn" href="{% url 'check_access' 'test' test.id %}">
+                                    <span></span> Open
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    {% for video in premium_analysis_videos %}
+                        <div class="test-card">
+                            <div class="test-top">
+                                <div class="test-icon">A</div>
+                                <span class="badge badge-premium">Premium</span>
+                            </div>
+
+                            <h3>{{ video.title }}</h3>
+                            <p>{{ video.description|default:"Premium analysis video."|truncatechars:110 }}</p>
+
+                            <div class="meta-row">
+                                <span class="meta-chip">Analysis</span>
+                                <span class="meta-chip">{{ video.price }} so'm</span>
+                            </div>
+
+                            <div class="card-actions">
+                                <a class="open-btn" href="{% url 'check_access' 'video' video.id %}">
+                                    <span>💎</span> Watch
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-box">Hozircha premium materiallar yo'q.</div>
+            {% endif %}
+        </section>
+    </section>
+</main>
+
+<script src="{% static 'exam/page_transition.js' %}"></script>
+<script>
+    // Smooth scroll to math tests if hash is present
+    if (window.location.hash === '#math-tests') {
+        setTimeout(() => {
+            document.getElementById('math-tests')?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }, 300);
+    }
+
+    // Add hover effect to cards
+    document.querySelectorAll('.test-card, .info-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transition = 'all 0.22s ease';
+        });
+    });
+</script>
+</body>
+</html>

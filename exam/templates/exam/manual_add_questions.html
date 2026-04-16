@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahifalar soni - SAT Azizbek</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #0f1f4d, #1e3a8a, #2247c7);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            animation: fadeIn 0.6s ease both;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.08) 1.5px, transparent 1.5px);
+            background-size: 64px 64px;
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% center;
+            }
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        .box {
+            background: white;
+            padding: 48px 44px;
+            border-radius: 32px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 24px 48px rgba(0,0,0,0.25);
+            animation: fadeUp 0.7s ease both;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 32px 64px rgba(0,0,0,0.3);
+        }
+
+        .icon-wrapper {
+            margin-bottom: 24px;
+            animation: bounce 0.8s ease both;
+        }
+
+        .pdf-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            border-radius: 24px;
+            font-size: 42px;
+            box-shadow: 0 8px 24px rgba(220, 38, 38, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pdf-icon::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        h2 {
+            margin: 0 0 16px;
+            font-size: 32px;
+            font-weight: 800;
+            color: #111827;
+            animation: fadeUp 0.9s ease both;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        h2::before {
+            content: "📄";
+            font-size: 36px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 15px;
+            margin-bottom: 28px;
+            line-height: 1.6;
+            animation: fadeUp 1s ease both;
+        }
+
+        .input-wrapper {
+            margin-bottom: 24px;
+            animation: fadeUp 1.05s ease both;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #374151;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 18px 20px;
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            background: white;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+            color: #111827;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1d4ed8;
+            box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.15);
+            transform: scale(1.02);
+        }
+
+        input:hover {
+            border-color: #9ca3af;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .quick-select {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 12px;
+        }
+
+        .quick-btn {
+            padding: 8px 16px;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quick-btn:hover {
+            background: #e5e7eb;
+            transform: translateY(-1px);
+        }
+
+        button {
+            width: 100%;
+            padding: 18px 24px;
+            background: linear-gradient(135deg, #111827, #1f2937);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 24px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(17, 24, 39, 0.3);
+            background: linear-gradient(135deg, #1f2937, #374151);
+            animation: none;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .info-note {
+            margin-top: 20px;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: 14px;
+            border: 1px solid #bae6fd;
+            color: #0369a1;
+            font-size: 13px;
+            line-height: 1.6;
+            animation: fadeUp 1.1s ease both;
+        }
+
+        .info-note strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #0284c7;
+        }
+
+        .back-link {
+            margin-top: 20px;
+            color: white;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .back-link a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-link a:hover {
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+                align-items: flex-start;
+            }
+
+            .box {
+                padding: 36px 28px;
+                margin: 20px auto;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            h2::before {
+                font-size: 32px;
+            }
+
+            .pdf-icon {
+                width: 75px;
+                height: 75px;
+                font-size: 36px;
+            }
+
+            input {
+                font-size: 20px;
+                padding: 16px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 16px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 24px;
+            }
+
+            h2::before {
+                font-size: 28px;
+            }
+
+            .box {
+                padding: 28px 20px;
+            }
+
+            .quick-select {
+                flex-wrap: wrap;
+            }
+
+            .quick-btn {
+                flex: 1;
+                min-width: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="icon-wrapper">
+            <div class="pdf-icon">PDF</div>
+        </div>
+
+        <h2>Sahifalar soni</h2>
+
+        <p class="subtitle">
+            PDF faylda nechta sahifa borligini kiriting
+        </p>
+
+        <form method="post" id="pageForm">
+            {% csrf_token %}
+
+            <div class="input-wrapper">
+                <label>Savollar soni (sahifalar)</label>
+                <input type="number" name="num_questions" id="numQuestions"
+                       value="33" min="1" max="100" required>
+
+                <div class="quick-select">
+                    <button type="button" class="quick-btn" onclick="setValue(22)">22</button>
+                    <button type="button" class="quick-btn" onclick="setValue(27)">27</button>
+                    <button type="button" class="quick-btn" onclick="setValue(33)">33</button>
+                    <button type="button" class="quick-btn" onclick="setValue(44)">44</button>
+                    <button type="button" class="quick-btn" onclick="setValue(54)">54</button>
+                </div>
+            </div>
+
+            <div class="info-note">
+                <strong>💡 Ma'lumot:</strong>
+                Odatda SAT testlari 22, 27, 33, 44 yoki 54 savoldan iborat bo'ladi.
+                PDF'dagi sahifalar soniga qarab tanlang.
+            </div>
+
+            <button type="submit" id="submitBtn">
+                <span>➡️</span> Davom etish
+            </button>
+        </form>
+
+        <div class="back-link">
+            <a href="javascript:history.back()">← Orqaga qaytish</a>
+        </div>
+    </div>
+
+    <script>
+        function setValue(value) {
+            const input = document.getElementById('numQuestions');
+            input.value = value;
+
+            // Add animation
+            input.style.transform = 'scale(1.05)';
+            input.style.borderColor = '#1d4ed8';
+            setTimeout(() => {
+                input.style.transform = 'scale(1)';
+                input.style.borderColor = '#e5e7eb';
+            }, 200);
+
+            // Pulse animation on quick button
+            event.target.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                event.target.style.transform = '';
+            }, 150);
+        }
+
+        // Form submission loading state
+        document.getElementById('pageForm').addEventListener('submit', function(e) {
+            const input = document.getElementById('numQuestions');
+            const value = parseInt(input.value);
+
+            if (value < 1 || value > 100) {
+                e.preventDefault();
+                alert('Iltimos, 1 dan 100 gacha son kiriting');
+                input.style.borderColor = '#dc2626';
+                setTimeout(() => {
+                    input.style.borderColor = '#e5e7eb';
+                }, 1000);
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+
+            submitBtn.classList.add('loading');
+            submitBtn.innerHTML = '<span>⏳</span> Yuklanmoqda...';
+
+            setTimeout(() => {
+                if (submitBtn.classList.contains('loading')) {
+                    submitBtn.classList.remove('loading');
+                    submitBtn.innerHTML = originalText;
+                }
+            }, 5000);
+        });
+
+        // Input validation
+        const input = document.getElementById('numQuestions');
+        input.addEventListener('input', function() {
+            let value = parseInt(this.value);
+
+            if (this.value === '') {
+                this.style.borderColor = '#e5e7eb';
+                return;
+            }
+
+            if (value < 1) {
+                this.value = 1;
+                this.style.borderColor = '#f59e0b';
+            } else if (value > 100) {
+                this.value = 100;
+                this.style.borderColor = '#f59e0b';
+            } else {
+                this.style.borderColor = '#10b981';
+            }
+
+            setTimeout(() => {
+                this.style.borderColor = '#e5e7eb';
+            }, 500);
+        });
+
+        // Arrow keys to adjust value
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                this.value = Math.min(100, parseInt(this.value || 0) + 1);
+                triggerChange();
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                this.value = Math.max(1, parseInt(this.value || 0) - 1);
+                triggerChange();
+            }
+        });
+
+        function triggerChange() {
+            const event = new Event('input', { bubbles: true });
+            input.dispatchEvent(event);
+        }
+
+        // Smooth scroll to top
+        window.addEventListener('load', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Focus input on load
+        setTimeout(() => {
+            input.focus();
+            input.select();
+        }, 500);
+
+        // Keyboard shortcut (Enter to submit)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target === input) {
+                e.preventDefault();
+                document.getElementById('pageForm').submit();
+            }
+        });
+    </script>
+</body>
+</html>

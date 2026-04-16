@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ test.title }} - SAT Azizbek</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #f5f7fb, #eef2ff);
+            padding: 24px;
+            min-height: 100vh;
+            animation: fadeIn 0.6s ease both;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            animation: fadeUp 0.7s ease both;
+        }
+
+        .header {
+            background: white;
+            padding: 28px 32px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            animation: slideDown 0.5s ease both;
+            position: sticky;
+            top: 20px;
+            z-index: 10;
+            border: 1px solid #e5e7eb;
+        }
+
+        .header:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #111827;
+            font-size: 32px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .test-info {
+            color: #6b7280;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 999px;
+            overflow: hidden;
+            max-width: 300px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1d4ed8, #3b82f6);
+            border-radius: 999px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .question-card {
+            background: white;
+            padding: 32px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            animation: fadeUp 0.85s ease both;
+            border: 1px solid #e5e7eb;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #1d4ed8, #3b82f6);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+        }
+
+        .question-card.answered::before {
+            opacity: 1;
+        }
+
+        .question-number {
+            color: #1d4ed8;
+            font-weight: 700;
+            margin-bottom: 16px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .question-number::before {
+            content: "📝";
+            font-size: 18px;
+        }
+
+        .question-text {
+            font-size: 18px;
+            margin-bottom: 24px;
+            line-height: 1.6;
+            color: #111827;
+            font-weight: 500;
+        }
+
+        .choice {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 14px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .choice::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(37, 99, 235, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .choice:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .choice:hover {
+            border-color: #1d4ed8;
+            transform: translateX(4px);
+        }
+
+        .choice input {
+            margin-right: 16px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #1d4ed8;
+        }
+
+        .choice label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 16px;
+            color: #374151;
+        }
+
+        .choice.selected {
+            border-color: #1d4ed8;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+
+        .choice.selected label {
+            color: #1e40af;
+            font-weight: 600;
+        }
+
+        .submit-section {
+            background: white;
+            padding: 24px 32px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            animation: fadeUp 0.95s ease both;
+            position: sticky;
+            bottom: 20px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #111827, #1f2937);
+            color: white;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(17, 24, 39, 0.2);
+            background: linear-gradient(135deg, #1f2937, #374151);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .back-link {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease, transform 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-link:hover {
+            color: #111827;
+            transform: translateX(-4px);
+        }
+
+        .question-palette {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .palette-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #6b7280;
+        }
+
+        .palette-btn:hover {
+            background: #e5e7eb;
+            transform: translateY(-2px);
+        }
+
+        .palette-btn.answered {
+            background: #1d4ed8;
+            color: white;
+            border-color: #1d4ed8;
+        }
+
+        .palette-btn.current {
+            border: 2px solid #1d4ed8;
+            background: white;
+            color: #1d4ed8;
+        }
+
+        .answered-count {
+            font-size: 14px;
+            color: #6b7280;
+            margin-left: 12px;
+        }
+
+        /* Animation keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Staggered animation for question cards */
+        .question-card:nth-child(1) { animation-delay: 0.1s; }
+        .question-card:nth-child(2) { animation-delay: 0.15s; }
+        .question-card:nth-child(3) { animation-delay: 0.2s; }
+        .question-card:nth-child(4) { animation-delay: 0.25s; }
+        .question-card:nth-child(5) { animation-delay: 0.3s; }
+
+        /* Loading state */
+        .btn.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+
+            .header {
+                padding: 20px;
+                position: static;
+            }
+
+            .question-card {
+                padding: 24px 20px;
+            }
+
+            .submit-section {
+                padding: 20px;
+                position: static;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .test-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .progress-bar {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .choice {
+                padding: 12px 16px;
+            }
+
+            .question-text {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ test.title }}</h1>
+            <div class="test-info">
+                <span>📊 {{ test.questions.count }} ta savol</span>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span id="answeredDisplay">0/{{ test.questions.count }} javob berilgan</span>
+            </div>
+        </div>
+
+        <form method="post" action="{% url 'submit_test' test.id %}" id="testForm">
+            {% csrf_token %}
+
+            {% for question in test.questions.all %}
+                <div class="question-card" id="q{{ question.id }}" data-question-id="{{ question.id }}">
+                    <div class="question-number">Savol {{ question.order }}</div>
+                    <div class="question-text">{{ question.text }}</div>
+
+                    <div class="choice" onclick="selectChoice(this, {{ question.id }})">
+                        <input type="radio" name="q_{{ question.id }}" value="A" id="q{{ question.id }}_a">
+                        <label for="q{{ question.id }}_a">A) {{ question.choice_a }}</label>
+                    </div>
+                    <div class="choice" onclick="selectChoice(this, {{ question.id }})">
+                        <input type="radio" name="q_{{ question.id }}" value="B" id="q{{ question.id }}_b">
+                        <label for="q{{ question.id }}_b">B) {{ question.choice_b }}</label>
+                    </div>
+                    <div class="choice" onclick="selectChoice(this, {{ question.id }})">
+                        <input type="radio" name="q_{{ question.id }}" value="C" id="q{{ question.id }}_c">
+                        <label for="q{{ question.id }}_c">C) {{ question.choice_c }}</label>
+                    </div>
+                    <div class="choice" onclick="selectChoice(this, {{ question.id }})">
+                        <input type="radio" name="q_{{ question.id }}" value="D" id="q{{ question.id }}_d">
+                        <label for="q{{ question.id }}_d">D) {{ question.choice_d }}</label>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="submit-section">
+                <a href="{% url 'home' %}" class="back-link">← Chiqish</a>
+                <button type="submit" class="btn" id="submitBtn">
+                    <span>✅</span> Testni topshirish
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Track answered questions
+        const answeredQuestions = new Set();
+        const totalQuestions = {{ test.questions.count }};
+
+        function selectChoice(element, questionId) {
+            const radio = element.querySelector('input[type="radio"]');
+            if (radio) {
+                radio.checked = true;
+            }
+
+            const parent = element.parentElement;
+            parent.querySelectorAll('.choice').forEach(c => c.classList.remove('selected'));
+            element.classList.add('selected');
+
+            // Mark question as answered
+            answeredQuestions.add(questionId);
+            parent.classList.add('answered');
+
+            updateProgress();
+
+            // Add success animation
+            element.style.animation = 'none';
+            setTimeout(() => {
+                element.style.animation = '';
+            }, 10);
+        }
+
+        function updateProgress() {
+            const answered = answeredQuestions.size;
+            const percentage = (answered / totalQuestions) * 100;
+
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('answeredDisplay').textContent =
+                answered + '/' + totalQuestions + ' javob berilgan';
+        }
+
+        // Form submission
+        document.getElementById('testForm').addEventListener('submit', function(e) {
+            if (answeredQuestions.size < totalQuestions) {
+                const confirm = window.confirm(
+                    answeredQuestions.size + '/' + totalQuestions +
+                    ' savolga javob berdingiz. Testni yakunlashni xohlaysizmi?'
+                );
+                if (!confirm) {
+                    e.preventDefault();
+                    return;
+                }
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+
+            submitBtn.classList.add('loading');
+            submitBtn.innerHTML = '<span>⏳</span> Tekshirilmoqda...';
+
+            setTimeout(() => {
+                if (submitBtn.classList.contains('loading')) {
+                    submitBtn.classList.remove('loading');
+                    submitBtn.innerHTML = originalText;
+                }
+            }, 5000);
+        });
+
+        // Initialize - check pre-selected answers
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.question-card').forEach(card => {
+                const checkedRadio = card.querySelector('input[type="radio"]:checked');
+                if (checkedRadio) {
+                    const questionId = card.dataset.questionId;
+                    answeredQuestions.add(parseInt(questionId));
+                    card.classList.add('answered');
+
+                    const selectedChoice = checkedRadio.closest('.choice');
+                    if (selectedChoice) {
+                        selectedChoice.classList.add('selected');
+                    }
+                }
+            });
+
+            updateProgress();
+
+            // Smooth scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Number keys 1-4 for answers
+            if (e.key >= '1' && e.key <= '4') {
+                const currentCard = document.activeElement.closest('.question-card');
+                if (currentCard) {
+                    const choices = currentCard.querySelectorAll('.choice');
+                    const index = parseInt(e.key) - 1;
+                    if (choices[index]) {
+                        const questionId = currentCard.dataset.questionId;
+                        selectChoice(choices[index], parseInt(questionId));
+                    }
+                }
+            }
+        });
+
+        // Save answers to localStorage (optional)
+        function saveAnswersToStorage() {
+            const answers = {};
+            document.querySelectorAll('.question-card').forEach(card => {
+                const questionId = card.dataset.questionId;
+                const selectedRadio = card.querySelector('input[type="radio"]:checked');
+                if (selectedRadio) {
+                    answers[questionId] = selectedRadio.value;
+                }
+            });
+            localStorage.setItem('testAnswers_' + {{ test.id }}, JSON.stringify(answers));
+        }
+
+        // Auto-save every 30 seconds
+        setInterval(saveAnswersToStorage, 30000);
+
+        // Save before unload
+        window.addEventListener('beforeunload', function() {
+            saveAnswersToStorage();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Topics Manage - SAT Azizbek</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #f5f7fb, #eef2ff);
+            color: #111827;
+            min-height: 100vh;
+            animation: fadeIn 0.6s ease both;
+        }
+
+        .page {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 28px 20px 48px;
+            animation: fadeUp 0.7s ease both;
+        }
+
+        /* Hero section with animations */
+        .hero {
+            background: linear-gradient(135deg, #334acb, #1d4ed8);
+            color: white;
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 16px 32px rgba(29, 78, 216, 0.16);
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.12) 1.5px, transparent 1.5px);
+            background-size: 64px 64px;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .hero > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            margin: 0 0 10px;
+            font-size: 38px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero h1::before {
+            content: "🎯";
+            font-size: 42px;
+        }
+
+        .hero p {
+            margin: 0;
+            line-height: 1.7;
+            font-size: 15px;
+            opacity: 0.95;
+            max-width: 700px;
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        /* Button styles with animations */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 18px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.18);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-dark {
+            background: #111827;
+            color: white;
+        }
+
+        .btn-dark:hover {
+            background: #1f2937;
+        }
+
+        .btn-light {
+            background: white;
+            color: #2538a8;
+            border: 1px solid #c7d2fe;
+        }
+
+        .btn-light:hover {
+            background: #f8fafc;
+        }
+
+        /* Grid layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            animation: fadeUp 0.85s ease both;
+        }
+
+        /* Card styles with animations */
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            padding: 22px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+            animation: fadeUp 0.95s ease both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b, #d97706, #b45309);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.12);
+            border-color: #d1d5db;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: start;
+            margin-bottom: 14px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: #111827;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
+            transition: transform 0.2s ease;
+        }
+
+        .badge:hover {
+            transform: scale(1.05);
+        }
+
+        .badge-free {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .badge-free::before {
+            content: "🆓";
+            font-size: 14px;
+        }
+
+        .badge-premium {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+
+        .badge-premium::before {
+            content: "💎";
+            font-size: 14px;
+        }
+
+        .desc {
+            color: #374151;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .meta {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 18px;
+            font-size: 13px;
+            color: #4b5563;
+            background: #f9fafb;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-item strong {
+            min-width: 120px;
+            color: #374151;
+        }
+
+        .meta-item .status-active {
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        .meta-item .status-inactive {
+            color: #ef4444;
+            font-weight: 700;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .card-actions .btn {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .card-actions form {
+            flex: 1;
+            margin: 0;
+        }
+
+        .card-actions form button {
+            width: 100%;
+        }
+
+        /* Delete button special styling */
+        .btn-danger {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #fecaca, #fca5a5);
+        }
+
+        /* Empty state */
+        .empty {
+            background: white;
+            border-radius: 20px;
+            padding: 48px 24px;
+            text-align: center;
+            color: #6b7280;
+            border: 2px dashed #d1d5db;
+            font-size: 16px;
+            animation: fadeUp 0.95s ease both;
+        }
+
+        .empty::before {
+            content: "📭";
+            font-size: 48px;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        /* Messages */
+        .messages {
+            margin-bottom: 20px;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .msg {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #166534;
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 1px solid #86efac;
+            margin-bottom: 10px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .msg::before {
+            content: "✅";
+            font-size: 18px;
+        }
+
+        .msg:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(22, 101, 52, 0.12);
+        }
+
+        .msg.error {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+            border-color: #fca5a5;
+        }
+
+        .msg.error::before {
+            content: "⚠️";
+        }
+
+        /* Animation keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Card stagger animation */
+        .card:nth-child(1) { animation-delay: 0.05s; }
+        .card:nth-child(2) { animation-delay: 0.1s; }
+        .card:nth-child(3) { animation-delay: 0.15s; }
+        .card:nth-child(4) { animation-delay: 0.2s; }
+        .card:nth-child(5) { animation-delay: 0.25s; }
+        .card:nth-child(6) { animation-delay: 0.3s; }
+
+        /* Responsive design */
+        @media (max-width: 960px) {
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero h1::before {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .page {
+                padding: 18px 14px 32px;
+            }
+
+            .hero {
+                padding: 20px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .hero h1::before {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .title {
+                font-size: 20px;
+            }
+
+            .card-actions {
+                flex-direction: column;
+            }
+
+            .card-actions .btn,
+            .card-actions form {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 24px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .top-actions {
+                flex-direction: column;
+            }
+
+            .top-actions .btn {
+                width: 100%;
+            }
+
+            .meta-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .meta-item strong {
+                min-width: auto;
+            }
+        }
+
+        /* Loading skeleton animation (optional) */
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        /* Tooltip on hover for buttons */
+        .btn {
+            position: relative;
+        }
+
+        .btn:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f2937;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            white-space: nowrap;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="hero">
+            <h1>Career Topics Manager</h1>
+            <p>Career mode uchun topiclarni shu yerda yaratasan, edit qilasan va o'chirasan. Har bir topic o'z video va testiga ega bo'lishi mumkin.</p>
+
+            <div class="top-actions">
+                <a href="{% url 'career_topic_create' %}" class="btn btn-dark" data-tooltip="Yangi topic yaratish">
+                    ✨ Create Topic
+                </a>
+                <a href="{% url 'admin_panel' %}" class="btn btn-light" data-tooltip="Admin panelga qaytish">
+                    ← Back to Admin Panel
+                </a>
+                <a href="{% url 'career_mode' %}" class="btn btn-light" data-tooltip="Career mode'ni ko'rish">
+                    🎮 Open Career Mode
+                </a>
+            </div>
+        </div>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="msg {% if message.tags %}{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if topics %}
+            <div class="grid">
+                {% for topic in topics %}
+                    <div class="card">
+                        <div class="top-row">
+                            <div>
+                                <div class="title">
+                                    <span>{{ topic.icon }}</span>
+                                    <span>{{ topic.order }}. {{ topic.title }}</span>
+                                </div>
+                                <div class="subtitle">{{ topic.subtitle|default:"No subtitle" }}</div>
+                            </div>
+
+                            {% if topic.is_free %}
+                                <span class="badge badge-free">FREE</span>
+                            {% else %}
+                                <span class="badge badge-premium">PREMIUM</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="desc">
+                            {{ topic.description|default:"No description provided."|truncatechars:200 }}
+                        </div>
+
+                        <div class="meta">
+                            <div class="meta-item">
+                                <strong>🎯 Pass percentage:</strong>
+                                <span>{{ topic.pass_percentage }}%</span>
+                            </div>
+                            <div class="meta-item">
+                                <strong>🎥 Video:</strong>
+                                <span>{% if topic.video %}{{ topic.video.title }}{% else %}❌ None{% endif %}</span>
+                            </div>
+                            <div class="meta-item">
+                                <strong>📝 Test:</strong>
+                                <span>{% if topic.test %}{{ topic.test.title }}{% else %}❌ None{% endif %}</span>
+                            </div>
+                            <div class="meta-item">
+                                <strong>📊 Status:</strong>
+                                {% if topic.is_active %}
+                                    <span class="status-active">● Active</span>
+                                {% else %}
+                                    <span class="status-inactive">● Inactive</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="card-actions">
+                            <a href="{% url 'career_topic_edit' topic.id %}" class="btn btn-light" data-tooltip="Topicni tahrirlash">
+                                ✏️ Edit
+                            </a>
+
+                            <form method="post" action="{% url 'career_topic_delete' topic.id %}" onsubmit="return confirmDelete(event)">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger" data-tooltip="Topicni o'chirish">
+                                    🗑️ Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty">
+                Hali topiclar yaratilmagan.<br>
+                <small style="display: block; margin-top: 8px; font-size: 14px;">
+                    "Create Topic" tugmasini bosib birinchi topic'ingizni yarating!
+                </small>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Delete confirmation with animation
+        function confirmDelete(event) {
+            event.preventDefault();
+            const form = event.target.closest('form');
+
+            if (confirm('Haqiqatan ham bu topicni o\'chirmoqchimisiz? Bu amal qaytarib bo\'lmaydi.')) {
+                const card = form.closest('.card');
+                card.style.transition = 'all 0.3s ease';
+                card.style.transform = 'scale(0.95)';
+                card.style.opacity = '0.5';
+
+                setTimeout(() => {
+                    form.submit();
+                }, 300);
+            }
+
+            return false;
+        }
+
+        // Add staggered animation to cards on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                }, index * 50);
+            });
+        });
+
+        // Smooth scroll to top
+        window.addEventListener('load', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Add hover effect to meta items
+        document.querySelectorAll('.meta-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = '#f3f4f6';
+                this.style.borderRadius = '8px';
+                this.style.padding = '4px 8px';
+                this.style.margin = '-4px -8px';
+                this.style.transition = 'all 0.2s ease';
+            });
+
+            item.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = '';
+                this.style.padding = '';
+                this.style.margin = '';
+            });
+        });
+
+        // Show message animation if redirected from successful action
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('created') === 'true') {
+            const successMsg = document.createElement('div');
+            successMsg.className = 'msg';
+            successMsg.textContent = 'Topic muvaffaqiyatli yaratildi!';
+            const messagesContainer = document.querySelector('.messages');
+            if (messagesContainer) {
+                messagesContainer.appendChild(successMsg);
+            }
+        }
+    </script>
+</body>
+</html>

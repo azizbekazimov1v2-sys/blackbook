@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Required - SAT Azizbek</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #f5f7fb, #eef2ff);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            animation: fadeIn 0.6s ease both;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(51, 74, 203, 0.05) 1.5px, transparent 1.5px);
+            background-size: 64px 64px;
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% center;
+            }
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 8px 24px rgba(245, 158, 11, 0.2);
+            }
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 12px 32px rgba(245, 158, 11, 0.3);
+            }
+        }
+
+        .box {
+            max-width: 680px;
+            width: 100%;
+            margin: 0 auto;
+            background: white;
+            padding: 48px 40px;
+            border-radius: 32px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            animation: fadeUp 0.7s ease both;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            border: 1px solid #e5e7eb;
+            position: relative;
+            z-index: 1;
+        }
+
+        .box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 28px 56px rgba(0,0,0,0.15);
+        }
+
+        .icon-wrapper {
+            margin-bottom: 24px;
+            animation: bounce 0.8s ease both;
+        }
+
+        .premium-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 28px;
+            font-size: 48px;
+            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.25);
+            border: 2px solid #fcd34d;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .premium-icon::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        h1 {
+            margin: 0 0 16px;
+            font-size: 38px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeUp 0.9s ease both;
+        }
+
+        .content-type {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 700;
+            border: 1px solid #fcd34d;
+            animation: fadeUp 1s ease both;
+        }
+
+        p {
+            color: #4b5563;
+            line-height: 1.7;
+            font-size: 16px;
+            margin-bottom: 16px;
+            animation: fadeUp 1.05s ease both;
+        }
+
+        .telegram-card {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 2px solid #7dd3fc;
+            border-radius: 20px;
+            padding: 24px 20px;
+            margin: 28px 0;
+            animation: pulse 2s infinite;
+            transition: transform 0.2s ease;
+        }
+
+        .telegram-card:hover {
+            transform: scale(1.02);
+        }
+
+        .telegram-card p {
+            margin-bottom: 12px;
+            color: #0369a1;
+            font-weight: 600;
+        }
+
+        .telegram-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            text-decoration: none;
+            border-radius: 16px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .telegram-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(37, 99, 235, 0.3);
+            text-decoration: none;
+        }
+
+        .telegram-link::before {
+            content: "📱";
+            font-size: 20px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 24px 0;
+            animation: fadeUp 1.1s ease both;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: #f9fafb;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+            font-size: 14px;
+            color: #374151;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-2px);
+            background: #f3f4f6;
+        }
+
+        .feature-item span:first-child {
+            font-size: 20px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 24px;
+            animation: fadeUp 1.15s ease both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #111827, #1f2937);
+            color: white;
+            text-decoration: none;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 15px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(17, 24, 39, 0.2);
+            background: linear-gradient(135deg, #1f2937, #374151);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+        }
+
+        .back-link {
+            margin-top: 20px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .back-link a {
+            color: #6b7280;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .back-link a:hover {
+            color: #374151;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+                align-items: flex-start;
+            }
+
+            .box {
+                padding: 36px 24px;
+                margin: 20px auto;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .premium-icon {
+                width: 80px;
+                height: 80px;
+                font-size: 40px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 28px;
+            }
+
+            .telegram-link {
+                font-size: 16px;
+                padding: 12px 20px;
+            }
+
+            .box {
+                padding: 28px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <div class="icon-wrapper">
+        <div class="premium-icon">💎</div>
+    </div>
+
+    <h1>Premium Access Required</h1>
+
+    <div class="content-type">
+        {% if content_type == 'test' %}
+            📝 Premium Test
+        {% elif content_type == 'video' %}
+            🎥 Premium Video
+        {% elif content_type == 'bank' %}
+            📚 Premium Bank
+        {% else %}
+            💎 Premium Content
+        {% endif %}
+    </div>
+
+    <p>Bu {{ content_type }} premium kontent hisoblanadi.<br>
+    Premium foydalanuvchilar uchun maxsus tayyorlangan.</p>
+
+    <div class="features-grid">
+        <div class="feature-item">
+            <span>✅</span>
+            <span>To'liq testlar to'plami</span>
+        </div>
+        <div class="feature-item">
+            <span>✅</span>
+            <span>Video darsliklar</span>
+        </div>
+        <div class="feature-item">
+            <span>✅</span>
+            <span>Analysis materiallar</span>
+        </div>
+        <div class="feature-item">
+            <span>✅</span>
+            <span>Premium support</span>
+        </div>
+    </div>
+
+    <div class="telegram-card">
+        <p>📢 Premium olish yoki savollar uchun:</p>
+        <a class="telegram-link" href="https://t.me/{{ telegram }}" target="_blank" rel="noopener noreferrer">
+            @{{ telegram }}
+        </a>
+        <p style="margin-top: 16px; font-size: 14px; color: #0369a1;">
+            Telegram orqali bog'lanib, premium xarid qilishingiz mumkin
+        </p>
+    </div>
+
+    <div class="button-group">
+        <a href="{% url 'home' %}" class="btn">
+            <span>🏠</span> Bosh sahifa
+        </a>
+        <a href="https://t.me/{{ telegram }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+            <span>💬</span> Telegram'da yozish
+        </a>
+    </div>
+
+    <div class="back-link">
+        <a href="javascript:history.back()">← Orqaga qaytish</a>
+    </div>
+</div>
+
+<script>
+    // Smooth scroll to top
+    window.addEventListener('load', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Add hover effect to feature items
+    document.querySelectorAll('.feature-item').forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            this.style.backgroundColor = '#eef2ff';
+        });
+
+        item.addEventListener('mouseleave', function() {
+            this.style.backgroundColor = '#f9fafb';
+        });
+    });
+
+    // Pulse animation for Telegram card on hover
+    const telegramCard = document.querySelector('.telegram-card');
+    if (telegramCard) {
+        telegramCard.addEventListener('mouseenter', function() {
+            this.style.animation = 'none';
+        });
+
+        telegramCard.addEventListener('mouseleave', function() {
+            this.style.animation = 'pulse 2s infinite';
+        });
+    }
+</script>
+
+</body>
+</html>

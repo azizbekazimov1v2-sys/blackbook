@@ -1,0 +1,654 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Manager - SAT Azizbek</title>
+    <link rel="stylesheet" href="{% static 'exam/ui_smooth.css' %}">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(245, 158, 11, 0.12) 0%, transparent 22%),
+                radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.16) 0%, transparent 24%),
+                linear-gradient(135deg, #fffdf8 0%, #fff8eb 48%, #fdf3df 100%);
+            color: #1f2937;
+            animation: fadeIn 0.6s ease both;
+        }
+
+        .page {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 28px 16px 40px;
+        }
+
+        /* Hero section with animations */
+        .hero {
+            background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,248,231,0.98));
+            color: #6b4f1d;
+            border: 1px solid rgba(180, 140, 60, 0.2);
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 18px 40px rgba(176, 138, 61, 0.12);
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp 0.7s ease both;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(245, 158, 11, 0.08) 1.5px, transparent 1.5px);
+            background-size: 64px 64px;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .hero:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 24px 48px rgba(176, 138, 61, 0.16);
+        }
+
+        .hero > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            margin: 0 0 10px;
+            font-size: 36px;
+            font-weight: 700;
+            color: #8b5e13;
+            background: linear-gradient(135deg, #8b5e13, #b8860b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            margin: 0;
+            line-height: 1.6;
+            color: #8a6a2f;
+            font-size: 15px;
+        }
+
+        .hero-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* Grid layout */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Card styles with animations */
+        .card {
+            background: rgba(255,255,255,0.88);
+            border: 1px solid rgba(180, 140, 60, 0.18);
+            border-radius: 22px;
+            padding: 22px;
+            box-shadow: 0 12px 28px rgba(176, 138, 61, 0.1);
+            backdrop-filter: blur(10px);
+            animation: fadeUp 0.85s ease both;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 36px rgba(176, 138, 61, 0.16);
+            border-color: rgba(180, 140, 60, 0.3);
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            color: #8b5e13;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Form elements */
+        label {
+            display: block;
+            margin-top: 12px;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 800;
+            color: #6b4f1d;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            border: 1px solid rgba(180, 140, 60, 0.2);
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 14px;
+            background: white;
+            color: #374151;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #b8860b;
+            box-shadow: 0 0 0 4px rgba(184, 134, 11, 0.1);
+            transform: translateY(-1px);
+        }
+
+        input:hover, textarea:hover, select:hover {
+            border-color: rgba(184, 134, 11, 0.4);
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        input[type="file"] {
+            padding: 10px 12px;
+            cursor: pointer;
+            background: #fefce8;
+        }
+
+        input[type="file"]:hover {
+            background: #fef3c7;
+        }
+
+        /* Checkbox styles */
+        .checks {
+            margin-top: 14px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .checks label {
+            margin: 0;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            cursor: pointer;
+            text-transform: none;
+            font-weight: 600;
+        }
+
+        .checks input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+            accent-color: #b8860b;
+        }
+
+        /* Button styles with animations */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 800;
+            text-decoration: none;
+            border: 1px solid rgba(180, 140, 60, 0.2);
+            cursor: pointer;
+            margin-top: 16px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(176, 138, 61, 0.16);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-light {
+            background: linear-gradient(135deg, #fff7db, #fde68a);
+            color: #8b5e13;
+        }
+
+        .btn-light:hover {
+            background: linear-gradient(135deg, #fef3c7, #fcd34d);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #6b4f1d;
+        }
+
+        .btn-secondary:hover {
+            background: #fefce8;
+        }
+
+        .btn-dark {
+            background: linear-gradient(135deg, #8b5e13, #b8860b);
+            color: white;
+            border: none;
+        }
+
+        .btn-dark:hover {
+            background: linear-gradient(135deg, #7c5310, #a6760a);
+        }
+
+        /* List styles */
+        .list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .item {
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(180, 140, 60, 0.16);
+            background: rgba(255,255,255,0.8);
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+            animation: fadeUp 0.95s ease both;
+        }
+
+        .item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(176, 138, 61, 0.1);
+            border-color: rgba(180, 140, 60, 0.3);
+            background: rgba(255,255,255,0.95);
+        }
+
+        .item-title {
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: #6b4f1d;
+            font-size: 16px;
+        }
+
+        .muted {
+            color: #8a6a2f;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .item-actions .btn {
+            margin-top: 0;
+            padding: 8px 14px;
+        }
+
+        /* Messages */
+        .messages {
+            margin-bottom: 18px;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .msg {
+            background: #fff7db;
+            color: #8b5e13;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(180, 140, 60, 0.2);
+            margin-bottom: 8px;
+            font-size: 13px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .msg:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(176, 138, 61, 0.1);
+        }
+
+        /* Animation keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading animation for buttons */
+        .btn.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Responsive design */
+        @media (max-width: 960px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .page {
+                padding: 18px 12px 32px;
+            }
+
+            .hero {
+                padding: 20px;
+            }
+
+            .hero h1 {
+                font-size: 26px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .item-actions {
+                flex-direction: column;
+            }
+
+            .item-actions .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 22px;
+            }
+
+            .checks {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="hero">
+        <h1>Career Manager</h1>
+        <p>Career Mode uchun alohida video, alohida PDF test va topic yaratish joyi. Bu yerda siz o'quvchilar uchun maxsus o'quv dasturini boshqarishingiz mumkin.</p>
+
+        <div class="hero-actions">
+            <a href="{% url 'career_mode' %}" class="btn btn-light">Career Mode ga qaytish</a>
+            <a href="{% url 'admin_panel' %}" class="btn btn-secondary">Admin Panel</a>
+        </div>
+    </div>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="msg {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="grid">
+        <div class="card">
+            <h2>Create Career Video</h2>
+            <form method="post" action="{% url 'career_video_create' %}" enctype="multipart/form-data" id="videoForm">
+                {% csrf_token %}
+                <label>Title</label>
+                <input type="text" name="title" placeholder="Video nomini kiriting" required>
+
+                <label>Description</label>
+                <textarea name="description" placeholder="Video haqida qisqacha ma'lumot"></textarea>
+
+                <label>Video URL</label>
+                <input type="text" name="video_url" placeholder="https://...">
+
+                <label>Video File</label>
+                <input type="file" name="video_file" accept="video/*">
+
+                <button type="submit" class="btn btn-dark">Create Video</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Create Career PDF Test</h2>
+            <form method="post" action="{% url 'career_test_create' %}" enctype="multipart/form-data" id="testForm">
+                {% csrf_token %}
+                <label>Title</label>
+                <input type="text" name="title" placeholder="Test nomini kiriting" required>
+
+                <label>Description</label>
+                <textarea name="description" placeholder="Test haqida ma'lumot"></textarea>
+
+                <label>PDF File</label>
+                <input type="file" name="pdf_file" accept="application/pdf" required>
+
+                <label>Total Questions</label>
+                <input type="number" name="total_questions" placeholder="Savollar soni" required>
+
+                <label>Time Limit (minutes)</label>
+                <input type="number" name="time_limit_minutes" value="15" required>
+
+                <label>Pass Percentage</label>
+                <input type="number" name="pass_percentage" value="60" required>
+
+                <label>Answer Key</label>
+                <textarea name="answer_key" placeholder="Har bir qatorda bitta javob kiriting:&#10;A&#10;B&#10;C&#10;D"></textarea>
+
+                <button type="submit" class="btn btn-dark">Create PDF Test</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>{% if editing_topic %}Edit Career Topic{% else %}Create Career Topic{% endif %}</h2>
+
+            {% if editing_topic %}
+                <form method="post" action="{% url 'career_topic_edit' editing_topic.id %}" id="topicForm">
+            {% else %}
+                <form method="post" action="{% url 'career_topic_create' %}" id="topicForm">
+            {% endif %}
+                {% csrf_token %}
+
+                <label>Title</label>
+                <input type="text" name="title" value="{% if editing_topic %}{{ editing_topic.title }}{% endif %}" placeholder="Mavzu nomi" required>
+
+                <label>Subtitle</label>
+                <input type="text" name="subtitle" value="{% if editing_topic %}{{ editing_topic.subtitle }}{% endif %}" placeholder="Qo'shimcha sarlavha">
+
+                <label>Description</label>
+                <textarea name="description" placeholder="Mavzu haqida batafsil">{% if editing_topic %}{{ editing_topic.description }}{% endif %}</textarea>
+
+                <label>Order</label>
+                <input type="number" name="order" value="{% if editing_topic %}{{ editing_topic.order }}{% endif %}" placeholder="Tartib raqami" required>
+
+                <label>Icon</label>
+                <input type="text" name="icon" value="{% if editing_topic %}{{ editing_topic.icon }}{% else %}⚽{% endif %}" placeholder="Emoji yoki icon">
+
+                <label>Video</label>
+                <select name="video_id">
+                    <option value="">-- Select video --</option>
+                    {% for video in videos %}
+                        <option value="{{ video.id }}" {% if editing_topic and editing_topic.video and editing_topic.video.id == video.id %}selected{% endif %}>
+                            {{ video.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <label>Test</label>
+                <select name="test_id">
+                    <option value="">-- Select test --</option>
+                    {% for test in tests %}
+                        <option value="{{ test.id }}" {% if editing_topic and editing_topic.test and editing_topic.test.id == test.id %}selected{% endif %}>
+                            {{ test.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <div class="checks">
+                    <label>
+                        <input type="checkbox" name="is_free"
+                            {% if editing_topic %}
+                                {% if editing_topic.is_free %}checked{% endif %}
+                            {% else %}
+                                checked
+                            {% endif %}>
+                        Free Access
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="is_active"
+                            {% if editing_topic %}
+                                {% if editing_topic.is_active %}checked{% endif %}
+                            {% else %}
+                                checked
+                            {% endif %}>
+                        Active
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-dark">
+                    {% if editing_topic %}Save Changes{% else %}Create Topic{% endif %}
+                </button>
+
+                {% if editing_topic %}
+                    <a href="{% url 'career_manager' %}" class="btn btn-secondary">Cancel Edit</a>
+                {% endif %}
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Career Topics</h2>
+            <div class="list">
+                {% for topic in topics %}
+                    <div class="item">
+                        <div class="item-title">
+                            {{ topic.icon }} {{ topic.order }}. {{ topic.title }}
+                            {% if topic.is_active %}
+                                <span style="color: #10b981; font-size: 12px;">● Active</span>
+                            {% else %}
+                                <span style="color: #6b7280; font-size: 12px;">● Inactive</span>
+                            {% endif %}
+                        </div>
+                        <div class="muted">
+                            <strong>Subtitle:</strong> {{ topic.subtitle|default:"—" }}<br>
+                            <strong>Video:</strong> {% if topic.video %} {{ topic.video.title }}{% else %} None{% endif %}<br>
+                            <strong>Test:</strong> {% if topic.test %} {{ topic.test.title }}{% else %} None{% endif %}<br>
+                            <strong>Type:</strong> {% if topic.is_free %} Free{% else %} Premium{% endif %}
+                        </div>
+
+                        <div class="item-actions">
+                            <a href="{% url 'career_manager' %}?edit={{ topic.id }}" class="btn btn-secondary">️ Edit</a>
+
+                            <form method="post" action="{% url 'career_topic_delete' topic.id %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-dark" onclick="return confirm('Haqiqatan ham bu topicni o\'chirmoqchimisiz?')">🗑️ Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="item" style="text-align: center; color: #8a6a2f;">
+                         Hali career topic yaratilmagan
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Form submission loading states
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.classList.add('loading');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Processing...';
+
+                // Reset after 3 seconds if still loading (fallback)
+                setTimeout(() => {
+                    if (submitBtn.classList.contains('loading')) {
+                        submitBtn.classList.remove('loading');
+                        submitBtn.textContent = originalText;
+                    }
+                }, 5000);
+            }
+        });
+    });
+
+    // File input enhancement
+    document.querySelectorAll('input[type="file"]').forEach(input => {
+        input.addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name;
+            if (fileName) {
+                this.style.background = '#fef3c7';
+                setTimeout(() => {
+                    this.style.background = '#fefce8';
+                }, 300);
+
+                // Show file name in a small indicator (optional)
+                const parent = this.parentElement;
+                const existingIndicator = parent.querySelector('.file-indicator');
+                if (existingIndicator) {
+                    existingIndicator.remove();
+                }
+                const indicator = document.createElement('div');
+                indicator.className = 'file-indicator';
+                indicator.style.cssText = 'font-size: 12px; color: #8b5e13; margin-top: 4px;';
+                indicator.textContent = `📎 ${fileName}`;
+                parent.appendChild(indicator);
+            }
+        });
+    });
+
+    // Auto-resize textareas
+    document.querySelectorAll('textarea').forEach(textarea => {
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 300) + 'px';
+        });
+    });
+
+    // Smooth scroll to top on page load
+    window.addEventListener('load', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+</script>
+
+</body>
+</html>

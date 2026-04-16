@@ -1,0 +1,383 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Append PDF Bank - SAT Azizbek</title>
+    <link rel="stylesheet" href="{% static 'exam/ui_smooth.css' %}">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #f5f7fb, #eef2ff);
+            padding: 24px;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.6s ease both;
+        }
+
+        .box {
+            max-width: 860px;
+            margin: auto;
+            background: white;
+            padding: 28px;
+            border-radius: 22px;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            animation: fadeUp 0.7s ease both;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.12);
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #334acb, #1d4ed8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .info {
+            background: linear-gradient(135deg, #eef2ff, #dbeafe);
+            color: #1e3a8a;
+            padding: 16px 18px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            line-height: 1.7;
+            border: 1px solid #c7d2fe;
+            animation: fadeUp 0.85s ease both;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(51, 74, 203, 0.1);
+        }
+
+        .info strong {
+            color: #1e40af;
+            font-weight: 800;
+        }
+
+        label {
+            display: block;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #374151;
+            animation: fadeUp 0.9s ease both;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            font-size: 14px;
+            box-sizing: border-box;
+            background: white;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+            animation: fadeUp 0.95s ease both;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #3950cf;
+            box-shadow: 0 0 0 4px rgba(57, 80, 207, 0.10);
+            transform: translateY(-1px);
+        }
+
+        input:hover, textarea:hover {
+            border-color: #9ca3af;
+        }
+
+        textarea {
+            min-height: 180px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+        }
+
+        input[type="file"] {
+            padding: 10px 12px;
+            cursor: pointer;
+            background: #f9fafb;
+        }
+
+        input[type="file"]:hover {
+            background: #f3f4f6;
+        }
+
+        .btn-row {
+            margin-top: 28px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            animation: fadeUp 1s ease both;
+        }
+
+        button, a {
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: none;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+        }
+
+        button {
+            background: #111827;
+            color: white;
+            box-shadow: 0 2px 8px rgba(17, 24, 39, 0.1);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.18);
+            background: #1f2937;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        a {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+        }
+
+        a:hover {
+            background: #e5e7eb;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+        }
+
+        a:active {
+            transform: scale(0.98);
+        }
+
+        .messages {
+            margin-bottom: 18px;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .msg {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px 14px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            border: 1px solid #fecaca;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .msg:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(153, 27, 27, 0.1);
+        }
+
+        /* Success message style */
+        .msg.success {
+            background: #dcfce7;
+            color: #166534;
+            border-color: #bbf7d0;
+        }
+
+        /* Helper text */
+        .helper-text {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+            margin-bottom: 0;
+            animation: fadeUp 0.95s ease both;
+        }
+
+        /* Animation keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading state for button */
+        button.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+                align-items: flex-start;
+            }
+
+            .box {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .btn-row {
+                flex-direction: column;
+            }
+
+            button, a {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 22px;
+            }
+
+            .info {
+                font-size: 13px;
+                padding: 12px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h1>Append PDF to Existing Bank</h1>
+
+    <div class="info">
+        <strong>📚 Bank:</strong> {{ test.title }}<br>
+        <strong>📊 Current total questions:</strong> {{ test.total_questions }}<br>
+        <strong>🎲 Current random pick count:</strong> {{ test.pick_count }}
+    </div>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="msg {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" id="appendForm">
+        {% csrf_token %}
+
+        <label for="pdf_file">📄 New PDF File</label>
+        <input type="file" name="pdf_file" id="pdf_file" accept="application/pdf" required>
+        <p class="helper-text">Faqat PDF formatidagi fayllarni yuklang</p>
+
+        <label for="total_questions">🔢 How many new questions are in this PDF?</label>
+        <input type="number" name="total_questions" id="total_questions" min="1" required>
+        <p class="helper-text">Yangi PDF'dagi savollar sonini kiriting</p>
+
+        <label for="answer_key">✅ Answer Key for only the new PDF</label>
+        <textarea name="answer_key" id="answer_key" placeholder="1. A&#10;2. B&#10;3. C&#10;..." required></textarea>
+        <p class="helper-text">Har bir qatorda savol raqami va javobni kiriting (masalan: 1. A)</p>
+
+        <div class="btn-row">
+            <button type="submit" id="submitBtn">➕ Add PDF to Bank</button>
+            <a href="{% url 'admin_panel' %}">← Back to Admin Panel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Optional: Add loading state to button on form submit
+    document.getElementById('appendForm').addEventListener('submit', function(e) {
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.classList.add('loading');
+        submitBtn.textContent = 'Adding...';
+
+        // Optional: Add validation before submit
+        const fileInput = document.getElementById('pdf_file');
+        const questionsInput = document.getElementById('total_questions');
+        const answerKeyInput = document.getElementById('answer_key');
+
+        if (!fileInput.files[0]) {
+            e.preventDefault();
+            alert('Iltimos, PDF faylni tanlang');
+            submitBtn.classList.remove('loading');
+            submitBtn.textContent = '➕ Add PDF to Bank';
+            return;
+        }
+
+        if (questionsInput.value < 1) {
+            e.preventDefault();
+            alert('Savollar soni 1 dan katta bo\'lishi kerak');
+            submitBtn.classList.remove('loading');
+            submitBtn.textContent = '➕ Add PDF to Bank';
+            return;
+        }
+
+        if (!answerKeyInput.value.trim()) {
+            e.preventDefault();
+            alert('Javoblar kalitini kiriting');
+            submitBtn.classList.remove('loading');
+            submitBtn.textContent = '➕ Add PDF to Bank';
+            return;
+        }
+    });
+
+    // File input enhancement - show filename
+    document.getElementById('pdf_file').addEventListener('change', function(e) {
+        const fileName = e.target.files[0]?.name;
+        if (fileName) {
+            this.style.background = '#e0e7ff';
+            setTimeout(() => {
+                this.style.background = '#f9fafb';
+            }, 300);
+        }
+    });
+
+    // Auto-resize textarea
+    const textarea = document.getElementById('answer_key');
+    textarea.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 400) + 'px';
+    });
+</script>
+
+</body>
+</html>

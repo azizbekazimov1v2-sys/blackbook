@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users - SAT Azizbek</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #f5f7fb, #eef2ff);
+            color: #111827;
+            min-height: 100vh;
+            animation: fadeIn 0.6s ease both;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Topbar with animations */
+        .topbar {
+            background: #ffffff;
+            border-bottom: 1px solid #d9d9d9;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            animation: slideDown 0.5s ease both;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .topbar-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            height: 56px;
+            padding: 0 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .left-brand {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .menu-box {
+            width: 56px;
+            height: 40px;
+            border-right: 1px solid #d9d9d9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #111;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .menu-box:hover {
+            background: #f8fafc;
+            transform: translateY(-1px);
+        }
+
+        .logo-box {
+            height: 40px;
+            min-width: 150px;
+            background: #111;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 0 14px;
+            text-decoration: none;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, opacity 0.22s ease;
+        }
+
+        .logo-box:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+            opacity: 0.96;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .top-link {
+            font-size: 13px;
+            padding: 7px 10px;
+            border-radius: 8px;
+            color: #111827;
+            transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .top-link:hover {
+            background: #f3f4f6;
+            transform: translateY(-1px);
+        }
+
+        .top-link.primary {
+            background: #111827;
+            color: white;
+            font-weight: 700;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+        }
+
+        .top-link.primary:hover {
+            background: #111827;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.18);
+            opacity: 0.96;
+        }
+
+        /* Page container */
+        .page {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 28px 16px 40px;
+            animation: fadeUp 0.7s ease both;
+        }
+
+        /* Hero section with animations */
+        .hero {
+            background: linear-gradient(135deg, #334acb, #1d4ed8);
+            color: white;
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 16px 32px rgba(29, 78, 216, 0.16);
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 18px;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.12) 1.5px, transparent 1.5px);
+            background-size: 64px 64px;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .hero > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            margin: 0 0 10px;
+            font-size: 36px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero h1::before {
+            content: "";
+            font-size: 40px;
+        }
+
+        .hero p {
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.7;
+            opacity: 0.95;
+            max-width: 680px;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .hero-stat {
+            background: rgba(255,255,255,0.12);
+            border-radius: 16px;
+            padding: 16px;
+            transition: transform 0.22s ease, background 0.22s ease;
+        }
+
+        .hero-stat:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.18);
+        }
+
+        .hero-stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .hero-stat-label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.85);
+        }
+
+        /* Messages */
+        .messages {
+            margin-bottom: 20px;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .message:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+        }
+
+        .message.success {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #166534;
+            border-color: #86efac;
+        }
+
+        .message.success::before {
+            content: "";
+            font-size: 18px;
+        }
+
+        .message.error {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+            border-color: #fca5a5;
+        }
+
+        .message.error::before {
+            content: "";
+            font-size: 18px;
+        }
+
+        /* Sections */
+        .section {
+            margin-top: 28px;
+            animation: fadeUp 0.85s ease both;
+        }
+
+        .section h2 {
+            margin: 0 0 8px;
+            font-size: 26px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .section p {
+            margin: 0 0 18px;
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        /* Search box */
+        .search-box {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .search-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+        }
+
+        .search-form input {
+            width: 100%;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 14px;
+            background: white;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .search-form input:focus {
+            outline: none;
+            border-color: #3950cf;
+            box-shadow: 0 0 0 4px rgba(57, 80, 207, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #111827, #1f2937);
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(17, 24, 39, 0.2);
+            background: linear-gradient(135deg, #1f2937, #374151);
+        }
+
+        .action-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Users grid */
+        .users-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        /* User card */
+        .user-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            overflow: hidden;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+            animation: fadeUp 0.95s ease both;
+            position: relative;
+        }
+
+        .user-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #334acb, #1d4ed8, #7c3aed);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .user-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.12);
+            border-color: #d1d5db;
+        }
+
+        .user-card:hover::before {
+            opacity: 1;
+        }
+
+        .user-body {
+            padding: 22px;
+        }
+
+        .user-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .user-main {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 18px;
+            object-fit: cover;
+            border: 2px solid #e5e7eb;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(51, 74, 203, 0.2);
+        }
+
+        .avatar-placeholder {
+            width: 80px;
+            height: 80px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #334acb, #1d4ed8);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: 700;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .avatar-placeholder:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(51, 74, 203, 0.2);
+        }
+
+        .username {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #111827;
+        }
+
+        .muted {
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        .badge:hover {
+            transform: scale(1.05);
+        }
+
+        .badge-staff {
+            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            color: #6d28d9;
+            border: 1px solid #c4b5fd;
+        }
+
+        .badge-user {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #1d4ed8;
+            border: 1px solid #93c5fd;
+        }
+
+        .info-box {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 14px;
+            margin-top: 16px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .info-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.04);
+        }
+
+        .info-row {
+            margin-bottom: 10px;
+            font-size: 13px;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-row strong {
+            min-width: 80px;
+            color: #1f2937;
+        }
+
+        .bio-box {
+            margin-top: 16px;
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+            border-radius: 14px;
+            padding: 14px;
+            font-size: 13px;
+            color: #374151;
+            line-height: 1.7;
+            min-height: 80px;
+            white-space: pre-wrap;
+            border: 1px solid #d1d5db;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .bio-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.04);
+        }
+
+        .premium-title {
+            margin-top: 20px;
+            margin-bottom: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .premium-title::before {
+            content: "";
+            font-size: 18px;
+        }
+
+        .premium-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .premium-form {
+            margin: 0;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-english {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        }
+
+        .btn-english:hover {
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
+        }
+
+        .btn-math {
+            background: linear-gradient(135deg, #059669, #047857);
+        }
+
+        .btn-math:hover {
+            background: linear-gradient(135deg, #047857, #065f46);
+        }
+
+        .btn-analysis {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+        }
+
+        .btn-analysis:hover {
+            background: linear-gradient(135deg, #6d28d9, #5b21b6);
+        }
+
+        /* Empty state */
+        .empty-state {
+            background: white;
+            border-radius: 20px;
+            padding: 48px 24px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 16px;
+            border: 2px dashed #d1d5db;
+            animation: fadeUp 0.95s ease both;
+        }
+
+        .empty-state::before {
+            content: "";
+            font-size: 48px;
+            display: block;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        /* Animation keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Card stagger animation */
+        .user-card:nth-child(1) { animation-delay: 0.05s; }
+        .user-card:nth-child(2) { animation-delay: 0.1s; }
+        .user-card:nth-child(3) { animation-delay: 0.15s; }
+        .user-card:nth-child(4) { animation-delay: 0.2s; }
+        .user-card:nth-child(5) { animation-delay: 0.25s; }
+        .user-card:nth-child(6) { animation-delay: 0.3s; }
+
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .users-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .topbar-inner {
+                height: auto;
+                padding-top: 12px;
+                padding-bottom: 12px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .top-right {
+                justify-content: center;
+            }
+
+            .hero {
+                padding: 20px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .hero h1::before {
+                font-size: 32px;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+
+            .user-main {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .premium-actions {
+                flex-direction: column;
+            }
+
+            .premium-form {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 24px;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .info-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+        }
+
+        /* Loading state for buttons */
+        .btn.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<header class="topbar">
+    <div class="topbar-inner">
+        <div class="left-brand">
+            <div class="menu-box">⌄</div>
+            <a href="{% url 'home' %}" class="logo-box">SAT Azizbek</a>
+        </div>
+
+        <div class="top-right">
+            <a class="top-link" href="{% url 'home' %}">Home</a>
+            <a class="top-link" href="{% url 'admin_panel' %}">Admin Panel</a>
+            <a class="top-link" href="/admin/">Django Admin</a>
+            <a class="top-link primary" href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+</header>
+
+<div class="page">
+    <section class="hero">
+        <div>
+            <h1>Users</h1>
+            <p>
+                Platformadagi foydalanuvchilarni ko'ring, ularning profillarini tekshiring
+                va kerak bo'lsa English, Math yoki Analysis premium bering.
+            </p>
+        </div>
+
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-number">{{ total_users }}</div>
+                <div class="hero-stat-label">Total Users</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-number">{{ users|length }}</div>
+                <div class="hero-stat-label">Visible Cards</div>
+            </div>
+        </div>
+    </section>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <section class="section">
+        <h2>User Search</h2>
+        <p>Username yoki email bo'yicha qidirish uchun quyidagi formani ishlating.</p>
+
+        <div class="search-box">
+            <form class="search-form" method="get">
+                <input type="text" name="q" placeholder="Search username or email..." value="{{ request.GET.q }}">
+                <button type="submit" class="action-btn">
+                    <span></span> Search
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>User Cards</h2>
+        <p>Har bir foydalanuvchi bo'yicha profil ma'lumoti va premium berish tugmalari.</p>
+
+        {% if users %}
+            <div class="users-grid">
+                {% for user in users %}
+                    <div class="user-card">
+                        <div class="user-body">
+                            <div class="user-top">
+                                <div class="user-main">
+                                    {% if user.profile.image %}
+                                        <img src="{{ user.profile.image.url }}" alt="avatar" class="avatar">
+                                    {% else %}
+                                        <div class="avatar-placeholder">
+                                            {{ user.username|first|upper }}
+                                        </div>
+                                    {% endif %}
+
+                                    <div>
+                                        <div class="username">{{ user.username }}</div>
+                                        <div class="muted">{{ user.email|default:"Email yo'q" }}</div>
+                                        <div style="margin-top: 10px;">
+                                            {% if user.is_staff %}
+                                                <span class="badge badge-staff">Staff</span>
+                                            {% else %}
+                                                <span class="badge badge-user">User</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <div class="info-row">
+                                    <strong>ID:</strong>
+                                    <span>{{ user.id }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <strong>Joined:</strong>
+                                    <span>{{ user.date_joined|date:"Y-m-d" }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <strong>Active:</strong>
+                                    <span>{{ user.is_active|yesno:"Yes,No" }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <strong>Password:</strong>
+                                    <span>•••••••• (hashed)</span>
+                                </div>
+                            </div>
+
+                            <div class="bio-box">
+                                <strong>Bio:</strong><br>
+                                {% if user.profile.bio %}
+                                    {{ user.profile.bio }}
+                                {% else %}
+                                    <span style="opacity: 0.6;">Bio yo'q</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="premium-title">Give Premium Access</div>
+
+                            <div class="premium-actions">
+                                <form class="premium-form" method="post" action="{% url 'give_premium' user.id 'english' %}" onsubmit="return confirmPremium(event, 'English')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-english">
+                                        English Premium
+                                    </button>
+                                </form>
+
+                                <form class="premium-form" method="post" action="{% url 'give_premium' user.id 'math' %}" onsubmit="return confirmPremium(event, 'Math')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-math">
+                                        Math Premium
+                                    </button>
+                                </form>
+
+                                <form class="premium-form" method="post" action="{% url 'give_premium' user.id 'analysis' %}" onsubmit="return confirmPremium(event, 'Analysis')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-analysis">
+                                        Analysis Premium
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                Hozircha users yo'q.<br>
+                <small style="display: block; margin-top: 8px;">
+                    Yangi foydalanuvchilar ro'yxatdan o'tganda shu yerda ko'rinadi.
+                </small>
+            </div>
+        {% endif %}
+    </section>
+</div>
+
+<script>
+    // Premium confirmation
+    function confirmPremium(event, type) {
+        event.preventDefault();
+        const form = event.target.closest('form');
+        const button = form.querySelector('button');
+
+        if (confirm(`Haqiqatan ham bu foydalanuvchiga ${type} Premium bermoqchimisiz?`)) {
+            button.classList.add('loading');
+            button.innerHTML = 'Processing...';
+
+            setTimeout(() => {
+                form.submit();
+            }, 300);
+        }
+
+        return false;
+    }
+
+    // Smooth scroll to top
+    window.addEventListener('load', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Add hover effect to info rows
+    document.querySelectorAll('.info-row').forEach(row => {
+        row.addEventListener('mouseenter', function() {
+            this.style.backgroundColor = '#f3f4f6';
+            this.style.borderRadius = '8px';
+            this.style.padding = '4px 8px';
+            this.style.margin = '-4px -8px';
+            this.style.transition = 'all 0.2s ease';
+        });
+
+        row.addEventListener('mouseleave', function() {
+            this.style.backgroundColor = '';
+            this.style.padding = '';
+            this.style.margin = '';
+        });
+    });
+
+    // Search input animation
+    const searchInput = document.querySelector('input[name="q"]');
+    if (searchInput) {
+        searchInput.addEventListener('focus', function() {
+            this.style.transform = 'scale(1.02)';
+        });
+
+        searchInput.addEventListener('blur', function() {
+            this.style.transform = 'scale(1)';
+        });
+    }
+
+    // Staggered card animation on load
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.user-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            setTimeout(() => {
+                card.style.opacity = '1';
+            }, index * 50);
+        });
+    });
+</script>
+
+</body>
+</html>
