@@ -2,5 +2,9 @@
 set -o errexit
 
 pip install -r requirements.txt
-python manage.py collectstatic --noinput
+
+echo "=== MIGRATE START ==="
 python manage.py migrate
+
+echo "=== COLLECT STATIC ==="
+python manage.py collectstatic --noinput
