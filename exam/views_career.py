@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import FileResponse, Http404
 
 from .models import CareerTopic, CareerProgress, UserPremiumAccess
 
@@ -73,6 +74,28 @@ def career_mode_view(request):
 
 
 @login_required
+def secure_video_stream(request, topic_id):
+    topic = get_object_or_404(CareerTopic, id=topic_id, is_active=True)
+
+    state = build_career_items(request.user)
+    item = next((x for x in state['items'] if x['topic'].id == topic.id), None)
+
+    if not item or item['locked']:
+        raise Http404("Bu video uchun ruxsat yo‘q.")
+
+    if not topic.video or not topic.video.video_file:
+        raise Http404("Video topilmadi.")
+
+    try:
+        topic.video.video_file.open("rb")
+        response = FileResponse(topic.video.video_file, content_type="video/mp4")
+        response["Content-Disposition"] = "inline"
+        return response
+    except Exception:
+        raise Http404("Video ochilmadi.")
+
+
+@login_required
 def career_watch_video(request, topic_id):
     topic = get_object_or_404(CareerTopic, id=topic_id, is_active=True)
     state = build_career_items(request.user)
@@ -94,7 +117,7 @@ def career_watch_video(request, topic_id):
         return redirect(topic.video.video_url)
 
     if topic.video.video_file:
-        return redirect(topic.video.video_file.url)
+        return redirect('secure_video', topic_id=topic.id)
 
     messages.error(request, "Video manzili topilmadi.")
     return redirect('career_mode')

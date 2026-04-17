@@ -15,6 +15,7 @@ urlpatterns = [
     path('score-calculator/', views.score_calculator_view, name='score_calculator'),
     path('career-watch-video/<int:topic_id>/', views.career_watch_video, name='career_watch_video'),
     path('career-test/<int:topic_id>/', views.career_test_view, name='career_test'),
+    path('secure-video/<int:topic_id>/', views.secure_video_stream, name='secure_video'),
 
     path('career-manager/', views.career_manager, name='career_manager'),
     path('career-video-create/', views.career_video_create, name='career_video_create'),
@@ -40,5 +41,6 @@ urlpatterns = [
 
     path('delete-test/<int:test_id>/', views.delete_test, name='delete_test'),
     path('delete-video/<int:video_id>/', views.delete_video, name='delete_video'),
+
     path('create-admin/', views.create_admin, name='create_admin'),
 ]
