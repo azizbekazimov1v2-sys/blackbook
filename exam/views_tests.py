@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
 from django.conf import settings
+from django.http import FileResponse, Http404
 
 from .models import Test, Question, VideoCourse, UserPremiumAccess, TestAttempt, TestAttemptAnswer
 from .services import (
@@ -56,6 +57,28 @@ def check_access(request, content_type, content_id):
 
 
 @login_required
+def pdf_proxy(request, test_id):
+    test = get_object_or_404(Test, id=test_id, is_published=True)
+
+    if test.is_premium and not has_category_access(request.user, test.category):
+        raise Http404("PDF not available")
+
+    if not test.pdf_file:
+        raise Http404("PDF file not found")
+
+    try:
+        test.pdf_file.open("rb")
+        response = FileResponse(
+            test.pdf_file,
+            content_type="application/pdf"
+        )
+        response["Content-Disposition"] = f'inline; filename="{test.title}.pdf"'
+        return response
+    except Exception:
+        raise Http404("Unable to open PDF")
+
+
+@login_required
 def take_pdf_test(request, test_id):
     test = get_object_or_404(Test, id=test_id, is_published=True)
 
@@ -72,6 +95,7 @@ def take_pdf_test(request, test_id):
         'test': test,
         'questions': questions,
         'desmos_api_key': getattr(settings, 'DESMOS_API_KEY', ''),
+        'pdf_proxy_url': f"/pdf-proxy/{test.id}/",
     })
 
 

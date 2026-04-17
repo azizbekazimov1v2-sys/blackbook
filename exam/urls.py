@@ -36,6 +36,7 @@ urlpatterns = [
     path('check-access/<str:content_type>/<int:content_id>/', views.check_access, name='check_access'),
     path('take-pdf-test/<int:test_id>/', views.take_pdf_test, name='take_pdf_test'),
     path('submit-pdf-test/<int:test_id>/', views.submit_pdf_test, name='submit_pdf_test'),
+    path('pdf-proxy/<int:test_id>/', views.pdf_proxy, name='pdf_proxy'),
 
     path('delete-test/<int:test_id>/', views.delete_test, name='delete_test'),
     path('delete-video/<int:video_id>/', views.delete_video, name='delete_video'),

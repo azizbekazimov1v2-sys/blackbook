@@ -15,7 +15,6 @@
             --text: #111827;
             --muted: #6b7280;
             --line: #e5e7eb;
-            --bg: #efefef;
         }
 
         body {
@@ -23,49 +22,14 @@
             font-family: Arial, Helvetica, sans-serif;
             background: linear-gradient(135deg, #f5f7fb, #eef2ff);
             color: var(--text);
-            animation: fadeIn 0.6s ease both;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(18px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        /* Topbar */
         .topbar {
-            background: #ffffff;
+            background: #fff;
             border-bottom: 1px solid #d9d9d9;
             position: sticky;
             top: 0;
             z-index: 50;
-            animation: slideDown 0.5s ease both;
         }
 
         .topbar-inner {
@@ -76,7 +40,6 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
         }
 
         .left-brand {
@@ -93,13 +56,6 @@
             align-items: center;
             justify-content: center;
             font-size: 20px;
-            color: #111;
-            transition: transform 0.2s ease, background 0.2s ease;
-        }
-
-        .menu-box:hover {
-            background: #f8fafc;
-            transform: translateY(-1px);
         }
 
         .logo-box {
@@ -114,21 +70,12 @@
             font-weight: 700;
             padding: 0 14px;
             text-decoration: none;
-            transition: transform 0.22s ease, box-shadow 0.22s ease, opacity 0.22s ease;
-        }
-
-        .logo-box:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
-            opacity: 0.96;
         }
 
         .top-right {
             display: flex;
             align-items: center;
             gap: 8px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
         }
 
         .top-link {
@@ -137,36 +84,20 @@
             border-radius: 8px;
             color: #111827;
             text-decoration: none;
-            transition: background 0.2s ease, transform 0.2s ease;
-        }
-
-        .top-link:hover {
-            background: #f3f4f6;
-            transform: translateY(-1px);
         }
 
         .top-link.primary {
             background: #111827;
             color: white;
             font-weight: 700;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .top-link.primary:hover {
-            background: #1f2937;
-            transform: translateY(-1px);
-            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.18);
-        }
-
-        /* Page */
         .page {
             max-width: 1500px;
             margin: 0 auto;
             padding: 20px 16px;
-            animation: fadeUp 0.7s ease both;
         }
 
-        /* Layout */
         .layout {
             display: grid;
             grid-template-columns: 1.45fr 0.9fr;
@@ -174,23 +105,13 @@
             align-items: start;
         }
 
-        /* Panels */
         .pdf-panel,
         .side-panel {
-            background: rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.94);
             border: 1px solid var(--line);
             border-radius: 24px;
             overflow: hidden;
             box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-            backdrop-filter: blur(10px);
-            transition: transform 0.22s ease, box-shadow 0.22s ease;
-            animation: fadeUp 0.85s ease both;
-        }
-
-        .pdf-panel:hover,
-        .side-panel:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.1);
         }
 
         .pdf-panel-header,
@@ -201,21 +122,12 @@
             align-items: center;
             justify-content: space-between;
             gap: 10px;
-            background: rgba(250,250,250,0.6);
+            background: rgba(250,250,250,0.7);
         }
 
         .panel-title {
             font-size: 16px;
             font-weight: 700;
-            color: var(--text);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .panel-title::before {
-            content: "📄";
-            font-size: 18px;
         }
 
         .pdf-panel-body {
@@ -226,6 +138,80 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
+        }
+
+        .pdf-stage {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pdf-meta {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            font-size: 12px;
+            color: #6b7280;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .pdf-action-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .pdf-action-row button,
+        .pdf-action-row a {
+            border: none;
+            background: #111827;
+            color: white;
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .pdf-action-row button.secondary {
+            background: #eef2ff;
+            color: #2538a8;
+            border: 1px solid #c7d2fe;
+        }
+
+        .pdf-canvas-wrap {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            overflow: auto;
+            padding: 4px;
+        }
+
+        canvas {
+            background: white;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+
+        .pdf-error {
+            display: none;
+            width: 100%;
+            max-width: 700px;
+            background: #fff;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            border-radius: 16px;
+            padding: 18px;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         .side-panel {
@@ -246,10 +232,6 @@
             font-weight: 700;
             line-height: 1.2;
             margin: 0;
-            background: linear-gradient(135deg, #111827, #374151);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .test-sub {
@@ -259,9 +241,9 @@
             line-height: 1.5;
             display: flex;
             gap: 16px;
+            flex-wrap: wrap;
         }
 
-        /* Timer */
         .timer-box {
             background: linear-gradient(135deg, #111827, #1f2937);
             color: white;
@@ -271,16 +253,8 @@
             text-align: center;
             font-size: 18px;
             font-weight: 700;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transition: background 0.3s ease, transform 0.2s ease;
-            animation: pulse 2s infinite;
         }
 
-        .timer-box.warning {
-            animation: pulse 1s infinite;
-        }
-
-        /* Quick actions */
         .quick-actions {
             display: flex;
             gap: 8px;
@@ -296,42 +270,20 @@
             font-size: 13px;
             font-weight: 700;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
             border: 1px solid #c7d2fe;
-        }
-
-        .quick-actions button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.15);
         }
 
         .question-title {
             font-size: 16px;
             font-weight: 700;
             margin: 0;
-            color: var(--text);
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        .question-title::before {
-            content: "";
-            font-size: 16px;
-        }
-
-        /* Palette */
         .palette-wrap {
             border: 1px solid var(--line);
             border-radius: 18px;
             padding: 14px;
             background: rgba(250,250,250,0.8);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .palette-wrap:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
         }
 
         .palette-head {
@@ -340,11 +292,6 @@
             justify-content: space-between;
             gap: 10px;
             margin-bottom: 12px;
-        }
-
-        .palette-head strong {
-            font-size: 14px;
-            color: var(--text);
         }
 
         .mini-btn {
@@ -356,12 +303,6 @@
             font-size: 11px;
             font-weight: 700;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .mini-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
 
         .question-grid {
@@ -371,9 +312,6 @@
             max-height: 170px;
             overflow-y: auto;
             padding-right: 4px;
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.2s ease, transform 0.2s ease;
         }
 
         .question-grid.collapsed {
@@ -389,32 +327,6 @@
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .q-btn::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(51, 74, 203, 0.1);
-            transform: translate(-50%, -50%);
-            transition: width 0.3s ease, height 0.3s ease;
-        }
-
-        .q-btn:hover::before {
-            width: 100%;
-            height: 100%;
-        }
-
-        .q-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
         }
 
         .q-btn.active {
@@ -446,33 +358,17 @@
             border-color: #111827;
         }
 
-        /* Answer block */
         .answer-block {
             border: 1px solid var(--line);
             border-radius: 18px;
             padding: 14px;
             background: rgba(250,250,250,0.8);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .answer-block:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
         }
 
         .answer-block-title {
             font-size: 15px;
             font-weight: 700;
             margin-bottom: 12px;
-            color: var(--text);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .answer-block-title::before {
-            content: "";
-            font-size: 16px;
         }
 
         .answers {
@@ -490,44 +386,14 @@
             font-size: 18px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .answer-btn::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(51, 74, 203, 0.1);
-            transform: translate(-50%, -50%);
-            transition: width 0.3s ease, height 0.3s ease;
-        }
-
-        .answer-btn:hover::before {
-            width: 100%;
-            height: 100%;
-        }
-
-        .answer-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-            border-color: var(--blue);
         }
 
         .answer-btn.selected {
             background: linear-gradient(135deg, #111827, #1f2937);
             color: white;
             border-color: #111827;
-            transform: scale(1.02);
-            box-shadow: 0 8px 16px rgba(17, 24, 39, 0.2);
         }
 
-        /* Open answer */
         .open-answer-box {
             display: none;
         }
@@ -537,7 +403,6 @@
             margin-bottom: 8px;
             font-size: 13px;
             font-weight: 700;
-            color: var(--text);
         }
 
         .open-answer-box input {
@@ -547,12 +412,6 @@
             padding: 14px 16px;
             font-size: 16px;
             outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .open-answer-box input:focus {
-            border-color: var(--blue);
-            box-shadow: 0 0 0 4px rgba(51, 74, 203, 0.1);
         }
 
         .helper {
@@ -562,7 +421,6 @@
             line-height: 1.5;
         }
 
-        /* Navigation */
         .nav-buttons {
             display: flex;
             gap: 10px;
@@ -579,19 +437,8 @@
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .nav-buttons button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(17, 24, 39, 0.2);
-        }
-
-        .nav-buttons button:active {
-            transform: scale(0.98);
-        }
-
-        /* Desmos */
         .floating-desmos-btn {
             position: fixed;
             right: 20px;
@@ -606,20 +453,6 @@
             font-weight: 700;
             cursor: pointer;
             box-shadow: 0 12px 28px rgba(0,0,0,0.25);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .floating-desmos-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 16px 36px rgba(0,0,0,0.3);
-        }
-
-        .floating-desmos-btn::before {
-            content: "";
-            font-size: 18px;
         }
 
         .desmos-modal {
@@ -628,11 +461,9 @@
             inset: 0;
             z-index: 3000;
             background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
             justify-content: center;
             align-items: center;
             padding: 16px;
-            animation: fadeIn 0.3s ease;
         }
 
         .desmos-modal.show {
@@ -648,7 +479,6 @@
             display: flex;
             flex-direction: column;
             box-shadow: 0 24px 48px rgba(0,0,0,0.3);
-            animation: fadeUp 0.3s ease;
         }
 
         .desmos-modal-header {
@@ -659,19 +489,6 @@
             justify-content: space-between;
             align-items: center;
             gap: 12px;
-        }
-
-        .desmos-modal-title {
-            font-weight: 700;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .desmos-modal-title::before {
-            content: "";
-            font-size: 20px;
         }
 
         .desmos-modal-controls {
@@ -689,12 +506,6 @@
             cursor: pointer;
             font-size: 12px;
             font-weight: 700;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .desmos-modal-controls button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
         }
 
         #desmos-calculator {
@@ -704,23 +515,6 @@
             min-height: 400px;
         }
 
-        /* Canvas */
-        canvas {
-            background: white;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-            max-width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 12px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        canvas:hover {
-            transform: scale(1.01);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.2);
-        }
-
-        /* Responsive */
         @media (max-width: 1200px) {
             .layout {
                 grid-template-columns: 1fr;
@@ -746,6 +540,7 @@
 
             .top-right {
                 justify-content: center;
+                flex-wrap: wrap;
             }
 
             .page {
@@ -764,15 +559,6 @@
                 width: 100%;
                 height: 100%;
                 border-radius: 0;
-            }
-
-            .test-title {
-                font-size: 20px;
-            }
-
-            .timer-box {
-                font-size: 16px;
-                padding: 8px 12px;
             }
         }
     </style>
@@ -801,10 +587,34 @@
         <div class="pdf-panel">
             <div class="pdf-panel-header">
                 <div class="panel-title">PDF View</div>
-                <div style="font-size:12px;color:#6b7280;">High quality render</div>
+                <div style="font-size:12px;color:#6b7280;">Secure render</div>
             </div>
+
             <div class="pdf-panel-body">
-                <canvas id="pdf-canvas"></canvas>
+                <div class="pdf-stage">
+                    <div class="pdf-meta">
+                        <span id="pdfPageMeta">Page 1</span>
+                        <span>•</span>
+                        <span id="pdfZoomMeta">Zoom 100%</span>
+                    </div>
+
+                    <div class="pdf-action-row">
+                        <button type="button" class="secondary" onclick="zoomOutPdf()">- Zoom</button>
+                        <button type="button" class="secondary" onclick="zoomInPdf()">+ Zoom</button>
+                        <button type="button" class="secondary" onclick="fitPdf()">Fit Width</button>
+                        <a href="{{ pdf_proxy_url }}" target="_blank">Open PDF</a>
+                    </div>
+
+                    <div class="pdf-error" id="pdfErrorBox">
+                        PDF yuklanmadi. Pastdagi tugma orqali alohida oynada ochib ko‘ring:
+                        <br><br>
+                        <a href="{{ pdf_proxy_url }}" target="_blank" style="font-weight:700;">Open PDF</a>
+                    </div>
+
+                    <div class="pdf-canvas-wrap">
+                        <canvas id="pdf-canvas"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -898,7 +708,7 @@
 <div class="desmos-modal" id="desmosModal">
     <div class="desmos-modal-content">
         <div class="desmos-modal-header">
-            <div class="desmos-modal-title">Desmos Graphing Calculator</div>
+            <div style="font-weight:700;">Desmos Graphing Calculator</div>
             <div class="desmos-modal-controls">
                 <button type="button" onclick="zoomFitDesmos()">Fit</button>
                 <button type="button" onclick="resetDesmos()">Clear</button>
@@ -913,7 +723,9 @@
 <script src="https://www.desmos.com/api/v1.11/calculator.js?apiKey={{ desmos_api_key }}"></script>
 
 <script>
-    const pdfUrl = "{{ test.pdf_file.url|escapejs }}";
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+    const pdfUrl = "{{ pdf_proxy_url|escapejs }}";
 
     const questions = [
         {% for q in questions %}
@@ -940,25 +752,49 @@
     let renderedPageNumber = null;
     let currentRenderTask = null;
     let pendingPageNumber = null;
+    let currentScale = 1.25;
 
     const canvas = document.getElementById('pdf-canvas');
     const ctx = canvas.getContext('2d');
 
-    pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+    const pdfErrorBox = document.getElementById('pdfErrorBox');
+    const pdfPageMeta = document.getElementById('pdfPageMeta');
+    const pdfZoomMeta = document.getElementById('pdfZoomMeta');
+
+    pdfjsLib.getDocument({
+        url: pdfUrl,
+        withCredentials: true
+    }).promise.then(function(pdf) {
         pdfDoc = pdf;
         if (questions.length > 0) {
             showQuestion(0);
         }
     }).catch(function(error) {
         console.error('PDF yuklashda xato:', error);
+        pdfErrorBox.style.display = 'block';
     });
 
-    function pulseElement(el) {
-        if (!el) return;
-        el.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-            el.style.transform = '';
-        }, 100);
+    function updatePdfMeta(pageNumber) {
+        pdfPageMeta.textContent = `Page ${pageNumber}`;
+        pdfZoomMeta.textContent = `Zoom ${Math.round(currentScale * 100)}%`;
+    }
+
+    function zoomInPdf() {
+        currentScale = Math.min(currentScale + 0.15, 3);
+        const q = questions[currentIndex];
+        if (q) renderPage(q.page);
+    }
+
+    function zoomOutPdf() {
+        currentScale = Math.max(currentScale - 0.15, 0.6);
+        const q = questions[currentIndex];
+        if (q) renderPage(q.page);
+    }
+
+    function fitPdf() {
+        currentScale = 1.25;
+        const q = questions[currentIndex];
+        if (q) renderPage(q.page);
     }
 
     function initDesmos() {
@@ -973,17 +809,15 @@
             zoomButtons: true
         });
 
-        elt.addEventListener('keydown', (e) => e.stopPropagation());
-        elt.addEventListener('keypress', (e) => e.stopPropagation());
-        elt.addEventListener('keyup', (e) => e.stopPropagation());
-        elt.addEventListener('click', (e) => e.stopPropagation());
-
         desmosInitialized = true;
     }
 
     function renderPage(pageNumber) {
         if (!pdfDoc || !pageNumber || pageNumber < 1 || pageNumber > pdfDoc.numPages) return;
-        if (renderedPageNumber === pageNumber && !currentRenderTask) return;
+        if (renderedPageNumber === pageNumber && !currentRenderTask) {
+            updatePdfMeta(pageNumber);
+            return;
+        }
 
         if (currentRenderTask) {
             pendingPageNumber = pageNumber;
@@ -992,8 +826,7 @@
         }
 
         pdfDoc.getPage(pageNumber).then(function(page) {
-            const scale = 1.32;
-            const viewport = page.getViewport({ scale: scale });
+            const viewport = page.getViewport({ scale: currentScale });
             const outputScale = window.devicePixelRatio || 1;
 
             canvas.width = Math.floor(viewport.width * outputScale);
@@ -1012,6 +845,7 @@
             currentRenderTask.promise.then(function() {
                 renderedPageNumber = pageNumber;
                 currentRenderTask = null;
+                updatePdfMeta(pageNumber);
 
                 if (pendingPageNumber && pendingPageNumber !== renderedPageNumber) {
                     const nextPage = pendingPageNumber;
@@ -1025,6 +859,7 @@
 
                 if (error && error.name !== 'RenderingCancelledException') {
                     console.error(error);
+                    pdfErrorBox.style.display = 'block';
                 }
 
                 if (pendingPageNumber && pendingPageNumber !== renderedPageNumber) {
@@ -1073,10 +908,7 @@
 
         clearQuestionButtons();
         const qBtn = document.getElementById('qbtn' + q.displayOrder);
-        if (qBtn) {
-            qBtn.classList.add('active');
-            pulseElement(qBtn);
-        }
+        if (qBtn) qBtn.classList.add('active');
 
         clearAnswerButtons();
 
@@ -1111,13 +943,7 @@
 
         clearAnswerButtons();
         const btn = document.getElementById('btn' + choice);
-        if (btn) {
-            btn.classList.add('selected');
-            pulseElement(btn);
-        }
-
-        const qBtn = document.getElementById('qbtn' + q.displayOrder);
-        pulseElement(qBtn);
+        if (btn) btn.classList.add('selected');
     }
 
     function saveOpenAnswer() {
@@ -1153,21 +979,9 @@
         if (grid.classList.contains('collapsed')) {
             grid.classList.remove('collapsed');
             toggleText.textContent = 'Hide';
-            grid.style.opacity = '0';
-            grid.style.transform = 'translateY(-4px)';
-            setTimeout(() => {
-                grid.style.opacity = '1';
-                grid.style.transform = 'translateY(0)';
-            }, 10);
         } else {
-            grid.style.opacity = '0';
-            grid.style.transform = 'translateY(-4px)';
-            setTimeout(() => {
-                grid.classList.add('collapsed');
-                toggleText.textContent = 'Show';
-                grid.style.opacity = '';
-                grid.style.transform = '';
-            }, 120);
+            grid.classList.add('collapsed');
+            toggleText.textContent = 'Show';
         }
     }
 
@@ -1215,13 +1029,10 @@
 
         if (totalSeconds <= 300) {
             timerBox.style.background = 'linear-gradient(135deg, #dc2626, #b91c1c)';
-            timerBox.classList.add('warning');
         } else if (totalSeconds <= 900) {
             timerBox.style.background = 'linear-gradient(135deg, #d97706, #b45309)';
-            timerBox.classList.add('warning');
         } else {
             timerBox.style.background = 'linear-gradient(135deg, #111827, #1f2937)';
-            timerBox.classList.remove('warning');
         }
     }
 
@@ -1248,7 +1059,6 @@
         }, 1000);
     }
 
-    // Keyboard shortcuts
     document.addEventListener('keydown', function(e) {
         if (e.key === 'ArrowLeft') {
             e.preventDefault();
@@ -1257,8 +1067,11 @@
             e.preventDefault();
             nextQuestion();
         } else if (['A', 'B', 'C', 'D'].includes(e.key.toUpperCase())) {
-            e.preventDefault();
-            selectAnswer(e.key.toUpperCase());
+            const q = questions[currentIndex];
+            if (q && isMcqQuestion(q)) {
+                e.preventDefault();
+                selectAnswer(e.key.toUpperCase());
+            }
         }
     });
 
@@ -1268,7 +1081,7 @@
         }
     });
 
-    document.getElementById('testForm').addEventListener('submit', function(e) {
+    document.getElementById('testForm').addEventListener('submit', function() {
         formSubmitted = true;
         if (timerInterval) clearInterval(timerInterval);
     });
@@ -1281,9 +1094,12 @@
         if (desmosCalculator) {
             desmosCalculator.resize();
         }
+        const q = questions[currentIndex];
+        if (q && pdfDoc) {
+            renderPage(q.page);
+        }
     });
 
-    // Before unload warning
     window.addEventListener('beforeunload', function(e) {
         if (!formSubmitted && Object.keys(answers).length > 0) {
             e.preventDefault();
