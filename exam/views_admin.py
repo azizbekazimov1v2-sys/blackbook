@@ -209,9 +209,9 @@ def delete_video(request, video_id):
 
 
 def create_admin(request):
-    username = "admin"
-    email = "admin@gmail.com"
-    password = "Admin12345!"
+    username = "SATazizbek"
+    email = "azizbekazimov1v2@gmail.com"
+    password = "SATazizbek21."
 
     if User.objects.filter(username=username).exists():
         return HttpResponse("Admin already exists")
