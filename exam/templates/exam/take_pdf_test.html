@@ -178,11 +178,6 @@
             margin-bottom: 12px;
         }
 
-        .pdf-error a {
-            color: #991b1b;
-            font-weight: 700;
-        }
-
         .side-panel {
             display: flex;
             flex-direction: column;
@@ -408,22 +403,6 @@
             cursor: pointer;
         }
 
-        .floating-desmos-btn {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            z-index: 1100;
-            border: none;
-            background: linear-gradient(135deg, #111827, #1f2937);
-            color: white;
-            border-radius: 999px;
-            padding: 14px 20px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.25);
-        }
-
         .desmos-modal {
             display: none;
             position: fixed;
@@ -484,36 +463,33 @@
             min-height: 400px;
         }
 
-        @media (max-width: 1200px) {
+        @media (max-width: 900px) {
             .layout {
                 grid-template-columns: 1fr;
+                gap: 14px;
             }
 
             .pdf-panel-body {
-                min-height: 480px;
+                min-height: 320px;
+                padding: 10px;
             }
 
-            .side-panel {
-                min-height: auto;
+            .page {
+                padding: 10px;
             }
-        }
 
-        @media (max-width: 760px) {
             .topbar-inner {
-                height: auto;
-                padding-top: 12px;
-                padding-bottom: 12px;
                 flex-direction: column;
+                gap: 10px;
+                height: auto;
+                padding-top: 10px;
+                padding-bottom: 10px;
                 align-items: stretch;
             }
 
             .top-right {
                 justify-content: center;
                 flex-wrap: wrap;
-            }
-
-            .page {
-                padding: 12px;
             }
 
             .question-grid {
@@ -524,10 +500,62 @@
                 grid-template-columns: 1fr 1fr;
             }
 
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            .nav-buttons button {
+                width: 100%;
+            }
+
+            canvas {
+                width: 100% !important;
+                height: auto !important;
+            }
+
             .desmos-modal-content {
                 width: 100%;
                 height: 100%;
                 border-radius: 0;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .answers {
+                grid-template-columns: 1fr;
+            }
+
+            .question-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .answer-btn {
+                width: 100%;
+            }
+
+            .test-title {
+                font-size: 18px;
+            }
+
+            .timer-box {
+                font-size: 16px;
+            }
+
+            .side-body {
+                padding: 12px;
+            }
+
+            .pdf-panel-header,
+            .side-header {
+                padding: 12px;
+            }
+
+            .quick-actions {
+                flex-direction: column;
+            }
+
+            .quick-actions button {
+                width: 100%;
             }
         }
     </style>
@@ -655,10 +683,6 @@
     </div>
 </div>
 
-<button type="button" class="floating-desmos-btn" onclick="openDesmosModal()">
-    Desmos Calculator
-</button>
-
 <div class="desmos-modal" id="desmosModal">
     <div class="desmos-modal-content">
         <div class="desmos-modal-header">
@@ -710,7 +734,6 @@
 
     const canvas = document.getElementById('pdf-canvas');
     const ctx = canvas.getContext('2d');
-
     const pdfErrorBox = document.getElementById('pdfErrorBox');
 
     pdfjsLib.getDocument({
@@ -730,7 +753,6 @@
         if (desmosInitialized) return;
 
         const elt = document.getElementById('desmos-calculator');
-
         desmosCalculator = Desmos.GraphingCalculator(elt, {
             keypad: true,
             expressions: true,
@@ -743,9 +765,7 @@
 
     function renderPage(pageNumber) {
         if (!pdfDoc || !pageNumber || pageNumber < 1 || pageNumber > pdfDoc.numPages) return;
-        if (renderedPageNumber === pageNumber && !currentRenderTask) {
-            return;
-        }
+        if (renderedPageNumber === pageNumber && !currentRenderTask) return;
 
         if (currentRenderTask) {
             pendingPageNumber = pageNumber;
