@@ -206,3 +206,21 @@ def delete_video(request, video_id):
         return redirect('admin_panel')
 
     return render(request, 'exam/delete_video.html', {'video': video})
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+
+
+def create_admin(request):
+    username = "superadmin"
+    email = "admin@gmail.com"
+    password = "Super12345!"
+
+    if User.objects.filter(username=username).exists():
+        return HttpResponse("Admin already exists")
+
+    User.objects.create_superuser(
+        username=username,
+        email=email,
+        password=password
+    )
+    return HttpResponse("Admin created successfully")
