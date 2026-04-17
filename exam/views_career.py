@@ -90,6 +90,10 @@ def secure_video_stream(request, topic_id):
         topic.video.video_file.open("rb")
         response = FileResponse(topic.video.video_file, content_type="video/mp4")
         response["Content-Disposition"] = "inline"
+        response["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        response["Pragma"] = "no-cache"
+        response["Expires"] = "0"
+        response["X-Content-Type-Options"] = "nosniff"
         return response
     except Exception:
         raise Http404("Video ochilmadi.")
@@ -114,10 +118,18 @@ def career_watch_video(request, topic_id):
     progress.save()
 
     if topic.video.video_url:
-        return redirect(topic.video.video_url)
+        return render(request, 'exam/career_watch_video.html', {
+            'topic': topic,
+            'external_video_url': topic.video.video_url,
+            'is_external': True,
+        })
 
     if topic.video.video_file:
-        return redirect('secure_video', topic_id=topic.id)
+        return render(request, 'exam/career_watch_video.html', {
+            'topic': topic,
+            'secure_video_url': f'/secure-video/{topic.id}/',
+            'is_external': False,
+        })
 
     messages.error(request, "Video manzili topilmadi.")
     return redirect('career_mode')
@@ -161,10 +173,7 @@ def career_test_view(request, topic_id):
         percent = round((correct_count / total) * 100, 2) if total > 0 else 0
 
         progress.score_percent = percent
-        if percent >= topic.test.pass_percentage:
-            progress.test_passed = True
-        else:
-            progress.test_passed = False
+        progress.test_passed = percent >= topic.test.pass_percentage
         progress.save()
 
         return render(request, 'exam/career_result.html', {

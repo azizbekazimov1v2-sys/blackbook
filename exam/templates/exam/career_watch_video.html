@@ -1,0 +1,217 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ topic.title }} - Video</title>
+    <link rel="stylesheet" href="{% static 'exam/ui_smooth.css' %}">
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #f5f7fb, #eef2ff);
+            color: #111827;
+        }
+
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid #d9d9d9;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            min-height: 56px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .logo-box {
+            height: 40px;
+            min-width: 150px;
+            background: #111;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 0 14px;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .top-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .top-link {
+            font-size: 13px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: #111827;
+            text-decoration: none;
+            background: #fff;
+        }
+
+        .top-link.primary {
+            background: #111827;
+            color: white;
+            font-weight: 700;
+        }
+
+        .wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 16px 40px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 24px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+
+        .card-head {
+            padding: 18px 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .title {
+            margin: 0 0 6px;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .sub {
+            margin: 0;
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .video-box {
+            padding: 16px;
+            background: #0f172a;
+        }
+
+        video,
+        iframe {
+            width: 100%;
+            max-height: 78vh;
+            min-height: 320px;
+            background: black;
+            border-radius: 18px;
+            display: block;
+            border: none;
+        }
+
+        .note {
+            padding: 14px 18px 20px;
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .wrap {
+                padding: 12px 10px 24px;
+            }
+
+            .title {
+                font-size: 20px;
+            }
+
+            .video-box {
+                padding: 10px;
+            }
+
+            video,
+            iframe {
+                min-height: 220px;
+                border-radius: 14px;
+            }
+
+            .topbar-inner {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .top-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+<header class="topbar">
+    <div class="topbar-inner">
+        <a href="{% url 'home' %}" class="logo-box">SAT Azizbek</a>
+        <div class="top-links">
+            <a href="{% url 'career_mode' %}" class="top-link">Career Mode</a>
+            <a href="{% url 'home' %}" class="top-link">Home</a>
+            <a href="{% url 'logout' %}" class="top-link primary">Log out</a>
+        </div>
+    </div>
+</header>
+
+<div class="wrap">
+    <div class="card">
+        <div class="card-head">
+            <h1 class="title">{{ topic.title }}</h1>
+            <p class="sub">{{ topic.description|default:"Career mode video" }}</p>
+        </div>
+
+        <div class="video-box">
+            {% if is_external and external_video_url %}
+                <iframe
+                    src="{{ external_video_url }}"
+                    allowfullscreen
+                    referrerpolicy="strict-origin-when-cross-origin">
+                </iframe>
+            {% else %}
+                <video
+                    controls
+                    controlsList="nodownload noplaybackrate"
+                    disablePictureInPicture
+                    preload="metadata"
+                    playsinline
+                >
+                    <source src="{{ secure_video_url }}" type="video/mp4">
+                    Brauzeringiz video formatni qo‘llab-quvvatlamaydi.
+                </video>
+            {% endif %}
+        </div>
+
+        <div class="note">
+            Video himoyalangan ko‘rinishda ochildi. Oddiy download tugmasi yashirilgan.
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && ['s', 'u', 'p'].includes(e.key.toLowerCase())) {
+            e.preventDefault();
+        }
+    });
+</script>
+
+</body>
+</html>
