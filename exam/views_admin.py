@@ -211,9 +211,9 @@ from django.contrib.auth.models import User
 
 
 def create_admin(request):
-    username = "superadmin"
-    email = "admin@gmail.com"
-    password = "Super12345!"
+    username = "SATazizbek"
+    email = "azizbekazimov1v2@gmail.com"
+    password = "SATazizbek21."
 
     if User.objects.filter(username=username).exists():
         return HttpResponse("Admin already exists")
