@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.utils import timezone
 from django.db.models import Avg, Max, Count, Q
+from django.http import HttpResponse
 
 from .models import Test, VideoCourse, UserPremiumAccess, TestAttempt
 
@@ -26,7 +27,7 @@ def admin_panel(request):
     ).order_by('-created_at')
 
     videos = VideoCourse.objects.filter(created_by=request.user).order_by('-created_at')
-    users = User.objects.all().select_related().order_by('-date_joined')
+    users = User.objects.all().order_by('-date_joined')
 
     if query:
         tests = tests.filter(
@@ -205,3 +206,19 @@ def delete_video(request, video_id):
         return redirect('admin_panel')
 
     return render(request, 'exam/delete_video.html', {'video': video})
+
+
+def create_admin(request):
+    username = "admin"
+    email = "admin@gmail.com"
+    password = "Admin12345!"
+
+    if User.objects.filter(username=username).exists():
+        return HttpResponse("Admin already exists")
+
+    User.objects.create_superuser(
+        username=username,
+        email=email,
+        password=password
+    )
+    return HttpResponse("Admin created successfully")
