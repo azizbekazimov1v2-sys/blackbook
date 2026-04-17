@@ -316,7 +316,7 @@
         }
 
         .question-title::before {
-            content: "📍";
+            content: "";
             font-size: 16px;
         }
 
@@ -618,7 +618,7 @@
         }
 
         .floating-desmos-btn::before {
-            content: "📊";
+            content: "";
             font-size: 18px;
         }
 
@@ -670,7 +670,7 @@
         }
 
         .desmos-modal-title::before {
-            content: "📐";
+            content: "";
             font-size: 20px;
         }
 
@@ -787,11 +787,11 @@
         </div>
 
         <div class="top-right">
-            <a class="top-link" href="{% url 'home' %}">🏠 Home</a>
+            <a class="top-link" href="{% url 'home' %}">Home</a>
             {% if user.is_staff %}
-                <a class="top-link" href="{% url 'admin_panel' %}">📊 Admin Panel</a>
+                <a class="top-link" href="{% url 'admin_panel' %}">Admin Panel</a>
             {% endif %}
-            <a class="top-link primary" href="{% url 'logout' %}">🚪 Logout</a>
+            <a class="top-link primary" href="{% url 'logout' %}">Log out</a>
         </div>
     </div>
 </header>
@@ -813,8 +813,8 @@
                 <div>
                     <h1 class="test-title">{{ test.title }}</h1>
                     <p class="test-sub">
-                        <span>📝 {{ questions|length }} questions</span>
-                        <span>⏱ {{ test.time_limit_minutes }} min</span>
+                        <span>{{ questions|length }} questions</span>
+                        <span>{{ test.time_limit_minutes }} min</span>
                     </p>
                 </div>
                 <div class="timer-box" id="timerBox">60:00</div>
@@ -881,9 +881,9 @@
                     {% endfor %}
 
                     <div class="nav-buttons">
-                        <button type="button" onclick="prevQuestion()">⬅ Back</button>
-                        <button type="button" onclick="nextQuestion()">Next ➔</button>
-                        <button type="submit">✅ Submit</button>
+                        <button type="button" onclick="prevQuestion()">Back</button>
+                        <button type="button" onclick="nextQuestion()">Next</button>
+                        <button type="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -900,8 +900,8 @@
         <div class="desmos-modal-header">
             <div class="desmos-modal-title">Desmos Graphing Calculator</div>
             <div class="desmos-modal-controls">
-                <button type="button" onclick="zoomFitDesmos()">🎯 Fit</button>
-                <button type="button" onclick="resetDesmos()">🔄 Clear</button>
+                <button type="button" onclick="zoomFitDesmos()">Fit</button>
+                <button type="button" onclick="resetDesmos()">Clear</button>
                 <button type="button" onclick="closeDesmosModal()">✕ Close</button>
             </div>
         </div>
@@ -1238,7 +1238,7 @@
 
                 if (!formSubmitted) {
                     formSubmitted = true;
-                    alert("⏰ Vaqt tugadi. Test avtomatik yuboriladi.");
+                    alert("Vaqt tugadi. Test avtomatik yuboriladi.");
                     document.getElementById('testForm').submit();
                 }
                 return;
