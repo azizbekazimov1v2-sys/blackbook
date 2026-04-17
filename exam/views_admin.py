@@ -210,17 +210,35 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 
 
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+
+
 def create_admin(request):
     username = "SATazizbek"
     email = "azizbekazimov1v2@gmail.com"
     password = "SATazizbek21."
 
-    if User.objects.filter(username=username).exists():
-        return HttpResponse("Admin already exists")
-
-    User.objects.create_superuser(
+    user, created = User.objects.get_or_create(
         username=username,
-        email=email,
-        password=password
+        defaults={
+            "email": email,
+            "is_staff": True,
+            "is_superuser": True,
+        }
     )
-    return HttpResponse("Admin created successfully")
+
+    if created:
+        user.set_password(password)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save()
+        return HttpResponse("Admin created successfully")
+
+    # agar bor bo‘lsa ham majburan admin qilamiz
+    user.set_password(password)
+    user.is_staff = True
+    user.is_superuser = True
+    user.save()
+
+    return HttpResponse("Admin updated (forced admin)")
