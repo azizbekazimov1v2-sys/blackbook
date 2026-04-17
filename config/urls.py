@@ -8,8 +8,8 @@ urlpatterns = [
     path('', include('exam.urls')),
 ]
 
-if settings.DEBUG:
+if settings.DEBUG and hasattr(settings, "MEDIA_ROOT"):
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-    if hasattr(settings, 'STATICFILES_DIRS') and settings.STATICFILES_DIRS:
-        urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+if settings.DEBUG and hasattr(settings, "STATICFILES_DIRS") and settings.STATICFILES_DIRS:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
