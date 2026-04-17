@@ -14,6 +14,37 @@ from .services import (
 )
 
 
+def _read_uploaded_file_bytes(uploaded_file):
+    """
+    request.FILES ichidan kelgan faylni bytes ko‘rinishida o‘qiydi.
+    """
+    uploaded_file.seek(0)
+    data = uploaded_file.read()
+    uploaded_file.seek(0)
+    return data
+
+
+def _read_field_file_bytes(field_file):
+    """
+    Django FieldFile (masalan test.pdf_file) ni bytes ko‘rinishida o‘qiydi.
+    S3 / Railway bucket bilan ham ishlaydi.
+    """
+    field_file.open("rb")
+    try:
+        data = field_file.read()
+    finally:
+        field_file.close()
+    return data
+
+
+def _get_pdf_page_count_from_bytes(pdf_bytes):
+    """
+    PDF bytes dan sahifalar sonini qaytaradi.
+    """
+    reader = PdfReader(BytesIO(pdf_bytes))
+    return len(reader.pages)
+
+
 @login_required
 def create_video(request):
     if not request.user.is_staff:
@@ -111,9 +142,8 @@ def upload_sat_pdf(request):
             is_published=False
         )
 
-        pdf_path = test.pdf_file.path
-        pdf_reader = PdfReader(pdf_path)
-        total_pages = len(pdf_reader.pages)
+        pdf_bytes = _read_field_file_bytes(test.pdf_file)
+        total_pages = _get_pdf_page_count_from_bytes(pdf_bytes)
 
         create_questions_from_answer_list(
             test=test,
@@ -197,8 +227,8 @@ def upload_latex_test(request):
 
         test.save()
 
-        pdf_reader = PdfReader(test.pdf_file.path)
-        total_pages = len(pdf_reader.pages)
+        saved_pdf_bytes = _read_field_file_bytes(test.pdf_file)
+        total_pages = _get_pdf_page_count_from_bytes(saved_pdf_bytes)
 
         create_questions_from_answer_list(
             test=test,
@@ -277,8 +307,8 @@ def upload_pdf_bank(request):
             is_published=False
         )
 
-        pdf_reader = PdfReader(test.pdf_file.path)
-        total_pages = len(pdf_reader.pages)
+        pdf_bytes = _read_field_file_bytes(test.pdf_file)
+        total_pages = _get_pdf_page_count_from_bytes(pdf_bytes)
 
         create_questions_from_answer_list(
             test=test,
@@ -331,16 +361,15 @@ def append_pdf_bank(request, test_id):
             )
             return redirect('append_pdf_bank', test_id=test.id)
 
-        old_reader = PdfReader(test.pdf_file.path)
-        old_pages_count = len(old_reader.pages)
+        old_pdf_bytes = _read_field_file_bytes(test.pdf_file)
+        old_pages_count = _get_pdf_page_count_from_bytes(old_pdf_bytes)
 
-        new_reader = PdfReader(pdf_file)
-        new_pages_count = len(new_reader.pages)
+        new_pdf_bytes = _read_uploaded_file_bytes(pdf_file)
+        new_pages_count = _get_pdf_page_count_from_bytes(new_pdf_bytes)
 
         merger = PdfMerger()
-        merger.append(test.pdf_file.path)
-        pdf_file.seek(0)
-        merger.append(pdf_file)
+        merger.append(BytesIO(old_pdf_bytes))
+        merger.append(BytesIO(new_pdf_bytes))
 
         merged_buffer = BytesIO()
         merger.write(merged_buffer)
