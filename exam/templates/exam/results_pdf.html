@@ -618,12 +618,12 @@
         </div>
 
         <div class="top-right">
-            <a class="top-link" href="{% url 'home' %}">🏠 Home</a>
-            <a class="top-link" href="{% url 'take_pdf_test' test.id %}?reset=1">🔄 Retake</a>
+            <a class="top-link" href="{% url 'home' %}">Home</a>
+            <a class="top-link" href="{% url 'take_pdf_test' test.id %}?reset=1">Retake</a>
             {% if user.is_staff %}
-                <a class="top-link" href="{% url 'admin_panel' %}">📊 Admin Panel</a>
+                <a class="top-link" href="{% url 'admin_panel' %}">Admin Panel</a>
             {% endif %}
-            <a class="top-link primary" href="{% url 'logout' %}">🚪 Logout</a>
+            <a class="top-link primary" href="{% url 'logout' %}">Log out</a>
         </div>
     </div>
 </header>
@@ -647,19 +647,19 @@
 
     <section class="stats-grid">
         <div class="stat-card">
-            <div class="stat-label">✅ Correct</div>
+            <div class="stat-label">Correct</div>
             <div class="stat-value">{{ correct_count }}</div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">❌ Wrong</div>
+            <div class="stat-label">Wrong</div>
             <div class="stat-value">{{ wrong_count|default:0 }}</div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">⏭ Unanswered</div>
+            <div class="stat-label">Unanswered</div>
             <div class="stat-value">{{ unanswered_count|default:0 }}</div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">📝 Total Questions</div>
+            <div class="stat-label">Total Questions</div>
             <div class="stat-value">{{ total }}</div>
         </div>
     </section>
@@ -670,14 +670,14 @@
 
         <div class="actions">
             <a class="btn btn-dark" href="{% url 'take_pdf_test' test.id %}?reset=1">
-                <span>🔄</span> Retake Test
+                <span></span> Retake Test
             </a>
             <a class="btn btn-light" href="{% url 'home' %}">
-                <span>🏠</span> Back Home
+                <span></span> Back Home
             </a>
             {% if user.is_staff %}
                 <a class="btn btn-light" href="{% url 'admin_panel' %}">
-                    <span>📊</span> Open Admin Panel
+                    <span></span> Open Admin Panel
                 </a>
             {% endif %}
         </div>
@@ -694,26 +694,26 @@
                         <div>
                             <h3 class="result-title">Question {{ item.order }}</h3>
                             <div class="result-meta">
-                                📄 Page: {{ item.pdf_page }} |
-                                🔢 Source #: {{ item.source_number }}
+                                Page: {{ item.pdf_page }} |
+                                Source #: {{ item.source_number }}
                             </div>
                         </div>
 
                         {% if item.is_correct %}
-                            <span class="status-badge status-correct">✅ Correct</span>
+                            <span class="status-badge status-correct">Correct</span>
                         {% else %}
-                            <span class="status-badge status-wrong">❌ Wrong</span>
+                            <span class="status-badge status-wrong">Wrong</span>
                         {% endif %}
                     </div>
 
                     <div class="answer-grid">
                         <div class="answer-box answer-user">
-                            <div class="answer-box-label">👤 Your Answer</div>
+                            <div class="answer-box-label">Your Answer</div>
                             <div class="answer-box-value">{{ item.user_answer }}</div>
                         </div>
 
                         <div class="answer-box answer-correct">
-                            <div class="answer-box-label">✨ Correct Answer</div>
+                            <div class="answer-box-label">Correct Answer</div>
                             <div class="answer-box-value">{{ item.correct_answer }}</div>
                         </div>
                     </div>
