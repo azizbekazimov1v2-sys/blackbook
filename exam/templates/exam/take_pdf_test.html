@@ -12,9 +12,13 @@
         :root {
             --blue: #334acb;
             --blue-dark: #2538a8;
+            --blue-soft: #e8eeff;
+            --green: #16a34a;
+            --green-dark: #15803d;
             --text: #111827;
             --muted: #6b7280;
             --line: #e5e7eb;
+            --navy: #111827;
         }
 
         body {
@@ -221,20 +225,25 @@
 
         .quick-actions {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
-        .quick-actions button {
-            border: none;
+        .quick-btn {
+            border: 1px solid #c7d2fe;
             background: linear-gradient(135deg, #eef2ff, #dbeafe);
             color: var(--blue-dark);
-            border-radius: 12px;
-            padding: 10px 14px;
-            font-size: 13px;
+            border-radius: 14px;
+            padding: 11px 16px;
+            font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            border: 1px solid #c7d2fe;
+            transition: all 0.18s ease;
+        }
+
+        .quick-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 18px rgba(51, 74, 203, 0.10);
         }
 
         .question-title {
@@ -291,6 +300,12 @@
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .q-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 14px rgba(0,0,0,0.05);
         }
 
         .q-btn.active {
@@ -350,6 +365,13 @@
             font-size: 18px;
             font-weight: 700;
             cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.05);
+            border-color: #94a3b8;
         }
 
         .answer-btn.selected {
@@ -386,21 +408,42 @@
         }
 
         .nav-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 4px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.1fr;
+            gap: 12px;
+            margin-top: 10px;
         }
 
-        .nav-buttons button {
-            flex: 1;
+        .nav-btn {
+            min-height: 50px;
             border: none;
-            background: linear-gradient(135deg, #111827, #1f2937);
-            color: white;
-            border-radius: 14px;
+            border-radius: 16px;
             padding: 12px 14px;
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 16px;
+            font-weight: 800;
             cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.985);
+        }
+
+        .nav-btn.back-btn,
+        .nav-btn.next-btn {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            box-shadow: 0 10px 18px rgba(37, 99, 235, 0.18);
+        }
+
+        .nav-btn.submit-btn {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            box-shadow: 0 10px 18px rgba(22, 163, 74, 0.20);
         }
 
         .desmos-modal {
@@ -501,10 +544,10 @@
             }
 
             .nav-buttons {
-                flex-direction: column;
+                grid-template-columns: 1fr;
             }
 
-            .nav-buttons button {
+            .nav-btn {
                 width: 100%;
             }
 
@@ -554,7 +597,7 @@
                 flex-direction: column;
             }
 
-            .quick-actions button {
+            .quick-btn {
                 width: 100%;
             }
         }
@@ -614,8 +657,8 @@
 
             <div class="side-body">
                 <div class="quick-actions">
-                    <button type="button" onclick="toggleQuestionPalette()">Questions</button>
-                    <button type="button" onclick="openDesmosModal()">Desmos</button>
+                    <button type="button" class="quick-btn" onclick="toggleQuestionPalette()">Questions</button>
+                    <button type="button" class="quick-btn" onclick="openDesmosModal()">Desmos</button>
                 </div>
 
                 <p class="question-title" id="current-question-label">Question 1</p>
@@ -673,9 +716,9 @@
                     {% endfor %}
 
                     <div class="nav-buttons">
-                        <button type="button" onclick="prevQuestion()">Back</button>
-                        <button type="button" onclick="nextQuestion()">Next</button>
-                        <button type="submit">Submit</button>
+                        <button type="button" class="nav-btn back-btn" onclick="prevQuestion()">Back</button>
+                        <button type="button" class="nav-btn next-btn" onclick="nextQuestion()">Next</button>
+                        <button type="submit" class="nav-btn submit-btn">Submit</button>
                     </div>
                 </form>
             </div>
