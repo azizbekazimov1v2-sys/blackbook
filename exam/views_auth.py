@@ -1,9 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.models import User
-from django.contrib import messages
-
-from .models import UserProfile
+from django.http import HttpResponseForbidden
 
 
 def login_view(request):
@@ -11,8 +8,8 @@ def login_view(request):
         return redirect('home')
 
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = (request.POST.get('username') or '').strip()
+        password = (request.POST.get('password') or '').strip()
 
         user = authenticate(request, username=username, password=password)
 
@@ -28,41 +25,7 @@ def login_view(request):
 
 
 def register(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-
-    if request.method == 'POST':
-        username = (request.POST.get('username') or '').strip()
-        email = (request.POST.get('email') or '').strip()
-        password = (request.POST.get('password') or '').strip()
-
-        if not username or not password:
-            return render(request, 'exam/register.html', {
-                'error': 'Username va password kiritilishi shart.'
-            })
-
-        if User.objects.filter(username=username).exists():
-            return render(request, 'exam/register.html', {
-                'error': 'Bu foydalanuvchi nomi band.'
-            })
-
-        if email and User.objects.filter(email=email).exists():
-            return render(request, 'exam/register.html', {
-                'error': 'Bu email allaqachon ishlatilgan.'
-            })
-
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password
-        )
-        UserProfile.objects.get_or_create(user=user)
-
-        login(request, user)
-        messages.success(request, f'Xush kelibsiz, {username}!')
-        return redirect('home')
-
-    return render(request, 'exam/register.html')
+    return HttpResponseForbidden("Registration is temporarily closed.")
 
 
 def custom_logout(request):
