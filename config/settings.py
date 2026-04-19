@@ -134,3 +134,9 @@ DESMOS_API_KEY = os.environ.get(
     "DESMOS_API_KEY",
     "83306a3cc68945ebb01a7b2553ce1078"
 )
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "sat-azizbek-cache",
+    }
+}

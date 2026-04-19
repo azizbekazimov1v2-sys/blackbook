@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -70,6 +70,8 @@
             box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
             animation: slideUp 0.7s ease both;
             transition: transform 0.22s ease, box-shadow 0.22s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .auth-shell:hover {
@@ -240,6 +242,7 @@
         .form-group {
             margin-bottom: 18px;
             animation: fadeIn 0.9s ease both;
+            transition: transform 0.2s ease;
         }
 
         label {
@@ -248,15 +251,19 @@
             font-size: 14px;
             font-weight: 700;
             color: #374151;
+        }
+
+        .label-row {
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        label::before {
+        .label-row::before {
             content: "•";
             color: #334acb;
             font-size: 20px;
+            line-height: 1;
         }
 
         input {
@@ -309,7 +316,7 @@
         }
 
         .submit-btn.loading {
-            opacity: 0.7;
+            opacity: 0.75;
             cursor: not-allowed;
             pointer-events: none;
         }
@@ -353,7 +360,6 @@
             transform: translateX(-4px);
         }
 
-        /* Password strength indicator */
         .password-strength {
             margin-top: 8px;
             height: 4px;
@@ -375,11 +381,27 @@
             margin-top: 4px;
         }
 
-        /* Responsive */
+        .helper-text {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        /* Honeypot field */
+        .hp-field {
+            position: absolute;
+            left: -10000px;
+            top: auto;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+
         @media (max-width: 900px) {
             .auth-shell {
                 grid-template-columns: 1fr;
-                max-width: 500px;
+                max-width: 560px;
             }
 
             .auth-left,
@@ -432,7 +454,7 @@
         <div class="hero-copy">
             <h1>Create your account</h1>
             <p>
-                Platformaga qo'shiling va English, Math, Analysis hamda premium resurslardan
+                Platformaga qo‘shiling va English, Math, Analysis hamda premium resurslardan
                 tartibli foydalanishni boshlang.
             </p>
 
@@ -467,29 +489,65 @@
             <div class="error-box">{{ error }}</div>
         {% endif %}
 
-        <form method="post" id="registerForm">
+        <form method="post" id="registerForm" autocomplete="off">
             {% csrf_token %}
 
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" name="username" id="username"
-                       placeholder="Username kiriting" required
-                       autocomplete="username" minlength="3">
+            <div class="hp-field">
+                <label for="website">Website</label>
+                <input type="text" name="website" id="website" tabindex="-1" autocomplete="off">
             </div>
 
             <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password"
-                       placeholder="Password kiriting" required
-                       autocomplete="new-password" minlength="6">
+                <label for="username" class="label-row">Username</label>
+                <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    placeholder="Username kiriting"
+                    required
+                    minlength="4"
+                    maxlength="24"
+                    autocomplete="off"
+                >
+                <div class="helper-text">
+                    Username 4–24 belgidan iborat bo‘lsin. Faqat harf, raqam, nuqta yoki underscore ishlating.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="label-row">Email</label>
+                <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="Email kiriting"
+                    required
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="label-row">Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="Password kiriting"
+                    required
+                    minlength="8"
+                    autocomplete="new-password"
+                >
                 <div class="password-strength">
                     <div class="strength-bar" id="strengthBar"></div>
                 </div>
                 <div class="strength-text" id="strengthText"></div>
+                <div class="helper-text">
+                    Password kamida 8 ta belgidan iborat bo‘lsin.
+                </div>
             </div>
 
             <button type="submit" class="submit-btn" id="submitBtn">
-                <span></span> Create Account
+                <span>→</span> Create Account
             </button>
         </form>
 
@@ -505,18 +563,20 @@
 </div>
 
 <script>
-    // Password strength checker
     const passwordInput = document.getElementById('password');
     const strengthBar = document.getElementById('strengthBar');
     const strengthText = document.getElementById('strengthText');
+    const registerForm = document.getElementById('registerForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const usernameInput = document.getElementById('username');
 
     if (passwordInput) {
         passwordInput.addEventListener('input', function() {
             const password = this.value;
             let strength = 0;
 
-            if (password.length >= 6) strength++;
             if (password.length >= 8) strength++;
+            if (password.length >= 10) strength++;
             if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
             if (/[0-9]/.test(password)) strength++;
             if (/[^a-zA-Z0-9]/.test(password)) strength++;
@@ -545,64 +605,76 @@
         });
     }
 
-    // Form submission loading state
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
-        const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value;
-
-        if (username.length < 3) {
-            e.preventDefault();
-            alert('Username kamida 3 ta belgidan iborat bo\'lishi kerak');
-            return;
-        }
-
-        if (password.length < 6) {
-            e.preventDefault();
-            alert('Password kamida 6 ta belgidan iborat bo\'lishi kerak');
-            return;
-        }
-
-        const submitBtn = document.getElementById('submitBtn');
-        const originalText = submitBtn.innerHTML;
-
-        submitBtn.classList.add('loading');
-        submitBtn.innerHTML = '<span>⏳</span> Creating account...';
-
-        setTimeout(() => {
-            if (submitBtn.classList.contains('loading')) {
-                submitBtn.classList.remove('loading');
-                submitBtn.innerHTML = originalText;
-            }
-        }, 5000);
-    });
-
-    // Smooth scroll to top
-    window.addEventListener('load', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    // Input animations
-    document.querySelectorAll('input').forEach(input => {
-        input.addEventListener('focus', function() {
-            this.parentElement.style.transform = 'scale(1.01)';
-        });
-
-        input.addEventListener('blur', function() {
-            this.parentElement.style.transform = 'scale(1)';
-        });
-    });
-
-    // Username validation
-    const usernameInput = document.getElementById('username');
     if (usernameInput) {
         usernameInput.addEventListener('input', function() {
-            if (this.value.length > 0 && this.value.length < 3) {
+            const value = this.value;
+            const regex = /^[A-Za-z0-9_.]*$/;
+
+            if (value.length > 0 && (!regex.test(value) || value.length < 4)) {
                 this.style.borderColor = '#fca5a5';
             } else {
                 this.style.borderColor = '#e5e7eb';
             }
         });
     }
+
+    if (registerForm) {
+        registerForm.addEventListener('submit', function(e) {
+            const username = usernameInput.value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = passwordInput.value;
+
+            const usernameRegex = /^[A-Za-z0-9_.]+$/;
+
+            if (username.length < 4) {
+                e.preventDefault();
+                alert("Username kamida 4 ta belgidan iborat bo‘lishi kerak");
+                return;
+            }
+
+            if (!usernameRegex.test(username)) {
+                e.preventDefault();
+                alert("Username faqat harf, raqam, nuqta va underscore dan iborat bo‘lishi kerak");
+                return;
+            }
+
+            if (!email) {
+                e.preventDefault();
+                alert("Email kiritilishi shart");
+                return;
+            }
+
+            if (password.length < 8) {
+                e.preventDefault();
+                alert("Password kamida 8 ta belgidan iborat bo‘lishi kerak");
+                return;
+            }
+
+            submitBtn.classList.add('loading');
+            submitBtn.innerHTML = '<span>⏳</span> Creating account...';
+
+            setTimeout(() => {
+                if (submitBtn.classList.contains('loading')) {
+                    submitBtn.classList.remove('loading');
+                    submitBtn.innerHTML = '<span>→</span> Create Account';
+                }
+            }, 5000);
+        });
+    }
+
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('focus', function() {
+            if (this.closest('.form-group')) {
+                this.closest('.form-group').style.transform = 'scale(1.01)';
+            }
+        });
+
+        input.addEventListener('blur', function() {
+            if (this.closest('.form-group')) {
+                this.closest('.form-group').style.transform = 'scale(1)';
+            }
+        });
+    });
 </script>
 
 </body>
