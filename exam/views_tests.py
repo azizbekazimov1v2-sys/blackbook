@@ -6,7 +6,7 @@ from django.conf import settings
 from django.http import FileResponse, Http404
 from .models import Comment
 
-from .models import Test, Question, VideoCourse, UserPremiumAccess, TestAttempt, TestAttemptAnswer
+from .models import Test, Question, VideoCourse, UserPremiumAccess, TestAttempt, TestAttemptAnswer, Comment
 from .services import (
     calculate_scaled_score,
     smart_answers_match,
