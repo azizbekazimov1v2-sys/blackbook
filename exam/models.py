@@ -256,3 +256,33 @@ class CareerProgress(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.topic.title}"
+# =========================
+# COMMENTS (TEST + VIDEO)
+# =========================
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    test = models.ForeignKey(
+        Test,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='comments'
+    )
+
+    video = models.ForeignKey(
+        VideoCourse,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='comments'
+    )
+
+    text = models.TextField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        target = self.test.title if self.test else self.video.title if self.video else "Unknown"
+        return f"{self.user.username} - {target}"

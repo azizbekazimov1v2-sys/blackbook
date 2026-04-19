@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.utils import timezone
 from django.conf import settings
 from django.http import FileResponse, Http404
+from .models import Comment
 
 from .models import Test, Question, VideoCourse, UserPremiumAccess, TestAttempt, TestAttemptAnswer
 from .services import (
@@ -96,6 +97,7 @@ def take_pdf_test(request, test_id):
         'questions': questions,
         'desmos_api_key': getattr(settings, 'DESMOS_API_KEY', ''),
         'pdf_proxy_url': f"/pdf-proxy/{test.id}/",
+        'comments': test.comments.all().order_by('-created_at'),
     })
 
 
@@ -184,3 +186,35 @@ def submit_pdf_test(request, test_id):
         })
 
     return redirect('take_pdf_test', test_id=test.id)
+# =========================
+# TEST COMMENTS
+# =========================
+
+@login_required
+def add_test_comment(request, test_id):
+    test = get_object_or_404(Test, id=test_id)
+
+    if request.method == 'POST':
+        text = request.POST.get('text', '').strip()
+
+        if text:
+            Comment.objects.create(
+                user=request.user,
+                test=test,
+                text=text
+            )
+            messages.success(request, "Comment added!")
+
+    return redirect('take_pdf_test', test_id=test.id)
+
+
+@login_required
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    # faqat o‘zi yoki admin o‘chira oladi
+    if comment.user == request.user or request.user.is_staff:
+        comment.delete()
+        messages.success(request, "Comment deleted")
+
+    return redirect(request.META.get('HTTP_REFERER', 'home'))

@@ -43,4 +43,6 @@ urlpatterns = [
     path('delete-video/<int:video_id>/', views.delete_video, name='delete_video'),
 
     path('create-admin/', views.create_admin, name='create_admin'),
+    path('test/<int:test_id>/comment/', views.add_test_comment, name='add_test_comment'),
+    path('comment/delete/<int:comment_id>/', views.delete_comment, name='delete_comment'),
 ]
