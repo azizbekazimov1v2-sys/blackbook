@@ -1,6 +1,6 @@
-from django.urls import path
 from . import views
 from . import views_tests
+from . import views_career
 
 urlpatterns = [
     path('', views.home, name='home'),
