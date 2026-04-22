@@ -196,25 +196,17 @@ def add_test_comment(request, test_id):
 
     if request.method == 'POST':
         text = request.POST.get('text', '').strip()
-
         if text:
-            Comment.objects.create(
-                user=request.user,
-                test=test,
-                text=text
-            )
-            messages.success(request, "Comment added!")
+            Comment.objects.create(user=request.user, test=test, text=text)
 
-    return redirect('take_pdf_test', test_id=test.id)
+    return redirect('home')
 
 
 @login_required
 def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
 
-    # faqat o‘zi yoki admin o‘chira oladi
     if comment.user == request.user or request.user.is_staff:
         comment.delete()
-        messages.success(request, "Comment deleted")
 
     return redirect(request.META.get('HTTP_REFERER', 'home'))

@@ -194,3 +194,13 @@ def career_test_view(request, topic_id):
         'pass_percentage': topic.test.pass_percentage,
         'pdf_url': pdf_url,
     })
+@login_required
+def add_video_comment(request, video_id):
+    video = get_object_or_404(VideoCourse, id=video_id)
+
+    if request.method == 'POST':
+        text = request.POST.get('text', '').strip()
+        if text:
+            Comment.objects.create(user=request.user, video=video, text=text)
+
+    return redirect('home')

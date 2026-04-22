@@ -62,8 +62,8 @@
                 transform: translateX(30px);
             }
             to {
-                opacity: 1;
                 transform: translateX(0);
+                opacity: 1;
             }
         }
 
@@ -72,9 +72,11 @@
             50% { transform: scale(1.02); }
         }
 
-        a { text-decoration: none; color: inherit; }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-        /* Topbar */
         .topbar {
             background: #ffffff;
             border-bottom: 1px solid #d9d9d9;
@@ -177,7 +179,6 @@
             width: 100%;
         }
 
-        /* Hero */
         .hero {
             background: linear-gradient(135deg, #1e3a8a, #1d4ed8, #334acb);
             color: white;
@@ -316,7 +317,6 @@
             color: #1d4ed8;
         }
 
-        /* Content */
         .content {
             max-width: 1280px;
             margin: 0 auto;
@@ -517,6 +517,10 @@
         .card-actions {
             margin-top: auto;
             padding-top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .open-btn {
@@ -539,6 +543,128 @@
             background: linear-gradient(135deg, #1f2937, #374151);
         }
 
+        .comment-toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #eef2ff, #dbeafe);
+            color: #1d4ed8;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1px solid #bfdbfe;
+            cursor: pointer;
+        }
+
+        .comment-toggle-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .comment-box {
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid #e5e7eb;
+            display: none;
+        }
+
+        .comment-box.show {
+            display: block;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            min-height: 80px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+            resize: vertical;
+            background: white;
+        }
+
+        .comment-form textarea:focus {
+            outline: none;
+            border-color: #334acb;
+            box-shadow: 0 0 0 4px rgba(51, 74, 203, 0.08);
+        }
+
+        .comment-submit-btn {
+            margin-top: 8px;
+            border: none;
+            background: linear-gradient(135deg, #334acb, #2538a8);
+            color: white;
+            padding: 9px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .comments-list {
+            margin-top: 14px;
+            max-height: 220px;
+            overflow: auto;
+            padding-right: 4px;
+        }
+
+        .comment-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+
+        .comment-user {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #111827;
+        }
+
+        .comment-text {
+            font-size: 13px;
+            line-height: 1.5;
+            color: #374151;
+            white-space: pre-wrap;
+            margin-bottom: 4px;
+        }
+
+        .comment-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        .comment-delete {
+            color: #dc2626;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .comment-delete:hover {
+            text-decoration: underline;
+        }
+
+        .empty-comments {
+            margin: 0;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .comment-count {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 700;
+        }
+
         .empty-box {
             background: white;
             border-radius: 18px;
@@ -559,7 +685,6 @@
             border: 1px solid #fcd34d;
         }
 
-        /* Staggered animations */
         .info-card:nth-child(1) { animation-delay: 0.1s; }
         .info-card:nth-child(2) { animation-delay: 0.2s; }
         .info-card:nth-child(3) { animation-delay: 0.3s; }
@@ -568,7 +693,6 @@
         .test-card:nth-child(2) { animation-delay: 0.2s; }
         .test-card:nth-child(3) { animation-delay: 0.3s; }
 
-        /* Responsive */
         @media (max-width: 1200px) {
             .hero {
                 grid-template-columns: 1fr;
@@ -638,24 +762,24 @@
         </div>
 
         <div class="top-right">
-            <a class="top-link" href="{% url 'home' %}"> Home</a>
+            <a class="top-link" href="{% url 'home' %}">Home</a>
 
             {% if user.is_authenticated %}
-                <a class="top-link" href="{% url 'profile' %}"> Profil</a>
-                <a class="top-link" href="{% url 'career_mode' %}"> Career Mode</a>
-                <a class="top-link" href="{% url 'score_calculator' %}"> Score Calculator</a>
+                <a class="top-link" href="{% url 'profile' %}">Profil</a>
+                <a class="top-link" href="{% url 'career_mode' %}">Career Mode</a>
+                <a class="top-link" href="{% url 'score_calculator' %}">Score Calculator</a>
             {% endif %}
 
             {% if user.is_authenticated and user.is_staff %}
                 <a class="top-link" href="{% url 'admin_panel' %}">Admin Panel</a>
-                <a class="top-link" href="/admin/"> Django Admin</a>
+                <a class="top-link" href="/admin/">Django Admin</a>
             {% endif %}
 
             {% if user.is_authenticated %}
-                <a class="top-link primary" href="{% url 'logout' %}"> Logout</a>
+                <a class="top-link primary" href="{% url 'logout' %}">Logout</a>
             {% else %}
-                <a class="top-link" href="{% url 'login' %}"> Sign In</a>
-
+                <a class="top-link" href="{% url 'login' %}">Sign In</a>
+                <a class="top-link primary" href="{% url 'register' %}">Create Account</a>
             {% endif %}
         </div>
     </div>
@@ -680,19 +804,19 @@
             <div class="signin-panel">
                 {% if user.is_authenticated %}
                     <a class="signin-main-btn" href="{% url 'career_mode' %}">
-                        <span></span> Open Career Mode
+                        Open Career Mode
                     </a>
                     <div class="signin-divider"></div>
                     <a class="signin-secondary" href="{% url 'profile' %}">
-                        <span></span> Open Profile
+                        Open Profile
                     </a>
                 {% else %}
                     <a class="signin-main-btn" href="{% url 'login' %}">
-                        <span></span> Sign In
+                        Sign In
                     </a>
                     <div class="signin-divider"></div>
                     <a class="signin-secondary" href="{% url 'register' %}">
-                        <span></span> Create Account
+                        Create Account
                     </a>
                 {% endif %}
             </div>
@@ -727,7 +851,7 @@
                     Test ishlash va tayyorgarlikni tartibli davom ettirish uchun platforma.
                 </p>
                 <div class="premium-line">
-                    <strong> Sizdagi premiumlar:</strong>
+                    <strong>Sizdagi premiumlar:</strong>
                     {% if user_premiums %}
                         {{ user_premiums|join:", " }}
                     {% else %}
@@ -738,7 +862,7 @@
         {% endif %}
 
         <section class="section">
-            <h2> English Tests</h2>
+            <h2>English Tests</h2>
             <p class="section-sub">Reading, Writing va SAT English practice materiallari.</p>
 
             {% if english_tests %}
@@ -747,7 +871,9 @@
                         <div class="test-card">
                             <div class="test-top">
                                 <div class="test-icon">E</div>
-                                <span class="badge badge-free">Free</span>
+                                <span class="badge {% if test.is_premium %}badge-premium{% else %}badge-free{% endif %}">
+                                    {% if test.is_premium %}Premium{% else %}Free{% endif %}
+                                </span>
                             </div>
 
                             <h3>{{ test.title }}</h3>
@@ -760,9 +886,42 @@
                             </div>
 
                             <div class="card-actions">
-                                <a class="open-btn" href="{% url 'take_pdf_test' test.id %}">
-                                    <span></span> Open Test
+                                <a class="open-btn" href="{% if test.is_premium %}{% url 'check_access' 'test' test.id %}{% else %}{% url 'take_pdf_test' test.id %}{% endif %}">
+                                    Open Test
                                 </a>
+                                <button type="button" class="comment-toggle-btn" onclick="toggleComments('test-comments-{{ test.id }}')">
+                                    Comments
+                                </button>
+                                <span class="comment-count">{{ test.comments.count }} ta</span>
+                            </div>
+
+                            <div class="comment-box" id="test-comments-{{ test.id }}">
+                                {% if user.is_authenticated %}
+                                    <form method="post" action="{% url 'add_test_comment' test.id %}" class="comment-form">
+                                        {% csrf_token %}
+                                        <textarea name="text" placeholder="Test haqida fikringizni yozing..." required></textarea>
+                                        <button type="submit" class="comment-submit-btn">Send</button>
+                                    </form>
+                                {% else %}
+                                    <p class="empty-comments">Comment yozish uchun login qiling.</p>
+                                {% endif %}
+
+                                <div class="comments-list">
+                                    {% for c in test.comments.all|dictsortreversed:"created_at" %}
+                                        <div class="comment-item">
+                                            <div class="comment-user">{{ c.user.username }}</div>
+                                            <div class="comment-text">{{ c.text }}</div>
+                                            <div class="comment-meta">
+                                                <span>{{ c.created_at|date:"Y-m-d H:i" }}</span>
+                                                {% if c.user == user or user.is_staff %}
+                                                    <a href="{% url 'delete_comment' c.id %}" class="comment-delete">delete</a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% empty %}
+                                        <p class="empty-comments">Hozircha comment yo‘q.</p>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -773,7 +932,7 @@
         </section>
 
         <section class="section" id="math-tests">
-            <h2> Math Tests</h2>
+            <h2>Math Tests</h2>
             <p class="section-sub">Timer, Desmos va practice testlar bilan Math bo'limi.</p>
 
             {% if math_tests %}
@@ -782,7 +941,9 @@
                         <div class="test-card">
                             <div class="test-top">
                                 <div class="test-icon">M</div>
-                                <span class="badge badge-free">Free</span>
+                                <span class="badge {% if test.is_premium %}badge-premium{% else %}badge-free{% endif %}">
+                                    {% if test.is_premium %}Premium{% else %}Free{% endif %}
+                                </span>
                             </div>
 
                             <h3>{{ test.title }}</h3>
@@ -795,9 +956,42 @@
                             </div>
 
                             <div class="card-actions">
-                                <a class="open-btn" href="{% url 'take_pdf_test' test.id %}">
-                                    <span></span> Open Test
+                                <a class="open-btn" href="{% if test.is_premium %}{% url 'check_access' 'test' test.id %}{% else %}{% url 'take_pdf_test' test.id %}{% endif %}">
+                                    Open Test
                                 </a>
+                                <button type="button" class="comment-toggle-btn" onclick="toggleComments('test-comments-{{ test.id }}')">
+                                    Comments
+                                </button>
+                                <span class="comment-count">{{ test.comments.count }} ta</span>
+                            </div>
+
+                            <div class="comment-box" id="test-comments-{{ test.id }}">
+                                {% if user.is_authenticated %}
+                                    <form method="post" action="{% url 'add_test_comment' test.id %}" class="comment-form">
+                                        {% csrf_token %}
+                                        <textarea name="text" placeholder="Test haqida fikringizni yozing..." required></textarea>
+                                        <button type="submit" class="comment-submit-btn">Send</button>
+                                    </form>
+                                {% else %}
+                                    <p class="empty-comments">Comment yozish uchun login qiling.</p>
+                                {% endif %}
+
+                                <div class="comments-list">
+                                    {% for c in test.comments.all|dictsortreversed:"created_at" %}
+                                        <div class="comment-item">
+                                            <div class="comment-user">{{ c.user.username }}</div>
+                                            <div class="comment-text">{{ c.text }}</div>
+                                            <div class="comment-meta">
+                                                <span>{{ c.created_at|date:"Y-m-d H:i" }}</span>
+                                                {% if c.user == user or user.is_staff %}
+                                                    <a href="{% url 'delete_comment' c.id %}" class="comment-delete">delete</a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% empty %}
+                                        <p class="empty-comments">Hozircha comment yo‘q.</p>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -808,7 +1002,7 @@
         </section>
 
         <section class="section">
-            <h2> Analysis Videos</h2>
+            <h2>Analysis Videos</h2>
             <p class="section-sub">Test tahlillari va tushuntiruvchi videolar.</p>
 
             {% if analysis_videos %}
@@ -817,7 +1011,9 @@
                         <div class="test-card">
                             <div class="test-top">
                                 <div class="test-icon">A</div>
-                                <span class="badge badge-free">Free</span>
+                                <span class="badge {% if video.is_premium %}badge-premium{% else %}badge-free{% endif %}">
+                                    {% if video.is_premium %}Premium{% else %}Free{% endif %}
+                                </span>
                             </div>
 
                             <h3>{{ video.title }}</h3>
@@ -831,17 +1027,49 @@
                             </div>
 
                             <div class="card-actions">
-                                {% if video.video_url %}
-                                    <a class="open-btn" href="{{ video.video_url }}" target="_blank">
-                                        <span>▶</span> Watch
-                                    </a>
+                                {% if video.is_premium %}
+                                    <a class="open-btn" href="{% url 'check_access' 'video' video.id %}">Watch</a>
+                                {% elif video.video_url %}
+                                    <a class="open-btn" href="{{ video.video_url }}" target="_blank">Watch</a>
                                 {% elif video.video_file %}
-                                    <a class="open-btn" href="{{ video.video_file.url }}" target="_blank">
-                                        <span>▶</span> Watch
-                                    </a>
+                                    <a class="open-btn" href="{{ video.video_file.url }}" target="_blank">Watch</a>
                                 {% else %}
                                     <span class="open-btn" style="background:#9ca3af; cursor: default;">No Video</span>
                                 {% endif %}
+
+                                <button type="button" class="comment-toggle-btn" onclick="toggleComments('video-comments-{{ video.id }}')">
+                                    Comments
+                                </button>
+                                <span class="comment-count">{{ video.comments.count }} ta</span>
+                            </div>
+
+                            <div class="comment-box" id="video-comments-{{ video.id }}">
+                                {% if user.is_authenticated %}
+                                    <form method="post" action="{% url 'add_video_comment' video.id %}" class="comment-form">
+                                        {% csrf_token %}
+                                        <textarea name="text" placeholder="Video haqida fikringizni yozing..." required></textarea>
+                                        <button type="submit" class="comment-submit-btn">Send</button>
+                                    </form>
+                                {% else %}
+                                    <p class="empty-comments">Comment yozish uchun login qiling.</p>
+                                {% endif %}
+
+                                <div class="comments-list">
+                                    {% for c in video.comments.all|dictsortreversed:"created_at" %}
+                                        <div class="comment-item">
+                                            <div class="comment-user">{{ c.user.username }}</div>
+                                            <div class="comment-text">{{ c.text }}</div>
+                                            <div class="comment-meta">
+                                                <span>{{ c.created_at|date:"Y-m-d H:i" }}</span>
+                                                {% if c.user == user or user.is_staff %}
+                                                    <a href="{% url 'delete_comment' c.id %}" class="comment-delete">delete</a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% empty %}
+                                        <p class="empty-comments">Hozircha comment yo‘q.</p>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -852,7 +1080,7 @@
         </section>
 
         <section class="section">
-            <h2> Premium Materials</h2>
+            <h2>Premium Materials</h2>
             <p class="section-sub">Premium foydalanuvchilar uchun maxsus testlar va resurslar.</p>
 
             {% if premium_english_tests or premium_math_tests or premium_analysis_videos %}
@@ -874,9 +1102,40 @@
                             </div>
 
                             <div class="card-actions">
-                                <a class="open-btn" href="{% url 'check_access' 'test' test.id %}">
-                                    <span></span> Open
-                                </a>
+                                <a class="open-btn" href="{% url 'check_access' 'test' test.id %}">Open</a>
+                                <button type="button" class="comment-toggle-btn" onclick="toggleComments('test-comments-{{ test.id }}')">
+                                    Comments
+                                </button>
+                                <span class="comment-count">{{ test.comments.count }} ta</span>
+                            </div>
+
+                            <div class="comment-box" id="test-comments-{{ test.id }}">
+                                {% if user.is_authenticated %}
+                                    <form method="post" action="{% url 'add_test_comment' test.id %}" class="comment-form">
+                                        {% csrf_token %}
+                                        <textarea name="text" placeholder="Test haqida fikringizni yozing..." required></textarea>
+                                        <button type="submit" class="comment-submit-btn">Send</button>
+                                    </form>
+                                {% else %}
+                                    <p class="empty-comments">Comment yozish uchun login qiling.</p>
+                                {% endif %}
+
+                                <div class="comments-list">
+                                    {% for c in test.comments.all|dictsortreversed:"created_at" %}
+                                        <div class="comment-item">
+                                            <div class="comment-user">{{ c.user.username }}</div>
+                                            <div class="comment-text">{{ c.text }}</div>
+                                            <div class="comment-meta">
+                                                <span>{{ c.created_at|date:"Y-m-d H:i" }}</span>
+                                                {% if c.user == user or user.is_staff %}
+                                                    <a href="{% url 'delete_comment' c.id %}" class="comment-delete">delete</a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% empty %}
+                                        <p class="empty-comments">Hozircha comment yo‘q.</p>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -898,9 +1157,40 @@
                             </div>
 
                             <div class="card-actions">
-                                <a class="open-btn" href="{% url 'check_access' 'test' test.id %}">
-                                    <span></span> Open
-                                </a>
+                                <a class="open-btn" href="{% url 'check_access' 'test' test.id %}">Open</a>
+                                <button type="button" class="comment-toggle-btn" onclick="toggleComments('test-comments-{{ test.id }}')">
+                                    Comments
+                                </button>
+                                <span class="comment-count">{{ test.comments.count }} ta</span>
+                            </div>
+
+                            <div class="comment-box" id="test-comments-{{ test.id }}">
+                                {% if user.is_authenticated %}
+                                    <form method="post" action="{% url 'add_test_comment' test.id %}" class="comment-form">
+                                        {% csrf_token %}
+                                        <textarea name="text" placeholder="Test haqida fikringizni yozing..." required></textarea>
+                                        <button type="submit" class="comment-submit-btn">Send</button>
+                                    </form>
+                                {% else %}
+                                    <p class="empty-comments">Comment yozish uchun login qiling.</p>
+                                {% endif %}
+
+                                <div class="comments-list">
+                                    {% for c in test.comments.all|dictsortreversed:"created_at" %}
+                                        <div class="comment-item">
+                                            <div class="comment-user">{{ c.user.username }}</div>
+                                            <div class="comment-text">{{ c.text }}</div>
+                                            <div class="comment-meta">
+                                                <span>{{ c.created_at|date:"Y-m-d H:i" }}</span>
+                                                {% if c.user == user or user.is_staff %}
+                                                    <a href="{% url 'delete_comment' c.id %}" class="comment-delete">delete</a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% empty %}
+                                        <p class="empty-comments">Hozircha comment yo‘q.</p>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -921,9 +1211,40 @@
                             </div>
 
                             <div class="card-actions">
-                                <a class="open-btn" href="{% url 'check_access' 'video' video.id %}">
-                                    <span>💎</span> Watch
-                                </a>
+                                <a class="open-btn" href="{% url 'check_access' 'video' video.id %}">Watch</a>
+                                <button type="button" class="comment-toggle-btn" onclick="toggleComments('video-comments-{{ video.id }}')">
+                                    Comments
+                                </button>
+                                <span class="comment-count">{{ video.comments.count }} ta</span>
+                            </div>
+
+                            <div class="comment-box" id="video-comments-{{ video.id }}">
+                                {% if user.is_authenticated %}
+                                    <form method="post" action="{% url 'add_video_comment' video.id %}" class="comment-form">
+                                        {% csrf_token %}
+                                        <textarea name="text" placeholder="Video haqida fikringizni yozing..." required></textarea>
+                                        <button type="submit" class="comment-submit-btn">Send</button>
+                                    </form>
+                                {% else %}
+                                    <p class="empty-comments">Comment yozish uchun login qiling.</p>
+                                {% endif %}
+
+                                <div class="comments-list">
+                                    {% for c in video.comments.all|dictsortreversed:"created_at" %}
+                                        <div class="comment-item">
+                                            <div class="comment-user">{{ c.user.username }}</div>
+                                            <div class="comment-text">{{ c.text }}</div>
+                                            <div class="comment-meta">
+                                                <span>{{ c.created_at|date:"Y-m-d H:i" }}</span>
+                                                {% if c.user == user or user.is_staff %}
+                                                    <a href="{% url 'delete_comment' c.id %}" class="comment-delete">delete</a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% empty %}
+                                        <p class="empty-comments">Hozircha comment yo‘q.</p>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -937,7 +1258,12 @@
 
 <script src="{% static 'exam/page_transition.js' %}"></script>
 <script>
-    // Smooth scroll to math tests if hash is present
+    function toggleComments(id) {
+        const box = document.getElementById(id);
+        if (!box) return;
+        box.classList.toggle('show');
+    }
+
     if (window.location.hash === '#math-tests') {
         setTimeout(() => {
             document.getElementById('math-tests')?.scrollIntoView({
@@ -947,7 +1273,6 @@
         }, 300);
     }
 
-    // Add hover effect to cards
     document.querySelectorAll('.test-card, .info-card').forEach(card => {
         card.addEventListener('mouseenter', function() {
             this.style.transition = 'all 0.22s ease';
