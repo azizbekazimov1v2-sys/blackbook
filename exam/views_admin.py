@@ -8,7 +8,7 @@ from django.utils import timezone
 from django.db.models import Avg, Max, Count, Q
 from django.http import HttpResponse
 
-from .models import Test, VideoCourse, UserPremiumAccess, TestAttempt
+from .models import Test, VideoCourse, UserPremiumAccess, TestAttempt, Question
 
 
 @login_required
@@ -206,12 +206,77 @@ def delete_video(request, video_id):
         return redirect('admin_panel')
 
     return render(request, 'exam/delete_video.html', {'video': video})
-from django.http import HttpResponse
-from django.contrib.auth.models import User
 
 
-from django.http import HttpResponse
-from django.contrib.auth.models import User
+@login_required
+def edit_test(request, test_id):
+    if not request.user.is_staff:
+        return redirect('home')
+
+    test = get_object_or_404(Test, id=test_id, created_by=request.user)
+    questions = test.questions.all().order_by('order')
+
+    if request.method == 'POST':
+        test.title = (request.POST.get('title') or '').strip()
+        test.description = (request.POST.get('description') or '').strip()
+        test.time_limit_minutes = int(request.POST.get('time_limit_minutes') or 60)
+        test.total_questions = int(request.POST.get('total_questions') or 0)
+        test.is_premium = request.POST.get('is_premium') == 'on'
+        test.is_published = request.POST.get('is_published') == 'on'
+
+        new_pdf = request.FILES.get('pdf_file')
+        if new_pdf:
+            if test.pdf_file:
+                test.pdf_file.delete(save=False)
+            test.pdf_file = new_pdf
+
+        test.save()
+
+        for q in questions:
+            q.text = (request.POST.get(f'question_text_{q.id}') or '').strip()
+            q.choice_a = (request.POST.get(f'choice_a_{q.id}') or '').strip()
+            q.choice_b = (request.POST.get(f'choice_b_{q.id}') or '').strip()
+            q.choice_c = (request.POST.get(f'choice_c_{q.id}') or '').strip()
+            q.choice_d = (request.POST.get(f'choice_d_{q.id}') or '').strip()
+            q.correct_choice = (request.POST.get(f'correct_choice_{q.id}') or '').strip()
+            q.order = int(request.POST.get(f'order_{q.id}') or q.order)
+            q.pdf_page = int(request.POST.get(f'pdf_page_{q.id}') or q.pdf_page)
+            q.source_number = int(request.POST.get(f'source_number_{q.id}') or q.source_number)
+            q.save()
+
+        messages.success(request, "Test updated successfully!")
+        return redirect('admin_panel')
+
+    return render(request, 'exam/edit_test.html', {
+        'test': test,
+        'questions': questions,
+    })
+
+
+@login_required
+def edit_video(request, video_id):
+    if not request.user.is_staff:
+        return redirect('home')
+
+    video = get_object_or_404(VideoCourse, id=video_id, created_by=request.user)
+
+    if request.method == 'POST':
+        video.title = (request.POST.get('title') or '').strip()
+        video.description = (request.POST.get('description') or '').strip()
+        video.video_url = (request.POST.get('video_url') or '').strip()
+        video.is_premium = request.POST.get('is_premium') == 'on'
+
+        new_video_file = request.FILES.get('video_file')
+        if new_video_file:
+            if video.video_file:
+                video.video_file.delete(save=False)
+            video.video_file = new_video_file
+
+        video.save()
+        messages.success(request, "Video updated successfully!")
+        return redirect('admin_panel')
+
+    return render(request, 'exam/edit_video.html', {'video': video})
 
 
 def create_admin(request):
@@ -235,54 +300,9 @@ def create_admin(request):
         user.save()
         return HttpResponse("Admin created successfully")
 
-    # agar bor bo‘lsa ham majburan admin qilamiz
     user.set_password(password)
     user.is_staff = True
     user.is_superuser = True
     user.save()
 
     return HttpResponse("Admin updated (forced admin)")
-# =========================
-# EDIT TEST
-# =========================
-@login_required
-def edit_test(request, test_id):
-    if not request.user.is_staff:
-        return redirect('home')
-
-    test = get_object_or_404(Test, id=test_id, created_by=request.user)
-
-    if request.method == 'POST':
-        test.title = request.POST.get('title')
-        test.description = request.POST.get('description')
-        test.time_limit_minutes = request.POST.get('time_limit_minutes')
-        test.total_questions = request.POST.get('total_questions')
-        test.is_premium = request.POST.get('is_premium') == 'on'
-
-        test.save()
-        messages.success(request, "Test updated!")
-        return redirect('admin_panel')
-
-    return render(request, 'exam/edit_test.html', {'test': test})
-
-
-# =========================
-# EDIT VIDEO
-# =========================
-@login_required
-def edit_video(request, video_id):
-    if not request.user.is_staff:
-        return redirect('home')
-
-    video = get_object_or_404(VideoCourse, id=video_id, created_by=request.user)
-
-    if request.method == 'POST':
-        video.title = request.POST.get('title')
-        video.description = request.POST.get('description')
-        video.is_premium = request.POST.get('is_premium') == 'on'
-
-        video.save()
-        messages.success(request, "Video updated!")
-        return redirect('admin_panel')
-
-    return render(request, 'exam/edit_video.html', {'video': video})

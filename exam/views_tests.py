@@ -5,7 +5,8 @@ from django.utils import timezone
 from django.conf import settings
 from django.http import FileResponse, Http404
 from .models import Comment
-
+from django.http import FileResponse, Http404, HttpResponse
+from .models import Test, Question, VideoCourse, UserPremiumAccess, TestAttempt, TestAttemptAnswer, Comment
 from .models import Test, Question, VideoCourse, UserPremiumAccess, TestAttempt, TestAttemptAnswer, Comment
 from .services import (
     calculate_scaled_score,
@@ -215,4 +216,38 @@ def delete_comment(request, comment_id):
 def share_test(request, test_id):
     test = get_object_or_404(Test, id=test_id)
     link = request.build_absolute_uri(f"/take-pdf-test/{test.id}/")
+    return HttpResponse(link)
+@login_required
+def add_test_comment(request, test_id):
+    test = get_object_or_404(Test, id=test_id)
+
+    if request.method == 'POST':
+        text = (request.POST.get('text') or '').strip()
+        if text:
+            Comment.objects.create(user=request.user, test=test, text=text)
+            messages.success(request, "Comment added!")
+
+    return redirect('home')
+
+
+@login_required
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if comment.user == request.user or request.user.is_staff:
+        comment.delete()
+        messages.success(request, "Comment deleted")
+
+    return redirect(request.META.get('HTTP_REFERER', 'home'))
+
+
+@login_required
+def share_test(request, test_id):
+    test = get_object_or_404(Test, id=test_id)
+
+    if test.is_premium:
+        link = request.build_absolute_uri(f"/check-access/test/{test.id}/")
+    else:
+        link = request.build_absolute_uri(f"/take-pdf-test/{test.id}/")
+
     return HttpResponse(link)

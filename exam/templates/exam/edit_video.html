@@ -48,6 +48,7 @@
         }
 
         input[type="text"],
+        input[type="file"],
         textarea {
             width: 100%;
             border: 1px solid #d1d5db;
@@ -95,6 +96,7 @@
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
+            text-decoration: none;
         }
 
         .btn-save {
@@ -114,7 +116,7 @@
     <div class="card">
         <h1>Edit Video</h1>
 
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
             <div class="group">
@@ -125,6 +127,16 @@
             <div class="group">
                 <label for="description">Description</label>
                 <textarea id="description" name="description">{{ video.description }}</textarea>
+            </div>
+
+            <div class="group">
+                <label for="video_url">Video URL</label>
+                <input type="text" id="video_url" name="video_url" value="{{ video.video_url }}">
+            </div>
+
+            <div class="group">
+                <label for="video_file">Replace Video File</label>
+                <input type="file" id="video_file" name="video_file">
             </div>
 
             <div class="group">

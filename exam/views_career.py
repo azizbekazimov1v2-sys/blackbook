@@ -234,3 +234,30 @@ def share_video(request, video_id):
         link = request.build_absolute_uri(f"/check-access/video/{video.id}/")
 
     return HttpResponse(link)
+@login_required
+def add_video_comment(request, video_id):
+    video = get_object_or_404(VideoCourse, id=video_id)
+
+    if request.method == 'POST':
+        text = (request.POST.get('text') or '').strip()
+        if text:
+            Comment.objects.create(user=request.user, video=video, text=text)
+            messages.success(request, "Comment added!")
+
+    return redirect('home')
+
+
+@login_required
+def share_video(request, video_id):
+    video = get_object_or_404(VideoCourse, id=video_id)
+
+    if video.is_premium:
+        link = request.build_absolute_uri(f"/check-access/video/{video.id}/")
+    elif video.video_url:
+        link = video.video_url
+    elif video.video_file:
+        link = request.build_absolute_uri(video.video_file.url)
+    else:
+        link = request.build_absolute_uri(f"/check-access/video/{video.id}/")
+
+    return HttpResponse(link)

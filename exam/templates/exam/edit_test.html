@@ -17,8 +17,8 @@
         }
 
         .wrap {
-            max-width: 760px;
-            margin: 40px auto;
+            max-width: 1100px;
+            margin: 32px auto;
             padding: 0 16px;
         }
 
@@ -31,7 +31,7 @@
         }
 
         h1 {
-            margin: 0 0 18px;
+            margin: 0 0 20px;
             font-size: 30px;
         }
 
@@ -49,7 +49,8 @@
 
         input[type="text"],
         input[type="number"],
-        textarea {
+        textarea,
+        input[type="file"] {
             width: 100%;
             border: 1px solid #d1d5db;
             border-radius: 14px;
@@ -60,7 +61,7 @@
         }
 
         textarea {
-            min-height: 120px;
+            min-height: 100px;
             resize: vertical;
         }
 
@@ -77,6 +78,7 @@
             gap: 10px;
             font-size: 14px;
             font-weight: 700;
+            margin-bottom: 16px;
         }
 
         .actions {
@@ -96,6 +98,7 @@
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
+            text-decoration: none;
         }
 
         .btn-save {
@@ -108,6 +111,32 @@
             color: #1d4ed8;
             border: 1px solid #bfdbfe;
         }
+
+        .question-card {
+            margin-top: 18px;
+            padding: 18px;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            background: #fafafa;
+        }
+
+        .question-title {
+            margin: 0 0 14px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -115,7 +144,7 @@
     <div class="card">
         <h1>Edit Test</h1>
 
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
             <div class="group">
@@ -128,22 +157,87 @@
                 <textarea id="description" name="description">{{ test.description }}</textarea>
             </div>
 
-            <div class="group">
-                <label for="time_limit_minutes">Time Limit (minutes)</label>
-                <input type="number" id="time_limit_minutes" name="time_limit_minutes" value="{{ test.time_limit_minutes }}" min="1" required>
+            <div class="grid-2">
+                <div class="group">
+                    <label for="time_limit_minutes">Time Limit (minutes)</label>
+                    <input type="number" id="time_limit_minutes" name="time_limit_minutes" value="{{ test.time_limit_minutes }}" min="1" required>
+                </div>
+
+                <div class="group">
+                    <label for="total_questions">Total Questions</label>
+                    <input type="number" id="total_questions" name="total_questions" value="{{ test.total_questions }}" min="0" required>
+                </div>
             </div>
 
             <div class="group">
-                <label for="total_questions">Total Questions</label>
-                <input type="number" id="total_questions" name="total_questions" value="{{ test.total_questions }}" min="0" required>
+                <label for="pdf_file">Replace PDF file</label>
+                <input type="file" id="pdf_file" name="pdf_file">
             </div>
 
-            <div class="group">
-                <label class="checkbox-row">
-                    <input type="checkbox" name="is_premium" {% if test.is_premium %}checked{% endif %}>
-                    Premium
-                </label>
-            </div>
+            <label class="checkbox-row">
+                <input type="checkbox" name="is_premium" {% if test.is_premium %}checked{% endif %}>
+                Premium
+            </label>
+
+            <label class="checkbox-row">
+                <input type="checkbox" name="is_published" {% if test.is_published %}checked{% endif %}>
+                Published
+            </label>
+
+            {% for q in questions %}
+                <div class="question-card">
+                    <h3 class="question-title">Question {{ q.order }}</h3>
+
+                    <div class="group">
+                        <label for="question_text_{{ q.id }}">Question Text</label>
+                        <textarea id="question_text_{{ q.id }}" name="question_text_{{ q.id }}">{{ q.text }}</textarea>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="group">
+                            <label for="choice_a_{{ q.id }}">Choice A</label>
+                            <input type="text" id="choice_a_{{ q.id }}" name="choice_a_{{ q.id }}" value="{{ q.choice_a }}">
+                        </div>
+
+                        <div class="group">
+                            <label for="choice_b_{{ q.id }}">Choice B</label>
+                            <input type="text" id="choice_b_{{ q.id }}" name="choice_b_{{ q.id }}" value="{{ q.choice_b }}">
+                        </div>
+
+                        <div class="group">
+                            <label for="choice_c_{{ q.id }}">Choice C</label>
+                            <input type="text" id="choice_c_{{ q.id }}" name="choice_c_{{ q.id }}" value="{{ q.choice_c }}">
+                        </div>
+
+                        <div class="group">
+                            <label for="choice_d_{{ q.id }}">Choice D</label>
+                            <input type="text" id="choice_d_{{ q.id }}" name="choice_d_{{ q.id }}" value="{{ q.choice_d }}">
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="group">
+                            <label for="correct_choice_{{ q.id }}">Correct Answer</label>
+                            <input type="text" id="correct_choice_{{ q.id }}" name="correct_choice_{{ q.id }}" value="{{ q.correct_choice }}">
+                        </div>
+
+                        <div class="group">
+                            <label for="order_{{ q.id }}">Order</label>
+                            <input type="number" id="order_{{ q.id }}" name="order_{{ q.id }}" value="{{ q.order }}" min="1">
+                        </div>
+
+                        <div class="group">
+                            <label for="pdf_page_{{ q.id }}">PDF Page</label>
+                            <input type="number" id="pdf_page_{{ q.id }}" name="pdf_page_{{ q.id }}" value="{{ q.pdf_page }}" min="1">
+                        </div>
+
+                        <div class="group">
+                            <label for="source_number_{{ q.id }}">Source Number</label>
+                            <input type="number" id="source_number_{{ q.id }}" name="source_number_{{ q.id }}" value="{{ q.source_number }}" min="1">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
 
             <div class="actions">
                 <button type="submit" class="btn btn-save">Save</button>
