@@ -1,9 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import FileResponse, Http404
+from django.http import FileResponse, Http404, HttpResponse
 
-from .models import CareerTopic, CareerProgress, UserPremiumAccess
+from .models import (
+    CareerTopic,
+    CareerProgress,
+    UserPremiumAccess,
+    VideoCourse,
+    Comment,
+)
 
 
 def user_has_premium(user):
@@ -122,6 +128,7 @@ def career_watch_video(request, topic_id):
             'topic': topic,
             'external_video_url': topic.video.video_url,
             'is_external': True,
+            'video_comments': topic.video.comments.all().order_by('-created_at'),
         })
 
     if topic.video.video_file:
@@ -129,6 +136,7 @@ def career_watch_video(request, topic_id):
             'topic': topic,
             'secure_video_url': f'/secure-video/{topic.id}/',
             'is_external': False,
+            'video_comments': topic.video.comments.all().order_by('-created_at'),
         })
 
     messages.error(request, "Video manzili topilmadi.")
@@ -194,13 +202,35 @@ def career_test_view(request, topic_id):
         'pass_percentage': topic.test.pass_percentage,
         'pdf_url': pdf_url,
     })
+
+
 @login_required
 def add_video_comment(request, video_id):
     video = get_object_or_404(VideoCourse, id=video_id)
 
     if request.method == 'POST':
         text = request.POST.get('text', '').strip()
+
         if text:
-            Comment.objects.create(user=request.user, video=video, text=text)
+            Comment.objects.create(
+                user=request.user,
+                video=video,
+                text=text
+            )
+            messages.success(request, "Comment added!")
 
     return redirect('home')
+
+
+@login_required
+def share_video(request, video_id):
+    video = get_object_or_404(VideoCourse, id=video_id)
+
+    if video.video_url:
+        link = video.video_url
+    elif video.video_file:
+        link = request.build_absolute_uri(video.video_file.url)
+    else:
+        link = request.build_absolute_uri(f"/check-access/video/{video.id}/")
+
+    return HttpResponse(link)

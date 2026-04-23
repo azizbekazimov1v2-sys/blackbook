@@ -44,7 +44,16 @@ urlpatterns = [
     path('delete-test/<int:test_id>/', views.delete_test, name='delete_test'),
     path('delete-video/<int:video_id>/', views.delete_video, name='delete_video'),
 
+    # COMMENTS
     path('test/<int:test_id>/comment/', views_tests.add_test_comment, name='add_test_comment'),
     path('video/<int:video_id>/comment/', views_career.add_video_comment, name='add_video_comment'),
     path('comment/delete/<int:comment_id>/', views_tests.delete_comment, name='delete_comment'),
+
+    # SHARE
+    path('test/<int:test_id>/share/', views_tests.share_test, name='share_test'),
+    path('video/<int:video_id>/share/', views_career.share_video, name='share_video'),
+
+    # ADMIN EDIT
+    path('edit-test/<int:test_id>/', views.edit_test, name='edit_test'),
+    path('edit-video/<int:video_id>/', views.edit_video, name='edit_video'),
 ]

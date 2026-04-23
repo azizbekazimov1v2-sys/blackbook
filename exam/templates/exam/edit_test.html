@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Test - SAT Azizbek</title>
+    <link rel="stylesheet" href="{% static 'exam/ui_smooth.css' %}">
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #f5f7fb, #eef2ff);
+            color: #111827;
+        }
+
+        .wrap {
+            max-width: 760px;
+            margin: 40px auto;
+            padding: 0 16px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+        }
+
+        h1 {
+            margin: 0 0 18px;
+            font-size: 30px;
+        }
+
+        .group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #374151;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 14px;
+            padding: 12px 14px;
+            font-size: 15px;
+            background: white;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #334acb;
+            box-shadow: 0 0 0 4px rgba(51, 74, 203, 0.08);
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 12px;
+            padding: 11px 16px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #111827, #1f2937);
+            color: white;
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, #eef2ff, #dbeafe);
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="card">
+        <h1>Edit Test</h1>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" value="{{ test.title }}" required>
+            </div>
+
+            <div class="group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description">{{ test.description }}</textarea>
+            </div>
+
+            <div class="group">
+                <label for="time_limit_minutes">Time Limit (minutes)</label>
+                <input type="number" id="time_limit_minutes" name="time_limit_minutes" value="{{ test.time_limit_minutes }}" min="1" required>
+            </div>
+
+            <div class="group">
+                <label for="total_questions">Total Questions</label>
+                <input type="number" id="total_questions" name="total_questions" value="{{ test.total_questions }}" min="0" required>
+            </div>
+
+            <div class="group">
+                <label class="checkbox-row">
+                    <input type="checkbox" name="is_premium" {% if test.is_premium %}checked{% endif %}>
+                    Premium
+                </label>
+            </div>
+
+            <div class="actions">
+                <button type="submit" class="btn btn-save">Save</button>
+                <a href="{% url 'admin_panel' %}" class="btn btn-back">Back</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

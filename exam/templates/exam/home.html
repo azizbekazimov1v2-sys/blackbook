@@ -543,22 +543,42 @@
             background: linear-gradient(135deg, #1f2937, #374151);
         }
 
-        .comment-toggle-btn {
+        .comment-toggle-btn,
+        .share-btn,
+        .edit-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            background: linear-gradient(135deg, #eef2ff, #dbeafe);
-            color: #1d4ed8;
             padding: 10px 14px;
             border-radius: 12px;
             font-size: 13px;
             font-weight: 700;
-            border: 1px solid #bfdbfe;
             cursor: pointer;
+            border: none;
         }
 
-        .comment-toggle-btn:hover {
+        .comment-toggle-btn {
+            background: linear-gradient(135deg, #eef2ff, #dbeafe);
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+        }
+
+        .share-btn {
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+            color: #111827;
+            border: 1px solid #d1d5db;
+        }
+
+        .edit-btn {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+
+        .comment-toggle-btn:hover,
+        .share-btn:hover,
+        .edit-btn:hover {
             transform: translateY(-1px);
         }
 
@@ -889,9 +909,21 @@
                                 <a class="open-btn" href="{% if test.is_premium %}{% url 'check_access' 'test' test.id %}{% else %}{% url 'take_pdf_test' test.id %}{% endif %}">
                                     Open Test
                                 </a>
+
+                                <a class="share-btn" href="{% url 'share_test' test.id %}" target="_blank">
+                                    Share
+                                </a>
+
                                 <button type="button" class="comment-toggle-btn" onclick="toggleComments('test-comments-{{ test.id }}')">
                                     Comments
                                 </button>
+
+                                {% if user.is_staff %}
+                                    <a class="edit-btn" href="{% url 'edit_test' test.id %}">
+                                        Edit
+                                    </a>
+                                {% endif %}
+
                                 <span class="comment-count">{{ test.comments.count }} ta</span>
                             </div>
 
@@ -959,9 +991,21 @@
                                 <a class="open-btn" href="{% if test.is_premium %}{% url 'check_access' 'test' test.id %}{% else %}{% url 'take_pdf_test' test.id %}{% endif %}">
                                     Open Test
                                 </a>
+
+                                <a class="share-btn" href="{% url 'share_test' test.id %}" target="_blank">
+                                    Share
+                                </a>
+
                                 <button type="button" class="comment-toggle-btn" onclick="toggleComments('test-comments-{{ test.id }}')">
                                     Comments
                                 </button>
+
+                                {% if user.is_staff %}
+                                    <a class="edit-btn" href="{% url 'edit_test' test.id %}">
+                                        Edit
+                                    </a>
+                                {% endif %}
+
                                 <span class="comment-count">{{ test.comments.count }} ta</span>
                             </div>
 
@@ -1037,9 +1081,20 @@
                                     <span class="open-btn" style="background:#9ca3af; cursor: default;">No Video</span>
                                 {% endif %}
 
+                                <a class="share-btn" href="{% url 'share_video' video.id %}" target="_blank">
+                                    Share
+                                </a>
+
                                 <button type="button" class="comment-toggle-btn" onclick="toggleComments('video-comments-{{ video.id }}')">
                                     Comments
                                 </button>
+
+                                {% if user.is_staff %}
+                                    <a class="edit-btn" href="{% url 'edit_video' video.id %}">
+                                        Edit
+                                    </a>
+                                {% endif %}
+
                                 <span class="comment-count">{{ video.comments.count }} ta</span>
                             </div>
 
@@ -1103,9 +1158,21 @@
 
                             <div class="card-actions">
                                 <a class="open-btn" href="{% url 'check_access' 'test' test.id %}">Open</a>
+
+                                <a class="share-btn" href="{% url 'share_test' test.id %}" target="_blank">
+                                    Share
+                                </a>
+
                                 <button type="button" class="comment-toggle-btn" onclick="toggleComments('test-comments-{{ test.id }}')">
                                     Comments
                                 </button>
+
+                                {% if user.is_staff %}
+                                    <a class="edit-btn" href="{% url 'edit_test' test.id %}">
+                                        Edit
+                                    </a>
+                                {% endif %}
+
                                 <span class="comment-count">{{ test.comments.count }} ta</span>
                             </div>
 
@@ -1158,9 +1225,21 @@
 
                             <div class="card-actions">
                                 <a class="open-btn" href="{% url 'check_access' 'test' test.id %}">Open</a>
+
+                                <a class="share-btn" href="{% url 'share_test' test.id %}" target="_blank">
+                                    Share
+                                </a>
+
                                 <button type="button" class="comment-toggle-btn" onclick="toggleComments('test-comments-{{ test.id }}')">
                                     Comments
                                 </button>
+
+                                {% if user.is_staff %}
+                                    <a class="edit-btn" href="{% url 'edit_test' test.id %}">
+                                        Edit
+                                    </a>
+                                {% endif %}
+
                                 <span class="comment-count">{{ test.comments.count }} ta</span>
                             </div>
 
@@ -1212,9 +1291,21 @@
 
                             <div class="card-actions">
                                 <a class="open-btn" href="{% url 'check_access' 'video' video.id %}">Watch</a>
+
+                                <a class="share-btn" href="{% url 'share_video' video.id %}" target="_blank">
+                                    Share
+                                </a>
+
                                 <button type="button" class="comment-toggle-btn" onclick="toggleComments('video-comments-{{ video.id }}')">
                                     Comments
                                 </button>
+
+                                {% if user.is_staff %}
+                                    <a class="edit-btn" href="{% url 'edit_video' video.id %}">
+                                        Edit
+                                    </a>
+                                {% endif %}
+
                                 <span class="comment-count">{{ video.comments.count }} ta</span>
                             </div>
 

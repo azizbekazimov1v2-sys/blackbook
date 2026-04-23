@@ -210,3 +210,9 @@ def delete_comment(request, comment_id):
         comment.delete()
 
     return redirect(request.META.get('HTTP_REFERER', 'home'))
+
+@login_required
+def share_test(request, test_id):
+    test = get_object_or_404(Test, id=test_id)
+    link = request.build_absolute_uri(f"/take-pdf-test/{test.id}/")
+    return HttpResponse(link)

@@ -242,3 +242,47 @@ def create_admin(request):
     user.save()
 
     return HttpResponse("Admin updated (forced admin)")
+# =========================
+# EDIT TEST
+# =========================
+@login_required
+def edit_test(request, test_id):
+    if not request.user.is_staff:
+        return redirect('home')
+
+    test = get_object_or_404(Test, id=test_id, created_by=request.user)
+
+    if request.method == 'POST':
+        test.title = request.POST.get('title')
+        test.description = request.POST.get('description')
+        test.time_limit_minutes = request.POST.get('time_limit_minutes')
+        test.total_questions = request.POST.get('total_questions')
+        test.is_premium = request.POST.get('is_premium') == 'on'
+
+        test.save()
+        messages.success(request, "Test updated!")
+        return redirect('admin_panel')
+
+    return render(request, 'exam/edit_test.html', {'test': test})
+
+
+# =========================
+# EDIT VIDEO
+# =========================
+@login_required
+def edit_video(request, video_id):
+    if not request.user.is_staff:
+        return redirect('home')
+
+    video = get_object_or_404(VideoCourse, id=video_id, created_by=request.user)
+
+    if request.method == 'POST':
+        video.title = request.POST.get('title')
+        video.description = request.POST.get('description')
+        video.is_premium = request.POST.get('is_premium') == 'on'
+
+        video.save()
+        messages.success(request, "Video updated!")
+        return redirect('admin_panel')
+
+    return render(request, 'exam/edit_video.html', {'video': video})
