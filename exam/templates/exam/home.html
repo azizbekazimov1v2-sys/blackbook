@@ -910,9 +910,6 @@
                                     Open Test
                                 </a>
 
-                                <a class="share-btn" href="{% url 'share_test' test.id %}" target="_blank">
-                                    Share
-                                </a>
 
                                 <button type="button" class="comment-toggle-btn" onclick="toggleComments('test-comments-{{ test.id }}')">
                                     Comments
@@ -1292,9 +1289,6 @@
                             <div class="card-actions">
                                 <a class="open-btn" href="{% url 'check_access' 'video' video.id %}">Watch</a>
 
-                                <a class="share-btn" href="{% url 'share_video' video.id %}" target="_blank">
-                                    Share
-                                </a>
 
                                 <button type="button" class="comment-toggle-btn" onclick="toggleComments('video-comments-{{ video.id }}')">
                                     Comments
