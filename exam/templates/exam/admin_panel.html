@@ -455,6 +455,11 @@
             color: #92400e;
             border: 1px solid #fcd34d;
         }
+        .action-btn.bank-btn {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #166534;
+            border: 1px solid #86efac;
+        }
 
         .delete-btn {
             background: linear-gradient(135deg, #ef4444, #dc2626);
@@ -616,6 +621,7 @@
 
         <div class="head-actions">
             <a href="{% url 'upload_sat_pdf' %}" class="head-btn blue">New Test</a>
+            <a href="{% url 'upload_pdf_bank' %}" class="head-btn dark">Question Bank</a>
             <a href="{% url 'create_video' %}" class="head-btn dark">New Video</a>
             <a href="{% url 'users_list' %}" class="head-btn soft">Users</a>
         </div>
@@ -777,6 +783,7 @@
                         <div class="card-actions">
                             <a href="{% url 'take_pdf_test' card.test.id %}" class="action-btn open-btn">Open</a>
                             <a href="{% url 'edit_test' card.test.id %}" class="action-btn edit-btn">Edit</a>
+                            <a href="{% url 'append_pdf_bank' card.test.id %}" class="action-btn bank-btn">Add Bank</a>
                             <a href="{% url 'upload_sat_pdf' %}" class="action-btn new-btn">New Test</a>
 
                             <form method="post" action="{% url 'delete_test' card.test.id %}" style="display:inline;">
