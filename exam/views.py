@@ -1,3 +1,4 @@
+from django.urls import path
 from .views_home import home
 from .views_auth import login_view, register, custom_logout
 from .views_profile import profile_view, edit_profile, leaderboard_view
@@ -33,4 +34,3 @@ from .views_career_admin import (
     career_topic_edit,
     career_topic_delete,
 )
-from .views_score import score_calculator_view
