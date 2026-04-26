@@ -287,47 +287,31 @@ class Comment(models.Model):
         target = self.test.title if self.test else self.video.title if self.video else "Unknown"
         return f"{self.user.username} - {target}"
 
-class Duel(models.Model):
-    STATUS_CHOICES = [
+class DuelChallenge(models.Model):
+    STATUS_CHOICES = (
         ('pending', 'Pending'),
         ('accepted', 'Accepted'),
         ('completed', 'Completed'),
         ('cancelled', 'Cancelled'),
-    ]
-
-    test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='duels')
-    challenger = models.ForeignKey(User, on_delete=models.CASCADE, related_name='duels_created')
-    opponent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='duels_received')
-
-    challenger_attempt = models.ForeignKey(
-        TestAttempt, on_delete=models.SET_NULL, null=True, blank=True, related_name='duel_as_challenger'
     )
-    opponent_attempt = models.ForeignKey(
-        TestAttempt, on_delete=models.SET_NULL, null=True, blank=True, related_name='duel_as_opponent'
-    )
+
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    challenger = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_duels')
+    opponent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_duels')
 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
-    winner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='duel_wins')
+
+    winner = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='duel_wins'
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     accepted_at = models.DateTimeField(null=True, blank=True)
     completed_at = models.DateTimeField(null=True, blank=True)
 
-    class Meta:
-        ordering = ['-created_at']
-
     def __str__(self):
-        return f"{self.challenger} vs {self.opponent} - {self.test.title}"
-
-    def finish_if_ready(self):
-        if self.challenger_attempt and self.opponent_attempt:
-            if self.challenger_attempt.score > self.opponent_attempt.score:
-                self.winner = self.challenger
-            elif self.opponent_attempt.score > self.challenger_attempt.score:
-                self.winner = self.opponent
-            else:
-                self.winner = None
-
-            self.status = 'completed'
-            self.completed_at = timezone.now()
-            self.save()
+        return f"{self.challenger.username} vs {self.opponent.username}"
