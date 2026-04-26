@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Duel Result</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(125,211,252,0.35), transparent 35%),
+                linear-gradient(135deg, #e0f2fe, #f8fafc 45%, #dbeafe);
+            margin: 0;
+            padding: 30px;
+        }
+
+        .card {
+            max-width: 900px;
+            margin: auto;
+            background: rgba(255,255,255,0.92);
+            padding: 28px;
+            border-radius: 26px;
+            border: 1px solid #bae6fd;
+            box-shadow: 0 18px 42px rgba(14,165,233,0.14);
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 36px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .box {
+            background: #f8fafc;
+            border: 1px solid #bae6fd;
+            border-radius: 20px;
+            padding: 18px;
+        }
+
+        .score {
+            font-size: 42px;
+            font-weight: 900;
+            color: #0284c7;
+        }
+
+        .winner {
+            margin-top: 22px;
+            padding: 18px;
+            border-radius: 18px;
+            background: #dcfce7;
+            color: #166534;
+            font-size: 24px;
+            font-weight: 900;
+        }
+
+        .waiting {
+            margin-top: 22px;
+            padding: 18px;
+            border-radius: 18px;
+            background: #fef3c7;
+            color: #92400e;
+            font-weight: 900;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 11px 15px;
+            border-radius: 13px;
+            background: #0284c7;
+            color: white;
+            text-decoration: none;
+            font-weight: 800;
+        }
+
+        @media (max-width: 700px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>Duel Result</h1>
+    <p><strong>Test:</strong> {{ duel.test.title }}</p>
+
+    <div class="row">
+        <div class="box">
+            <h2>{{ duel.challenger.username }}</h2>
+            {% if challenger_attempt %}
+                <div class="score">{{ challenger_attempt.score }}</div>
+                <p>Correct: {{ challenger_attempt.correct_count }}/{{ challenger_attempt.total_questions }}</p>
+                <p>Wrong: {{ challenger_attempt.wrong_count }}</p>
+                <p>Unanswered: {{ challenger_attempt.unanswered_count }}</p>
+            {% else %}
+                <p>Hali testni tugatmagan.</p>
+            {% endif %}
+        </div>
+
+        <div class="box">
+            <h2>{{ duel.opponent.username }}</h2>
+            {% if opponent_attempt %}
+                <div class="score">{{ opponent_attempt.score }}</div>
+                <p>Correct: {{ opponent_attempt.correct_count }}/{{ opponent_attempt.total_questions }}</p>
+                <p>Wrong: {{ opponent_attempt.wrong_count }}</p>
+                <p>Unanswered: {{ opponent_attempt.unanswered_count }}</p>
+            {% else %}
+                <p>Hali testni tugatmagan.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if duel.status == 'completed' %}
+        {% if duel.winner %}
+            <div class="winner">Winner: {{ duel.winner.username }}</div>
+        {% else %}
+            <div class="winner">Draw</div>
+        {% endif %}
+    {% else %}
+        <div class="waiting">Natija hali tayyor emas. Ikkala user ham testni tugatishi kerak.</div>
+    {% endif %}
+
+    <a href="{% url 'duel_mode' %}" class="btn">Back to Duel Mode</a>
+</div>
+</body>
+</html>

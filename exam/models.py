@@ -286,3 +286,27 @@ class Comment(models.Model):
     def __str__(self):
         target = self.test.title if self.test else self.video.title if self.video else "Unknown"
         return f"{self.user.username} - {target}"
+class DuelChallenge(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled'),
+    )
+
+    test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='duels')
+    challenger = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_duels')
+    opponent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_duels')
+
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    winner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='winner')
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    accepted_at = models.DateTimeField(null=True, blank=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.challenger.username} vs {self.opponent.username} - {self.test.title}"
