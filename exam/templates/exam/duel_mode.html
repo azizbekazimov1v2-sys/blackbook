@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Duel Mode - SAT Azizbek</title>
+
     <style>
         * { box-sizing: border-box; }
 
@@ -30,376 +31,162 @@
             box-shadow: 0 22px 50px rgba(2,132,199,0.28);
             display: flex;
             justify-content: space-between;
-            gap: 18px;
             align-items: center;
-            margin-bottom: 22px;
         }
 
         .hero h1 {
-            margin: 0 0 8px;
-            font-size: 42px;
-            line-height: 1;
-        }
-
-        .hero p {
             margin: 0;
-            opacity: 0.92;
-            font-size: 16px;
+            font-size: 40px;
         }
 
         .home-btn {
-            background: rgba(255,255,255,0.18);
-            border: 1px solid rgba(255,255,255,0.35);
             color: white;
-            padding: 11px 16px;
-            border-radius: 14px;
             text-decoration: none;
-            font-weight: 800;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-            margin-bottom: 22px;
-        }
-
-        .stat {
-            background: rgba(255,255,255,0.88);
-            border: 1px solid rgba(186,230,253,0.9);
-            border-radius: 20px;
-            padding: 18px;
-            box-shadow: 0 10px 24px rgba(14,165,233,0.08);
-        }
-
-        .stat-label {
-            font-size: 13px;
-            color: #0369a1;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .stat-value {
-            font-size: 30px;
-            font-weight: 900;
-            color: #0f172a;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
+            font-weight: bold;
         }
 
         .card {
-            background: rgba(255,255,255,0.92);
-            border: 1px solid rgba(186,230,253,0.9);
-            border-radius: 24px;
-            padding: 22px;
-            box-shadow: 0 12px 30px rgba(14,165,233,0.10);
-            margin-bottom: 18px;
-        }
-
-        .card h2 {
-            margin: 0 0 16px;
-            font-size: 24px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-            font-weight: 800;
-            color: #075985;
-        }
-
-        select {
-            width: 100%;
-            padding: 13px;
-            border-radius: 14px;
-            border: 1px solid #bae6fd;
-            margin-bottom: 14px;
-            font-size: 14px;
             background: white;
-        }
-
-        select:focus {
-            outline: none;
-            border-color: #0ea5e9;
-            box-shadow: 0 0 0 4px rgba(14,165,233,0.14);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
         }
 
         .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 14px;
-            border-radius: 13px;
+            padding: 8px 12px;
+            border-radius: 10px;
             color: white;
             text-decoration: none;
-            border: none;
-            cursor: pointer;
-            font-weight: 800;
-            font-size: 14px;
+            display: inline-block;
         }
 
-        .btn.blue { background: linear-gradient(135deg, #0284c7, #0ea5e9); }
-        .btn.green { background: linear-gradient(135deg, #16a34a, #22c55e); }
-        .btn.red { background: linear-gradient(135deg, #dc2626, #ef4444); }
-        .btn.gold { background: linear-gradient(135deg, #d97706, #f59e0b); }
-        .btn.dark { background: linear-gradient(135deg, #0f172a, #1e293b); }
+        .btn.blue { background: #2563eb; }
+        .btn.green { background: #16a34a; }
+        .btn.red { background: #dc2626; }
+        .btn.gold { background: #d97706; }
 
         .duel-item {
-            padding: 15px;
-            border: 1px solid #bae6fd;
-            border-radius: 18px;
-            margin-bottom: 12px;
-            background: #f8fafc;
-        }
-
-        .duel-title {
-            font-weight: 900;
-            margin-bottom: 7px;
-            font-size: 16px;
-        }
-
-        .status {
-            display: inline-flex;
-            padding: 5px 10px;
-            border-radius: 999px;
-            background: #e0f2fe;
-            color: #0369a1;
-            font-size: 12px;
-            font-weight: 900;
-            margin-top: 8px;
-        }
-
-        .winner {
-            color: #16a34a;
-            font-weight: 900;
-            margin-top: 8px;
-        }
-
-        .messages {
-            margin-bottom: 16px;
-        }
-
-        .msg {
-            padding: 12px 14px;
-            border-radius: 14px;
-            background: white;
-            color: #0369a1;
-            margin-bottom: 8px;
-            font-weight: 800;
-            border: 1px solid #bae6fd;
-        }
-
-        .leaderboard {
-            width: 100%;
-            border-collapse: collapse;
-            overflow: hidden;
-        }
-
-        .leaderboard th,
-        .leaderboard td {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
             padding: 12px;
-            border-bottom: 1px solid #e0f2fe;
-            text-align: left;
-            font-size: 14px;
+            margin-bottom: 10px;
         }
 
-        .leaderboard th {
-            background: #e0f2fe;
-            color: #075985;
-            font-weight: 900;
-        }
-
-        .rank {
-            font-weight: 900;
-            color: #0284c7;
-        }
-
-        @media (max-width: 900px) {
-            .hero {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 520px) {
-            .stats {
-                grid-template-columns: 1fr;
-            }
-
-            .hero h1 {
-                font-size: 32px;
-            }
+        table {
+            width: 100%;
         }
     </style>
 </head>
+
 <body>
 <div class="wrap">
+
+    <!-- HEADER -->
     <div class="hero">
-        <div>
-            <h1>Duel Mode</h1>
-            <p>Raqib tanlang, bir xil test ishlang, g‘alaba va mag‘lubiyatlaringizni kuzating.</p>
-        </div>
+        <h1>Duel Mode</h1>
         <a href="{% url 'home' %}" class="home-btn">Home</a>
     </div>
 
+    <!-- MESSAGES -->
     {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-                <div class="msg">{{ message }}</div>
-            {% endfor %}
-        </div>
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
     {% endif %}
 
-    <div class="stats">
-        <div class="stat">
-            <div class="stat-label">Wins</div>
-            <div class="stat-value">{{ my_stats.wins }}</div>
-        </div>
-        <div class="stat">
-            <div class="stat-label">Losses</div>
-            <div class="stat-value">{{ my_stats.losses }}</div>
-        </div>
-        <div class="stat">
-            <div class="stat-label">Draws</div>
-            <div class="stat-value">{{ my_stats.draws }}</div>
-        </div>
-        <div class="stat">
-            <div class="stat-label">Total Duels</div>
-            <div class="stat-value">{{ my_stats.total }}</div>
-        </div>
-        <div class="stat">
-            <div class="stat-label">Win Rate</div>
-            <div class="stat-value">{{ my_stats.win_rate }}%</div>
-        </div>
-    </div>
-
-    <div class="grid">
-        <div class="card">
-            <h2>Yangi duel yaratish</h2>
-
-            <form method="post" action="{% url 'create_duel' %}">
-                {% csrf_token %}
-
-                <label>Test tanlang</label>
-                <select name="test_id" required>
-                    {% for test in tests %}
-                        <option value="{{ test.id }}">{{ test.title }} — {{ test.category }}</option>
-                    {% empty %}
-                        <option value="">Test yo‘q</option>
-                    {% endfor %}
-                </select>
-
-                <label>Raqib tanlang</label>
-                <select name="opponent_id" required>
-                    {% for u in users %}
-                        <option value="{{ u.id }}">{{ u.username }}</option>
-                    {% empty %}
-                        <option value="">Raqib yo‘q</option>
-                    {% endfor %}
-                </select>
-
-                <button type="submit" class="btn blue">Duel yuborish</button>
-            </form>
-        </div>
-
-        <div class="card">
-            <h2>Kelgan duel takliflari</h2>
-
-            {% for duel in incoming_duels %}
-                <div class="duel-item">
-                    <div class="duel-title">{{ duel.challenger.username }} sizni duelga chaqirdi</div>
-                    <div>Test: <strong>{{ duel.test.title }}</strong></div>
-                    <br>
-                    <a href="{% url 'accept_duel' duel.id %}" class="btn green">Qabul qilish</a>
-                    <a href="{% url 'cancel_duel' duel.id %}" class="btn red">Rad etish</a>
-                </div>
-            {% empty %}
-                <p>Hozircha taklif yo‘q.</p>
-            {% endfor %}
-        </div>
-    </div>
-
+    <!-- STATS -->
     <div class="card">
-        <h2>Duel tarixi va natijalar</h2>
+        <h3>My Stats</h3>
+        Wins: {{ my_stats.wins }} |
+        Losses: {{ my_stats.losses }} |
+        Draws: {{ my_stats.draws }} |
+        Win Rate: {{ my_stats.win_rate }}%
+    </div>
+
+    <!-- CREATE -->
+    <div class="card">
+        <h3>Create Duel</h3>
+
+        <form method="post" action="{% url 'create_duel' %}">
+            {% csrf_token %}
+
+            <select name="test_id">
+                {% for test in tests %}
+                    <option value="{{ test.id }}">{{ test.title }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="opponent_id">
+                {% for u in users %}
+                    <option value="{{ u.id }}">{{ u.username }}</option>
+                {% endfor %}
+            </select>
+
+            <button class="btn blue">Create</button>
+        </form>
+    </div>
+
+    <!-- INCOMING -->
+    <div class="card">
+        <h3>Incoming Duels</h3>
+
+        {% for duel in incoming_duels %}
+            <div class="duel-item">
+                {{ duel.challenger.username }} → {{ duel.test.title }}
+
+                <br><br>
+
+                <a href="{% url 'accept_duel' duel.id %}" class="btn green">Accept</a>
+                <a href="{% url 'cancel_duel' duel.id %}" class="btn red">Cancel</a>
+            </div>
+        {% empty %}
+            <p>No duels</p>
+        {% endfor %}
+    </div>
+
+    <!-- HISTORY -->
+    <div class="card">
+        <h3>Duel History</h3>
 
         {% for duel in my_duels %}
             <div class="duel-item">
-                <div class="duel-title">
-                    {{ duel.challenger.username }} vs {{ duel.opponent.username }}
-                </div>
-
-                <div>Test: <strong>{{ duel.test.title }}</strong></div>
-                <div>Status: <span class="status">{{ duel.status }}</span></div>
-
-                {% if duel.status == 'completed' %}
-                    {% if duel.winner %}
-                        <div class="winner">Winner: {{ duel.winner.username }}</div>
-                    {% else %}
-                        <div class="winner">Draw</div>
-                    {% endif %}
-                {% endif %}
+                {{ duel.challenger.username }} vs {{ duel.opponent.username }}
 
                 <br>
+                Status: {{ duel.status }}
 
-                {% if duel.status == 'pending' or duel.status == 'accepted' %}
-                    <a href="{% url 'start_duel' duel.id %}" class="btn blue">Testni boshlash</a>
-                    <a href="{% url 'cancel_duel' duel.id %}" class="btn red">Cancel</a>
+                <br><br>
+
+                {% if duel.status != 'completed' %}
+                    <a href="{% url 'start_duel' duel.id %}" class="btn blue">Start</a>
                 {% endif %}
 
                 <a href="{% url 'duel_result' duel.id %}" class="btn gold">Result</a>
             </div>
-        {% empty %}
-            <p>Hali duel yo‘q.</p>
         {% endfor %}
     </div>
 
+    <!-- LEADERBOARD -->
     <div class="card">
-        <h2>Duel Leaderboard</h2>
+        <h3>Leaderboard</h3>
 
-        <table class="leaderboard">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>User</th>
-                    <th>Wins</th>
-                    <th>Losses</th>
-                    <th>Draws</th>
-                    <th>Total</th>
-                    <th>Win Rate</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in leaderboard %}
-                    <tr>
-                        <td class="rank">{{ forloop.counter }}</td>
-                        <td><strong>{{ row.user.username }}</strong></td>
-                        <td>{{ row.wins }}</td>
-                        <td>{{ row.losses }}</td>
-                        <td>{{ row.draws }}</td>
-                        <td>{{ row.total }}</td>
-                        <td>{{ row.win_rate }}%</td>
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="7">Hali leaderboard uchun duel natijalari yo‘q.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
+        <table>
+            <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Wins</th>
+            </tr>
+
+            {% for row in leaderboard %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ row.user.username }}</td>
+                <td>{{ row.wins }}</td>
+            </tr>
+            {% endfor %}
         </table>
     </div>
+
 </div>
 </body>
 </html>
