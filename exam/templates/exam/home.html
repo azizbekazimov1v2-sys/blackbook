@@ -387,6 +387,188 @@
             max-width: 300px;
         }
 
+        /* Duel Mode Styles */
+        .duel-section {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 32px;
+            border: 2px solid #f59e0b;
+        }
+
+        .duel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .duel-header h2 {
+            margin: 0;
+            color: #92400e;
+        }
+
+        .duel-badge {
+            background: #f59e0b;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .create-duel-form {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .create-duel-form h3 {
+            margin: 0 0 16px;
+            font-size: 18px;
+            color: #111827;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #374151;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        .duel-submit-btn {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .duel-submit-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .duels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+        }
+
+        .duel-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            border-left: 4px solid;
+            transition: transform 0.2s ease;
+        }
+
+        .duel-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .duel-card.pending { border-left-color: #f59e0b; }
+        .duel-card.accepted { border-left-color: #3b82f6; }
+        .duel-card.completed { border-left-color: #10b981; }
+        .duel-card.cancelled { border-left-color: #ef4444; }
+
+        .duel-players {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .player {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .vs {
+            color: #6b7280;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .duel-test {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .duel-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-accepted { background: #dbeafe; color: #1e40af; }
+        .status-completed { background: #d1fae5; color: #065f46; }
+        .status-cancelled { background: #fee2e2; color: #991b1b; }
+
+        .duel-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .duel-action-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .duel-action-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-accept { background: #10b981; color: white; }
+        .btn-cancel { background: #ef4444; color: white; }
+        .btn-complete { background: #3b82f6; color: white; }
+        .btn-view { background: #6b7280; color: white; }
+
         .section {
             margin-top: 36px;
         }
@@ -767,6 +949,10 @@
             .logo-box {
                 min-width: 120px;
             }
+
+            .duels-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -788,6 +974,7 @@
                 <a class="top-link" href="{% url 'profile' %}">Profil</a>
                 <a class="top-link" href="{% url 'career_mode' %}">Career Mode</a>
                 <a class="top-link" href="{% url 'score_calculator' %}">Score Calculator</a>
+                <a class="top-link" href="{% url 'duel_list' %}">Duels</a>
             {% endif %}
 
             {% if user.is_authenticated and user.is_staff %}
@@ -811,7 +998,7 @@
             <h1>College and Career Start Here</h1>
             <p>
                 {% if user.is_authenticated %}
-                    Platformdagi English testlar, Math testlar, analysis videolar, premium
+                    Platformadagi English testlar, Math testlar, analysis videolar, premium
                     materiallar va yangi Career Mode bo'limiga shu yerdan tezkor o'ting.
                 {% else %}
                     Sign in for personalized recommendations and access to your SAT, Math tests,
@@ -864,6 +1051,97 @@
             </div>
         </div>
 
+        <!-- DUEL MODE SECTION -->
+        {% if user.is_authenticated %}
+        <section class="duel-section">
+            <div class="duel-header">
+                <h2>⚔️ Duel Mode</h2>
+                <span class="duel-badge">Challenge Friends</span>
+            </div>
+
+            <!-- Create Duel Form -->
+            <div class="create-duel-form">
+                <h3>Yangi Duel Yaratish</h3>
+                <form method="post" action="{% url 'create_duel' %}" class="form-row">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Test tanlang</label>
+                        <select name="test_id" required>
+                            <option value="">-- Test tanlang --</option>
+                            {% for test in all_tests %}
+                                <option value="{{ test.id }}">{{ test.title }} ({{ test.total_questions }} questions)</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Raqibni tanlang</label>
+                        <select name="opponent_id" required>
+                            <option value="">-- Foydalanuvchi tanlang --</option>
+                            {% for other_user in other_users %}
+                                <option value="{{ other_user.id }}">{{ other_user.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="duel-submit-btn">➤ Duel Yaratish</button>
+                </form>
+            </div>
+
+            <!-- Active Duels List -->
+            <h3 style="margin-bottom: 16px;">Faol Duellar</h3>
+            {% if active_duels %}
+                <div class="duels-grid">
+                    {% for duel in active_duels %}
+                        <div class="duel-card {{ duel.status }}">
+                            <div class="duel-players">
+                                <span class="player">{{ duel.challenger.username }}</span>
+                                <span class="vs">VS</span>
+                                <span class="player">{{ duel.opponent.username }}</span>
+                            </div>
+                            <div class="duel-test">📋 {{ duel.test.title }}</div>
+                            <span class="duel-status status-{{ duel.status }}">
+                                {% if duel.status == 'pending' %}⏳ Kutilmoqda
+                                {% elif duel.status == 'accepted' %}✅ Qabul qilingan
+                                {% elif duel.status == 'completed' %}🏆 Tugagan
+                                {% else %}❌ Bekor qilingan
+                                {% endif %}
+                            </span>
+                            {% if duel.winner %}
+                                <div style="font-size: 12px; color: #10b981; margin-bottom: 12px;">
+                                    🏆 G'olib: {{ duel.winner.username }}
+                                </div>
+                            {% endif %}
+                            <div class="duel-actions">
+                                {% if duel.status == 'pending' and duel.opponent == user %}
+                                    <form method="post" action="{% url 'accept_duel' duel.id %}" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="duel-action-btn btn-accept">✅ Accept</button>
+                                    </form>
+                                    <form method="post" action="{% url 'cancel_duel' duel.id %}" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="duel-action-btn btn-cancel">❌ Cancel</button>
+                                    </form>
+                                {% elif duel.status == 'pending' and duel.challenger == user %}
+                                    <form method="post" action="{% url 'cancel_duel' duel.id %}" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="duel-action-btn btn-cancel">❌ Cancel</button>
+                                    </form>
+                                {% elif duel.status == 'accepted' %}
+                                    <a href="{% url 'take_duel_test' duel.id %}" class="duel-action-btn btn-view">▶ Start Duel</a>
+                                {% elif duel.status == 'completed' %}
+                                    <a href="{% url 'duel_result' duel.id %}" class="duel-action-btn btn-view">📊 View Result</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-box" style="background: rgba(255,255,255,0.7);">
+                    Hozircha faol duellar yo'q. Yangi duel yaratish orqali boshlang!
+                </div>
+            {% endif %}
+        </section>
+        {% endif %}
+
         {% if user.is_authenticated %}
             <section class="section">
                 <h2>Welcome to SAT Azizbek</h2>
@@ -909,7 +1187,6 @@
                                 <a class="open-btn" href="{% if test.is_premium %}{% url 'check_access' 'test' test.id %}{% else %}{% url 'take_pdf_test' test.id %}{% endif %}">
                                     Open Test
                                 </a>
-
 
                                 <button type="button" class="comment-toggle-btn" onclick="toggleComments('test-comments-{{ test.id }}')">
                                     Comments
@@ -988,7 +1265,6 @@
                                 <a class="open-btn" href="{% if test.is_premium %}{% url 'check_access' 'test' test.id %}{% else %}{% url 'take_pdf_test' test.id %}{% endif %}">
                                     Open Test
                                 </a>
-
 
                                 <button type="button" class="comment-toggle-btn" onclick="toggleComments('test-comments-{{ test.id }}')">
                                     Comments
@@ -1149,7 +1425,6 @@
                             <div class="card-actions">
                                 <a class="open-btn" href="{% url 'check_access' 'test' test.id %}">Open</a>
 
-
                                 <button type="button" class="comment-toggle-btn" onclick="toggleComments('test-comments-{{ test.id }}')">
                                     Comments
                                 </button>
@@ -1274,7 +1549,6 @@
 
                             <div class="card-actions">
                                 <a class="open-btn" href="{% url 'check_access' 'video' video.id %}">Watch</a>
-
 
                                 <button type="button" class="comment-toggle-btn" onclick="toggleComments('video-comments-{{ video.id }}')">
                                     Comments
